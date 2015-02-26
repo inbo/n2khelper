@@ -1,0 +1,13 @@
+Package: n2khelper
+Title: Auxiliary functions for the analysis and reporting of the Natura 2000 monitoring
+Version: 0.0
+Authors@R: c(person("Thierry", "Onkelinx", email = "thierry.onkelinx@inbo.be", role = c("aut", "cre")))
+Description: This package contains several simple functions to facilitate the analysis and reporting.
+Depends: 
+  R (>= 3.1.2)
+Imports: 
+  RODBC
+License: GPL-3
+LazyData: true
+Suggests: 
+  testthat
