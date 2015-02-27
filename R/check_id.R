@@ -1,11 +1,11 @@
-#' Test is an id exists in a given field of the table
+#' Test if an id exists in a given field of the table
 #' @param value the value of the id
 #' @param field the field in which holds the id
 #' @param table the table in which to look for the id
 #' @param channel An open ODBC channel
 #' @export
 #' @importFrom RODBC sqlQuery
-test_id <- function(value, field, table, channel){
+check_id <- function(value, field, table, channel){
   if(class(channel) != "RODBC"){
     stop("channel is not an ODBC connection")
   }
