@@ -26,7 +26,7 @@ describe("test_id()", {
   })
   it("tests if the id exists in the table", {
     expect_that(
-      test_id(value = -1, field = field, table = table, channel = channel),
+      test_id(value = 999999999, field = field, table = table, channel = channel),
       is_false()
     )
   })

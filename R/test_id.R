@@ -9,6 +9,7 @@ test_id <- function(value, field, table, channel){
   if(class(channel) != "RODBC"){
     stop("channel is not an ODBC connection")
   }
+  value <- check_single_strictly_positive_integer(value, name = "value")
   sql <- paste("SELECT", field, "FROM", table, "WHERE", field, "=", value)
   selection <- sqlQuery(channel = channel, query = sql)
   if(class(selection) != "data.frame"){
