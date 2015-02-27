@@ -3,4 +3,5 @@
 export(check_id)
 export(check_single_character)
 export(check_single_strictly_positive_integer)
+export(is_git_repo)
 importFrom(RODBC,sqlQuery)
