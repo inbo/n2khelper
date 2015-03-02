@@ -13,12 +13,18 @@ write_delim_git <- function(x, file, path, repo.path = rawdata.path){
   if(!is_git_repo(path = repo.path)){
     stop(repo.path, " is not a git repository")
   }
-  filename <- paste(repo.path, path, file, sep = "/")
+  
+  # write the file
+  filename.full <- paste(repo.path, path, file, sep = "/")
   write.table(
-    x = x, file = filename, append = FALSE, 
+    x = x, file = filename.full, append = FALSE, 
     quote = FALSE, sep = "\t", row.names = FALSE, fileEncoding = "UTF-8"
   )
+  
+  # stage the file
+  filename.local <- paste(path, file, sep = "/")
   repo <- repository(repo.path, discover = FALSE)
-  add(repo, filename)
+  add(repo, filename.local)
+  
   return(invisible(TRUE))
 }
