@@ -6,6 +6,7 @@ Description: This package contains several simple functions to facilitate the an
 Depends: 
   R (>= 3.1.2)
 Imports: 
+  git2r,
   RODBC
 License: GPL-3
 LazyData: true
