@@ -6,7 +6,7 @@
 #' @return The function gives the single character back. it throws an error when the input is not a signle character.
 #' @export
 #' @examples
-#' check_single_strictly_positive_integer(20)
+#' check_single_character("20")
 check_single_character <- function(x, name = "x"){
   if(!class(x) %in% c("character", "factor")){
     stop(name, " must be character")
