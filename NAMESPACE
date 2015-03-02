@@ -3,6 +3,7 @@
 export(auto_commit)
 export(check_id)
 export(check_single_character)
+export(check_single_logical)
 export(check_single_strictly_positive_integer)
 export(is_git_repo)
 export(read_delim_git)
