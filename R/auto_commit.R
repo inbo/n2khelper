@@ -26,6 +26,18 @@ auto_commit <- function(package, repo.path = rawdata.path){
     "\nOther package(s):\n", paste(sapply(info$otherPkgs, format.other), collapse = ""),
     "\nLoaded via a namespace:\n", paste(sapply(info$loadedOnly, format.other), collapse = "")
   )
-    
-  commit(repo = repo, message = message)
+  
+  committed <- tryCatch(
+    commit(repo = repo, message = message),
+    error = function(e){
+      if(e$message == "Error in 'git2r_commit': Nothing added to commit\n"){
+        FALSE
+      } else {
+        e
+      }
+    }
+  )
+  if("error" %in% class(committed)){
+    stop(committed)
+  }
 }
