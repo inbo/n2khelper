@@ -3,5 +3,4 @@
 export(check_id)
 export(check_single_character)
 export(check_single_strictly_positive_integer)
-export(test_id)
 importFrom(RODBC,sqlQuery)
