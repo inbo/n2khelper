@@ -1,9 +1,8 @@
-#' Check if the object is a single character
+#' Check if the object is a single logical
 #' 
-#' Factors are converted to character.
 #' @param x the object to check
 #' @param name the name of the object to use in the error message
-#' @return The function gives the single character back. it throws an error when the input is not a signle character.
+#' @return The function gives the single logical back. it throws an error when the input is not a single logical.
 #' @export
 #' @examples
 #' check_single_logical(TRUE)

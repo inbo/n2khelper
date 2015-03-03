@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_single_logical.R
 \name{check_single_logical}
 \alias{check_single_logical}
-\title{Check if the object is a single character}
+\title{Check if the object is a single logical}
 \usage{
 check_single_logical(x, name = "x")
 }
@@ -12,10 +12,10 @@ check_single_logical(x, name = "x")
 \item{name}{the name of the object to use in the error message}
 }
 \value{
-The function gives the single character back. it throws an error when the input is not a signle character.
+The function gives the single logical back. it throws an error when the input is not a single logical.
 }
 \description{
-Factors are converted to character.
+Check if the object is a single logical
 }
 \examples{
 check_single_logical(TRUE)
