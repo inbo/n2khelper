@@ -10,6 +10,9 @@ write_delim_git <- function(x, file, path, repo.path = rawdata.path){
   if(class(x) != "data.frame"){
     stop("x is not a data.frame")
   }
+  file <- check_single_character(x = file, name = "file")
+  path <- check_single_character(x = path, name = "path")
+  repo.path <- check_single_character(x = repo.path, name = "repo.path")
   if(!is_git_repo(path = repo.path)){
     stop(repo.path, " is not a git repository")
   }

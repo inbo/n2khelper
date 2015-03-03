@@ -4,6 +4,9 @@
 #' @param repo.path path of the git repository. Defaults to rawdata.path
 #' @export
 read_delim_git <- function(file, path, repo.path = rawdata.path){
+  file <- check_single_character(x = file, name = "file")
+  path <- check_single_character(x = path, name = "path")
+  repo.path <- check_single_character(x = repo.path, name = "repo.path")
   if(!is_git_repo(path = repo.path)){
     stop(repo.path, "is not a git repository")
   }

@@ -7,6 +7,7 @@
 #' @examples
 #' check_single_strictly_positive_integer(20)
 check_single_strictly_positive_integer <- function(x, name = "x", tolerance = 1e-10){
+  name <- check_single_character(x = name, name = "name")
   if(!class(x) %in% c("integer", "numeric")){
     stop(name, " must be integer")
   }

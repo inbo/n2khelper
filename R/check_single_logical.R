@@ -7,6 +7,7 @@
 #' @examples
 #' check_single_logical(TRUE)
 check_single_logical <- function(x, name = "x"){
+  name <- check_single_character(x = name, name = "name")
   if(class(x) != "logical"){
     stop(name, " must be logical")
   }
