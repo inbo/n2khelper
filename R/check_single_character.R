@@ -8,15 +8,9 @@
 #' @examples
 #' check_single_character("20")
 check_single_character <- function(x, name = "x"){
-  if(!class(x) %in% c("character", "factor")){
-    stop(name, " must be character")
-  }
+  x <- check_character(x = x, name = name, na.action = na.fail)
   if(length(x) != 1){
     stop(name, " must be a single character")
   }
-  if(is.factor(x)){
-    return(levels(x)[x])
-  } else {
-    return(x)
-  }
+  return(x)
 }
