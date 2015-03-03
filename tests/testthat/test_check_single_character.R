@@ -31,7 +31,7 @@ describe("check_single_character()", {
       throws_error(paste(name, "must be a single character"))
     )
   })
-  it("converts the input the character when it is a factor", {
+  it("converts the input to character when it is a factor", {
     one.level <- factor(x)
     two.level <- factor(x, levels = paste0(c("a", ""), x))
     expect_that(
