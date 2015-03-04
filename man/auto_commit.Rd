@@ -2,18 +2,20 @@
 % Please edit documentation in R/auto_commit.R
 \name{auto_commit}
 \alias{auto_commit}
-\title{Commit staged changes in a git repository with automated message
-The mesagge is based on the information returned by \code{\link[utils]{sessionInfo}}}
+\title{Commit staged changes in a git repository with automated message}
 \usage{
-auto_commit(package, repo.path = rawdata.path)
+auto_commit(package, repo.path = rawdata.path, username, password)
 }
 \arguments{
 \item{package}{The name of the package from which we autocommit}
 
 \item{repo.path}{The path of the repository. Default to \code{rawdata.path}}
+
+\item{username}{the username for the git repository}
+
+\item{password}{the user's password for the git repository}
 }
 \description{
-Commit staged changes in a git repository with automated message
 The mesagge is based on the information returned by \code{\link[utils]{sessionInfo}}
 }
 
