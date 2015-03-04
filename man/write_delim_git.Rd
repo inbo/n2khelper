@@ -2,8 +2,7 @@
 % Please edit documentation in R/write_delim_git.R
 \name{write_delim_git}
 \alias{write_delim_git}
-\title{write a dataframe as a tab delimited file to a git repository and stage it
-The existing file will be overwritten.}
+\title{write a dataframe as a tab delimited file to a git repository and stage it}
 \usage{
 write_delim_git(x, file, path, repo.path = rawdata.path)
 }
@@ -17,7 +16,6 @@ write_delim_git(x, file, path, repo.path = rawdata.path)
 \item{repo.path}{path of the git repository. Defaults to rawdata.path}
 }
 \description{
-write a dataframe as a tab delimited file to a git repository and stage it
 The existing file will be overwritten.
 }
 

@@ -1,4 +1,5 @@
 #' write a dataframe as a tab delimited file to a git repository and stage it
+#' 
 #' The existing file will be overwritten.
 #' @param x the data.frame
 #' @param file the name of the file
@@ -13,9 +14,16 @@ write_delim_git <- function(x, file, path, repo.path = rawdata.path){
   file <- check_single_character(x = file, name = "file")
   path <- check_single_character(x = path, name = "path")
   repo.path <- check_single_character(x = repo.path, name = "repo.path")
+  repo.path <- normalizePath(repo.path, winslash = "/", mustWork = FALSE)
   if(!is_git_repo(path = repo.path)){
     stop(repo.path, " is not a git repository")
   }
+  full.path <- paste(repo.path, path, sep = "/")
+  if(!file_test("-d", full.path)){
+    warning(path, " is created")
+    dir.create(full.path, recursive = TRUE)
+  }
+  
   
   # write the file
   filename.full <- paste(repo.path, path, file, sep = "/")
