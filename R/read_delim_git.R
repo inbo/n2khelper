@@ -13,5 +13,9 @@ read_delim_git <- function(file, path, repo.path = rawdata.path){
   }
   
   filename <- paste(repo.path, path, file, sep = "/")
-  read.delim(filename)
+  if(file_test("-f", filename)){
+    return(read.delim(filename))
+  } else {
+    return(FALSE)
+  }
 }

@@ -16,6 +16,17 @@ describe("read_delim_git()", {
 
   dir.create(repo.path)
   repo <- init(repo.path)
+  it("returns FALSE when the file doesn't exists", {
+    expect_that(
+      read_delim_git(file = file, path = path, repo.path = repo.path),
+      is_false()
+    )
+    dir.create(paste(repo.path, path, sep = "/"))
+    expect_that(
+      read_delim_git(file = file, path = path, repo.path = repo.path),
+      is_false()
+    )
+  })
   write_delim_git(x = df, file = file, path = path, repo.path = repo.path)
   it("read the tab-delimited file", {
     expect_that(
