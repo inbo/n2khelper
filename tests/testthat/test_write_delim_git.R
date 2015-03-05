@@ -19,7 +19,6 @@ describe("write_delim_git()", {
       throws_error(paste(repo.path, "is not a git repository"))
     )
   })
-  ??path
   
   dir.create(repo.path)
   repo <- init(repo.path)
