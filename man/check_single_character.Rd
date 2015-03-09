@@ -12,12 +12,12 @@ check_single_character(x, name = "x")
 \item{name}{the name of the object to use in the error message}
 }
 \value{
-The function gives the single character back. it throws an error when the input is not a signle character.
+The function gives the single character back. it throws an error when the input is not a single character.
 }
 \description{
 Factors are converted to character.
 }
 \examples{
-check_single_strictly_positive_integer(20)
+check_single_character("20")
 }
 
