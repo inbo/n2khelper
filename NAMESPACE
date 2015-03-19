@@ -2,6 +2,7 @@
 
 export(auto_commit)
 export(check_character)
+export(check_dataframe_covariate)
 export(check_dataframe_variable)
 export(check_id)
 export(check_single_character)
