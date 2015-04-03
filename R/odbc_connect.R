@@ -4,6 +4,7 @@
 #' @param data.source The name of the data source
 #' @inheritParams connect_result
 #' @importFrom RODBC sqlQuery odbcClose odbcDriverConnect
+#' @export
 odbc_connect <- function(data.source, develop = TRUE){
   data.source <- check_single_character(data.source)
 
