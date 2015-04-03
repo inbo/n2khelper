@@ -7,7 +7,7 @@
 connect_result(develop = TRUE)
 }
 \arguments{
-\item{develop}{}
+\item{develop}{Logical value. Indicates the location ton the results database}
 }
 \description{
 Opens an ODBC connection to the 'results' database
