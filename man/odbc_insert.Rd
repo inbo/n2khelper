@@ -2,7 +2,7 @@
 % Please edit documentation in R/odbc_insert.R
 \name{odbc_insert}
 \alias{odbc_insert}
-\title{Insert a data.frame into a table through an ODBC connection}
+\title{Append a data.frame to a table through an ODBC connection}
 \usage{
 odbc_insert(channel, data, table)
 }
@@ -13,7 +13,10 @@ odbc_insert(channel, data, table)
 
 \item{table}{the table in which to look for the id}
 }
+\value{
+The status of the SQL INSERT for each row in returned but invisible.
+}
 \description{
-Insert a data.frame into a table through an ODBC connection
+Append a data.frame to a table through an ODBC connection
 }
 

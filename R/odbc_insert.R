@@ -1,4 +1,6 @@
-#' Insert a data.frame into a table through an ODBC connection
+#' Append a data.frame to a table through an ODBC connection
+#' 
+#' @return The status of the SQL INSERT for each row in returned but invisible.
 #' @inheritParams check_id
 #' @param data the data.frame
 #' @export
@@ -59,5 +61,5 @@ odbc_insert <- function(channel, data, table){
       unname(which(sql.status == -1))
     )
   }
-  return(sql.status)
+  return(invisible(sql.status))
 }
