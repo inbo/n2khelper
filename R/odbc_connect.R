@@ -7,7 +7,7 @@
 odbc_connect <- function(data.source, develop = TRUE){
   data.source <- check_single_character(data.source)
 
-  channel <- connect_result()
+  channel <- connect_result(develop = develop)
   sql <- paste0("
     SELECT
       ConnectionString,
