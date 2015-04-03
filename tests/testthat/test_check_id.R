@@ -1,9 +1,12 @@
 context("check if an id exists")
 describe("check_id()", {
-  channel <- watervogelanalysis::connect_watervogel()
-  table <- "tblSoort"
-  field <- "EuringNummer"
-  value <- 70
+  channel <- connect_result()
+  table <- "DatasourceType"
+  field <- "ID"
+  field.text <- "Description"
+  value.text <- "'git, tab delimited'"
+  sql <- paste("SELECT", field, "FROM", table, "WHERE", field.text, "=", value.text)
+  value <- RODBC::sqlQuery(channel = channel, query = sql)[, 1]
   junk <- "junk"
 
   it("tests if the channel in an ODBC connection", {

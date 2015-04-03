@@ -13,5 +13,4 @@ Imports:
 License: GPL-3
 LazyData: true
 Suggests: 
-  watervogelanalysis,
   testthat
