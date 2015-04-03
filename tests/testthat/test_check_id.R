@@ -21,6 +21,12 @@ describe("check_id()", {
       throws_error(paste0("The table '", junk, "' doesn't exists in the ODBC data source"))
     )
   })
+  it("tests if data type is correct", {
+    expect_that(
+      check_id(value = 999999999, field = field.text, table = table, channel = channel),
+      throws_error(".*Conversion failed when converting.*")
+    )
+  })
   it("tests if the field table exists in the table", {
     expect_that(
       check_id(value = value, field = junk, table = table, channel = channel),

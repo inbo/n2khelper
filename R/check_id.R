@@ -22,6 +22,9 @@ check_id <- function(value, field, table, channel){
     if(length(grep("Invalid column name", selection)) > 0){
       stop("The field '", field, "' doesn't exists in table '", table, "'")
     }
+    if(length(grep("Conversion failed", selection))){
+      stop(paste(selection, collapse = "\n"))
+    }
   }
   
   if(nrow(selection) == 0){
