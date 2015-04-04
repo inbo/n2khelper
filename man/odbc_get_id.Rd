@@ -4,7 +4,7 @@
 \alias{odbc_get_id}
 \title{Get the corresponding id's}
 \usage{
-odbc_get_id(data, id.field, merge.field, table, channel)
+odbc_get_id(data, id.field, merge.field, table, channel, create = FALSE)
 }
 \arguments{
 \item{data}{the data.frame}
@@ -16,11 +16,13 @@ odbc_get_id(data, id.field, merge.field, table, channel)
 \item{table}{the table name}
 
 \item{channel}{the open ODBC channel}
+
+\item{create}{Should the function create new rows when no corresponding rows are found? Defaults to FALSE.}
 }
 \value{
 a data.frame with data and the id's
 }
 \description{
-New data will be created if no corresponding id's are found
+Get the corresponding id's
 }
 
