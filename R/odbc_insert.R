@@ -19,6 +19,9 @@ odbc_insert <- function(channel, data, table){
   type <- sapply(data, class)
   type[type %in% c("integer", "numeric")] <- "done"
   if(any(type == "character")){
+    data[, type == "character"] <- sapply(which(type == "character"), function(i){
+      gsub("\\'", "\\'\\'", data[, i])
+    })
     old.fancy.quotes <- getOption("useFancyQuotes")
     options(useFancyQuotes = FALSE)
     data[, type == "character"] <- apply(
