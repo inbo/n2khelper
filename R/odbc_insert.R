@@ -58,7 +58,7 @@ odbc_insert <- function(channel, data, table){
   if(any(sql.status == -1)){
     warning(
       "Inserting data failed on rows: ", 
-      unname(which(sql.status == -1))
+      paste(unname(which(sql.status == -1)), collapse = ", ")
     )
   }
   return(invisible(sql.status))
