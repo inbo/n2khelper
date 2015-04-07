@@ -18,9 +18,9 @@ odbc_get_id <- function(data, id.field, merge.field, table, channel, create = FA
   }
   create <- check_single_logical(create)
   
-  tmptable <- digest(data, algo = "sha1")
+  tmptable <- paste0("tmp", digest(data, algo = "sha1"))
   sqlSave(
-    channel = channel, dat = data, tablename = tmptable, append = FALSE, rownames = TRUE
+    channel = channel, dat = data, tablename = tmptable, append = FALSE, rownames = FALSE
   )
   
   id.field.table <- paste0(table, ".", id.field)
