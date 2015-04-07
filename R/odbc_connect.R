@@ -5,8 +5,8 @@
 #' @inheritParams connect_result
 #' @importFrom RODBC sqlQuery odbcClose odbcDriverConnect
 #' @export
-odbc_connect <- function(data.source, develop = TRUE){
-  data.source <- check_single_character(data.source)
+odbc_connect <- function(data.source.name, develop = TRUE){
+  data.source.name <- check_single_character(data.source.name)
 
   channel <- connect_result(develop = develop)
   sql <- paste0("
@@ -29,19 +29,19 @@ odbc_connect <- function(data.source, develop = TRUE){
       ON
         Datasource.ConnectMethodID = ConnectMethod.ID
     WHERE
-      Datasource.Description = '", data.source, "'"
+      Datasource.Description = '", data.source.name, "'"
   )
   connection <- sqlQuery(channel = channel, query = sql)
   odbcClose(channel)
   
   if(nrow(connection) == 0){
-    stop("No connection information found for '", data.source, "'.")
+    stop("No connection information found for '", data.source.name, "'.")
   }
   if(nrow(connection) > 1){
-    stop("Multiple lines with connection information found for '", data.source, "'.")
+    stop("Multiple lines with connection information found for '", data.source.name, "'.")
   }
   if(connection$Type %in% "git, tab delimited"){
-    stop("ODBC connection not available for '", data.source, "'. Use a connection for '", connection$Type, "'")
+    stop("ODBC connection not available for '", data.source.name, "'. Use a connection for '", connection$Type, "'")
   }
   
   if(connection$Type == "Microsoft SQL Server"){

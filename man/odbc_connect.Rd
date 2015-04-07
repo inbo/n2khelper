@@ -4,12 +4,12 @@
 \alias{odbc_connect}
 \title{connect to a data source through ODBC}
 \usage{
-odbc_connect(data.source, develop = TRUE)
+odbc_connect(data.source.name, develop = TRUE)
 }
 \arguments{
-\item{data.source}{The name of the data source}
-
 \item{develop}{Logical value. Indicates the location ton the results database}
+
+\item{data.source}{The name of the data source}
 }
 \description{
 The connection string is stored in the results database.
