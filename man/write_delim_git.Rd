@@ -15,6 +15,9 @@ write_delim_git(x, file, path, repo.path = rawdata.path)
 
 \item{repo.path}{path of the git repository. Defaults to rawdata.path}
 }
+\value{
+the SHA1 of the file
+}
 \description{
 The existing file will be overwritten.
 }

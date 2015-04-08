@@ -6,7 +6,8 @@
 #' @param path the subdirectory of the file relative to the root of the git repository
 #' @param repo.path path of the git repository. Defaults to rawdata.path
 #' @export
-#' @importFrom git2r repository add
+#' @importFrom git2r repository add hashfile
+#' @return the SHA1 of the file
 write_delim_git <- function(x, file, path, repo.path = rawdata.path){
   if(class(x) != "data.frame"){
     stop("x is not a data.frame")
@@ -37,5 +38,5 @@ write_delim_git <- function(x, file, path, repo.path = rawdata.path){
   repo <- repository(repo.path, discover = FALSE)
   add(repo, filename.local)
   
-  return(invisible(TRUE))
+  return(hashfile(filename.full))
 }
