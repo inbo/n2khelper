@@ -7,9 +7,9 @@
 odbc_connect(data.source.name, develop = TRUE)
 }
 \arguments{
-\item{develop}{Logical value. Indicates the location ton the results database}
+\item{data.source.name}{The name of the data source}
 
-\item{data.source}{The name of the data source}
+\item{develop}{Logical value. Indicates the location ton the results database}
 }
 \description{
 The connection string is stored in the results database.

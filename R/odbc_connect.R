@@ -1,7 +1,7 @@
 #' connect to a data source through ODBC
 #' 
 #' The connection string is stored in the results database.
-#' @param data.source The name of the data source
+#' @param data.source.name The name of the data source
 #' @inheritParams connect_result
 #' @importFrom RODBC sqlQuery odbcClose odbcDriverConnect
 #' @export
