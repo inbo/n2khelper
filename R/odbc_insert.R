@@ -44,6 +44,13 @@ odbc_insert <- function(channel, data, table){
     )
     type[relevant] <- "done"
   }
+  
+  relevant <- which(sapply(type,  identical, "logical"))
+  if(length(relevant) > 0){
+    data[, relevant] <- 1L * data[, relevant]
+    type[relevant] <- "done"
+  }
+  
   # test if all data types are handled
   if(any(type != "done")){
     stop(
