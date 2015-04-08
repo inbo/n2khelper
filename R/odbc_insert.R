@@ -19,18 +19,19 @@ odbc_insert <- function(channel, data, table){
   type <- sapply(data, class)
   type[type %in% c("integer", "numeric")] <- "done"
   if(any(type == "character")){
-    data[, type == "character"] <- sapply(which(type == "character"), function(i){
+    relevant <- which(type == "character")
+    data[, relevant] <- sapply(relevant, function(i){
       gsub("\\'", "\\'\\'", data[, i])
     })
     old.fancy.quotes <- getOption("useFancyQuotes")
     options(useFancyQuotes = FALSE)
-    data[, type == "character"] <- apply(
-      data[, type == "character", drop = FALSE], 
+    data[, relevant] <- apply(
+      data[, relevant, drop = FALSE], 
       2, 
       sQuote
     )
     options(useFancyQuotes = old.fancy.quotes)
-    type[type == "character"] <- "done"
+    type[relevant] <- "done"
   }
   # test if all data types are handled
   if(any(type != "done")){
