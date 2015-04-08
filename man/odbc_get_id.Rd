@@ -17,7 +17,7 @@ odbc_get_id(data, id.field, merge.field, table, channel, create = FALSE)
 
 \item{channel}{the open ODBC channel}
 
-\item{create}{Should the function create new rows when no corresponding rows are found? Defaults to FALSE.}
+\item{create}{When TRUE, the function creates unmatching records AND updates attributes. Defaults to FALSE.}
 }
 \value{
 a data.frame with data and the id's

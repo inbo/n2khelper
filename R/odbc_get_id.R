@@ -5,69 +5,92 @@
 #' @param merge.field the merge fields
 #' @param table the table name
 #' @param channel the open ODBC channel
-#' @param create Should the function create new rows when no corresponding rows are found? Defaults to FALSE.
+#' @param create When TRUE, the function creates unmatching records AND updates attributes. Defaults to FALSE.
 #' @export
 #' @return a data.frame with data and the id's
 #' @importFrom digest digest
-#' @importFrom RODBC sqlSave sqlQuery
+#' @importFrom RODBC sqlClear sqlQuery
 odbc_get_id <- function(data, id.field, merge.field, table, channel, create = FALSE){
   check_dataframe_variable(df = data, variable = merge.field, name = "data")
   table <- check_single_character(table, name = "table")
   if(class(channel) != "RODBC"){
     stop("channel is not an ODBC connection")
   }
+  check_dbtable_variable(
+    table = paste0("dbo.", table), 
+    variable = c(id.field, merge.field), 
+    channel = channel
+  )
   create <- check_single_logical(create)
   
-  tmptable <- paste0("tmp", digest(data, algo = "sha1"))
-  sqlSave(
-    channel = channel, dat = data, tablename = tmptable, append = FALSE, rownames = FALSE
-  )
-  
-  id.field.table <- paste0(table, ".", id.field)
-  merge.field.table <- paste0("tmp.", merge.field)
-  selected.field <- paste(
-    c(id.field.table, merge.field.table), 
-    collapse = ",\n      "
-  )
+  # empty staging table and fill it
+  sqlClear(channel = channel, sqtable = paste0("staging.", table))
+  odbc_insert(channel = channel, data = data, table = paste0("staging.", table))
+
   join.on <- paste0(
-    "tmp.", merge.field, " = ", table, ".", merge.field, 
-    collapse = " AND\n"
+    "TARGET.", merge.field, " = SOURCE.", merge.field, 
+    collapse = " AND\n        "
   )
   
   if(create){
-    null.field <- paste(
-      id.field.table, "IS NULL", 
-      collapse = " AND\n"
-    )
+    attribute.field <- colnames(data)[!colnames(data) %in% merge.field]
+    if(length(attribute.field) == 0){
+      update.command <- ""
+    } else {
+      update.clause <- paste0(
+        "TARGET.", attribute.field, " <> SOURCE.", attribute.field, 
+        collapse = " OR "
+      )
+      update.set <- paste0(
+        "TARGET.", attribute.field, " = SOURCE.", attribute.field, 
+        collapse = ",\n"
+      )
+      update.command <- paste0("
+      WHEN MATCHED AND (", update.clause, ") THEN
+        UPDATE SET
+          ", update.set
+      )
+    }
     sql <- paste0("
-      SELECT
-        ", paste(merge.field.table, collapse = ",\n      "), "
-      FROM
-        ", tmptable, " AS tmp
-      LEFT JOIN
-        ", table, "
+      MERGE
+        dbo.", table, " AS TARGET
+      USING
+        staging.", table, " AS SOURCE
       ON
-        ", join.on, "
-      WHERE
-        ", null.field
-    )
-    unknown <- sqlQuery(channel = channel, query = sql)
-    to.append <- merge(data, unknown)
-    odbc_insert(channel = channel, data = to.append, table = table)
+        ", join.on, update.command, "
+      WHEN NOT MATCHED BY TARGET THEN
+        INSERT (", paste0(colnames(data), collapse = ", "), ")
+        VALUES (", paste0("SOURCE.", colnames(data), collapse = ", "), ")
+      ;
+    ")
+    output <- sqlQuery(channel = channel, query = sql)
+    if(length(output) > 0){
+      true.error <- grep(
+        paste0("^[RODBC] ERROR: Could not SQLExecDirect '", sql), 
+        output
+      )
+      if(length(true.error) > 0){
+        warning(output)
+      }
+    }
   }
   
+  # select matching id's
+  selected.field <- paste0(
+    "TARGET.",
+    c(id.field, merge.field), 
+    collapse = ",\n      "
+  )
   sql <- paste0("
     SELECT
       ", selected.field, "
     FROM
-      ", tmptable, " AS tmp
+      staging.", table, " AS SOURCE
     INNER JOIN
-      ", table, "
+      dbo.", table, " AS TARGET
     ON
       ", join.on
   )
   id <- sqlQuery(channel = channel, query = sql)
-  sql <- paste("DROP TABLE", tmptable)
-  sqlQuery(channel = channel, query = sql)
   return(id)
 }
