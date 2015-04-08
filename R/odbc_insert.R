@@ -6,14 +6,14 @@
 #' @export
 #' @importFrom RODBC sqlQuery
 odbc_insert <- function(channel, data, table){
-  # check input
-  if(class(channel) != "RODBC"){
-    stop("channel is not an ODBC connection")
-  }
   if(!is.data.frame(data)){
     stop("data must be a data.frame")
   }
-  table <- check_single_character(table)
+  check_dbtable_variable(
+    table = table, 
+    variable = colnames(data), 
+    channel = channel
+  )
   
   # quote values when needed
   type <- sapply(data, class)
