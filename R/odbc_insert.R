@@ -33,6 +33,17 @@ odbc_insert <- function(channel, data, table){
     options(useFancyQuotes = old.fancy.quotes)
     type[relevant] <- "done"
   }
+  
+  relevant <- which(sapply(type,  identical, c("POSIXct", "POSIXt")))
+  if(length(relevant) > 0){
+    data[, relevant] <- apply(
+      data[, relevant, drop = FALSE], 
+      2, 
+      strftime,
+      format = "'%Y%m%d %H:%M:%S'"
+    )
+    type[relevant] <- "done"
+  }
   # test if all data types are handled
   if(any(type != "done")){
     stop(
