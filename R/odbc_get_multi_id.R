@@ -12,7 +12,6 @@
 #' @importFrom RODBC sqlClear sqlQuery
 odbc_get_multi_id <- function(data, id.field, merge.field, table, channel, create = FALSE){
   check_dataframe_variable(df = data, variable = merge.field, name = "data")
-  table <- check_single_character(table, name = "table")
   if(class(channel) != "RODBC"){
     stop("channel is not an ODBC connection")
   }
