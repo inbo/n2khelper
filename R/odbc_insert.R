@@ -45,7 +45,7 @@ odbc_insert <- function(channel, data, table){
     type[relevant] <- "done"
   }
   
-  relevant <- which(sapply(type,  identical, "logical"))
+  relevant <- which(sapply(type, identical, "logical"))
   if(length(relevant) > 0){
     data[, relevant] <- 1L * data[, relevant]
     type[relevant] <- "done"
@@ -59,6 +59,7 @@ odbc_insert <- function(channel, data, table){
     )
   }
   
+  data[is.na(data)] <- "NULL"
   # prepare values
   values <- apply(data, 1, paste, collapse = ", ")
   
