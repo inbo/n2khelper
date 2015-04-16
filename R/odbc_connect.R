@@ -52,6 +52,9 @@ odbc_connect <- function(data.source.name, develop = TRUE){
     if(!is.na(connection$Password)){
       connection.string <- paste0(connection.string, "pwd=", connection$Password, ";")
     }
+    if(is.na(connection$Username) & is.na(connection$Username)){
+      connection.string <- paste0(connection.string, "Trusted_Connection=True;")
+    }
     data.channel <- odbcDriverConnect(connection.string)
     return(data.channel)
   }
