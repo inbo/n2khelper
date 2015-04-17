@@ -2,16 +2,16 @@ context("check if an id exists")
 describe("check_id()", {
   channel <- connect_result()
   table <- "DatasourceType"
-  field <- "ID"
-  field.text <- "Description"
+  variable <- "ID"
+  variable.text <- "Description"
   value.text <- "'git, tab delimited'"
-  sql <- paste("SELECT", field, "FROM", table, "WHERE", field.text, "=", value.text)
+  sql <- paste("SELECT", variable, "FROM", table, "WHERE", variable.text, "=", value.text)
   value <- RODBC::sqlQuery(channel = channel, query = sql)[, 1]
   junk <- "junk"
 
   it("tests if the channel in an ODBC connection", {
     expect_that(
-      check_id(value = value, field = field, table = table, channel = junk),
+      check_id(value = value, variable = variable, table = table, channel = junk),
       throws_error("channel is not an ODBC connection")
     )
   })
@@ -23,19 +23,19 @@ describe("check_id()", {
   })
   it("tests if data type is correct", {
     expect_that(
-      check_id(value = 999999999, field = field.text, table = table, channel = channel),
+      check_id(value = 999999999, variable = variable.text, table = table, channel = channel),
       throws_error(".*Conversion failed when converting.*")
     )
   })
-  it("tests if the field table exists in the table", {
+  it("tests if the variable table exists in the table", {
     expect_that(
-      check_id(value = value, field = junk, table = table, channel = channel),
-      throws_error(paste0("The field '", junk, "' doesn't exists in table '", table, "'"))
+      check_id(value = value, variable = junk, table = table, channel = channel),
+      throws_error(paste0("Variable\\(s\\) missing from '", table, "': ", junk))
     )
   })
   it("tests if the id exists in the table", {
     expect_that(
-      check_id(value = 999999999, field = field, table = table, channel = channel),
+      check_id(value = 999999999, variable = variable, table = table, channel = channel),
       is_false()
     )
   })

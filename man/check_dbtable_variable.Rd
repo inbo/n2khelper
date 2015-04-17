@@ -13,7 +13,7 @@ check_dbtable_variable(table, variable, channel, error = TRUE)
 
 \item{channel}{the open ODBC channel}
 
-\item{error}{Indicates the behaviour when a variable is missing. Give an error when error = TRUE (default). Return FALSE otherwise.}
+\item{error}{Indicates the behaviour when a variable is missing. Gives an error when error = TRUE (default). Return FALSE otherwise.}
 }
 \value{
 TRUE when all variables are present in the table.

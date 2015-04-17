@@ -4,16 +4,16 @@
 \alias{check_id}
 \title{Test if an id exists in a given field of the table}
 \usage{
-check_id(value, field, table, channel)
+check_id(value, variable, table, channel)
 }
 \arguments{
-\item{value}{the value of the id}
+\item{value}{the content of the variable}
 
-\item{field}{the field in which holds the id}
+\item{variable}{A vector with the names of the columns}
 
-\item{table}{the table in which to look for the id}
+\item{table}{The name of the table}
 
-\item{channel}{An open ODBC channel}
+\item{channel}{the open ODBC channel}
 }
 \description{
 Test if an id exists in a given field of the table
