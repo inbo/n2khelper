@@ -17,7 +17,7 @@ read_object_environment <- function(object, env, warn = TRUE){
   if(class(env) != "environment"){
     stop("env is not an environment")
   }
-  warn <- check_single_logical(warn)
+  warn <- check_single_logical(warn, name = "warn")
   
   if(!exists(object, envir = env)){
     if(warn){

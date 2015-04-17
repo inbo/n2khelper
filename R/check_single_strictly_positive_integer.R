@@ -14,6 +14,15 @@ check_single_strictly_positive_integer <- function(x, name = "x", tolerance = 1e
   if(length(x) != 1){
     stop(name, " must be a single number")
   }
+  if(!class(tolerance) %in% c("integer", "numeric")){
+    stop("tolerance must be numeric")
+  }
+  if(tolerance <= 0){
+    stop("tolerance must be positive")
+  }
+  if(tolerance > 0.5){
+    stop("tolerance > 0.5 is not relevant")
+  }
   
   if(is.numeric(x)){
     if(abs(x - round(x)) > tolerance){

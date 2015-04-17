@@ -15,12 +15,12 @@ check_dataframe_variable <- function(df, variable, name = "df", error = TRUE){
   if(!class(df) %in% c("data.frame", "matrix")){
     stop(name, " must be a data.frame")
   }
+  name <- check_single_character(x = name, name = "name")
+  error <- check_single_logical(x = error, name = "error")
   variable <- check_character(x = variable, name = "variable", na.action = na.fail)
   if(length(variable) == 0){
     stop("'variable' must contain at least one value")
   }
-  name <- check_single_character(x = name, name = "name")
-  error <- check_single_logical(x = error, name = "error")
   
   available <- variable %in% colnames(df)
   if(!all(available)){
