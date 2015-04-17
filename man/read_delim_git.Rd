@@ -4,7 +4,7 @@
 \alias{read_delim_git}
 \title{read a tab delimited file from a git repository}
 \usage{
-read_delim_git(file, path, repo.path = rawdata.path)
+read_delim_git(file, path, repo.path)
 }
 \arguments{
 \item{file}{the name of the file}

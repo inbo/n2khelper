@@ -1,6 +1,5 @@
 context("write data.frame to git")
 describe("write_delim_git()", {
-  library(git2r)
   x <- data.frame(0)
   x1 <- data.frame(1)
   file <- "test.txt"
@@ -21,7 +20,7 @@ describe("write_delim_git()", {
   })
   
   dir.create(repo.path)
-  repo <- init(repo.path)
+  repo <- git2r::init(repo.path)
   it("creates path when it doesn't exists and gives a warning", {
     expect_that(
       write_delim_git(x = x, file = file, path = path, repo.path = repo.path),

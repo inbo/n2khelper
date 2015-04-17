@@ -4,8 +4,7 @@
 \alias{list_files_git}
 \title{List the files in a path of a git repository}
 \usage{
-list_files_git(path, pattern = "^[0123456789].*\\\\.txt$",
-  repo.path = rawdata.path)
+list_files_git(path, pattern = NULL, repo.path, full.names = FALSE)
 }
 \arguments{
 \item{path}{the subdirectory of the file relative to the root of the git repository}
@@ -14,6 +13,10 @@ list_files_git(path, pattern = "^[0123456789].*\\\\.txt$",
     which match the regular expression will be returned.}
 
 \item{repo.path}{path of the git repository. Defaults to rawdata.path}
+
+\item{full.names}{a logical value.  If \code{TRUE}, the directory
+    path is prepended to the file names to give a relative file path.
+    If \code{FALSE}, the file names (rather than paths) are returned.}
 }
 \description{
 List the files in a path of a git repository

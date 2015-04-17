@@ -1,6 +1,5 @@
 context("list files for a git repository")
 describe("list_files_git()", {
-  library(git2r)
   files <- sort(c("test.txt", "0123456.txt", "test", "0123456"))
   path <- "test"
   repo.path <- tempfile(pattern="git2r-")
@@ -15,7 +14,7 @@ describe("list_files_git()", {
   })
 
   dir.create(repo.path)
-  repo <- init(repo.path)
+  repo <- git2r::init(repo.path)
   repo.path <- normalizePath(repo.path, winslash = "/", mustWork = FALSE)
   full.path <- paste(repo.path, path, sep = "/")
   full.path <- normalizePath(full.path, winslash = "/", mustWork = FALSE)
@@ -30,7 +29,7 @@ describe("list_files_git()", {
   file.create(paste(full.path, files, sep = "/"))
   it("list the files according to the pattern", {
     expect_that(
-      list_files_git(path = path, repo.path = repo.path),
+      list_files_git(path = path, pattern = "^[0123456789].*\\.txt$", repo.path = repo.path),
       is_identical_to(files[grep("^[0123456789].*\\.txt$", files)])
     )
     expect_that(
@@ -38,7 +37,7 @@ describe("list_files_git()", {
       is_identical_to(files[grep("\\.txt$", files)])
     )
     expect_that(
-      list_files_git(path = path, pattern = ".*", repo.path = repo.path),
+      list_files_git(path = path, repo.path = repo.path),
       is_identical_to(files)
     )
     expect_that(

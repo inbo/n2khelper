@@ -7,7 +7,7 @@
 #' @param password the user's password for the git repository
 #' @export
 #' @importFrom git2r repository commit cred_user_pass head push
-auto_commit <- function(package, repo.path = rawdata.path, username, password){
+auto_commit <- function(package, repo.path, username, password){
   package <- check_single_character(package)
   
   # define the repository

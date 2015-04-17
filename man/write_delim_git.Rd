@@ -4,7 +4,7 @@
 \alias{write_delim_git}
 \title{write a dataframe as a tab delimited file to a git repository and stage it}
 \usage{
-write_delim_git(x, file, path, repo.path = rawdata.path)
+write_delim_git(x, file, path, repo.path)
 }
 \arguments{
 \item{x}{the data.frame}
@@ -13,7 +13,7 @@ write_delim_git(x, file, path, repo.path = rawdata.path)
 
 \item{path}{the subdirectory of the file relative to the root of the git repository}
 
-\item{repo.path}{path of the git repository. Defaults to rawdata.path}
+\item{repo.path}{path of the git repository.}
 }
 \value{
 the SHA1 of the file

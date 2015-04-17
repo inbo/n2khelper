@@ -4,8 +4,7 @@
 \alias{remove_files_git}
 \title{Remove all the files in a path of a git repository}
 \usage{
-remove_files_git(path, pattern = "^[0123456789].*\\\\.txt$",
-  repo.path = rawdata.path)
+remove_files_git(path, pattern = NULL, repo.path)
 }
 \arguments{
 \item{path}{the subdirectory of the file relative to the root of the git repository}

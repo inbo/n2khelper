@@ -4,7 +4,7 @@
 \alias{auto_commit}
 \title{Commit staged changes in a git repository with automated message}
 \usage{
-auto_commit(package, repo.path = rawdata.path, username, password)
+auto_commit(package, repo.path, username, password)
 }
 \arguments{
 \item{package}{The name of the package from which we autocommit}

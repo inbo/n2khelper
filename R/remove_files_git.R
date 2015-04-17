@@ -4,7 +4,6 @@
 #'@inheritParams read_delim_git
 #'@inheritParams base::list.files
 #'@export
-remove_files_git <- function(path, pattern = "^[0123456789].*\\.txt$", repo.path = rawdata.path){
   path <- check_single_character(x = path, name = "path")
   repo.path <- check_single_character(x = repo.path, name = "repo.path")
   repo.path <- normalizePath(repo.path, winslash = "/", mustWork = FALSE)
@@ -18,5 +17,6 @@ remove_files_git <- function(path, pattern = "^[0123456789].*\\.txt$", repo.path
     file.remove(list.files(path = full.path, pattern = pattern, full.names = TRUE))
   } else {
     stop(full.path, " is not a directory")
+remove_files_git <- function(path, pattern = NULL, repo.path){
   }
 }

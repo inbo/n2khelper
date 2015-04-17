@@ -3,7 +3,7 @@
 #' @param path the subdirectory of the file relative to the root of the git repository
 #' @param repo.path path of the git repository. Defaults to rawdata.path
 #' @export
-read_delim_git <- function(file, path, repo.path = rawdata.path){
+read_delim_git <- function(file, path, repo.path){
   file <- check_single_character(x = file, name = "file")
   path <- check_single_character(x = path, name = "path")
   repo.path <- check_single_character(x = repo.path, name = "repo.path")

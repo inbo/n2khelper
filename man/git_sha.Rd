@@ -4,10 +4,10 @@
 \alias{git_sha}
 \title{Get the SHA of the files at the HEAD}
 \usage{
-git_sha(file, path, repo.path = rawdata.path)
+git_sha(file, path, repo.path)
 }
 \arguments{
-\item{file}{the name of the files}
+\item{file}{the name of the file}
 
 \item{path}{the subdirectory of the file relative to the root of the git repository}
 

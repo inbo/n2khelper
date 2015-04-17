@@ -9,7 +9,7 @@ describe("auto_commit()", {
   dummy_add <- function(repo.path){
     content <- paste(sample(letters, 8, replace = TRUE), collapse = "")
     writeLines(content, paste(repo.path, content, sep = "/"))
-    add(repository(repo.path), content)
+    git2r::add(repository(repo.path), content)
   }
   
   # create test repository
@@ -17,11 +17,11 @@ describe("auto_commit()", {
   repo.path <- tempfile(pattern="git2r-")
   dir.create(origin.path)
   dir.create(repo.path)
-  repo_bare <- init(origin.path, bare = TRUE)
-  repo <- clone(origin.path, repo.path)
+  repo_bare <- git2r::init(origin.path, bare = TRUE)
+  repo <- git2r::clone(origin.path, repo.path)
   dummy_add(repo.path)
-  commit(repo, "inital")
-  push(repo, "origin", "refs/heads/master")
+  git2r::commit(repo, "inital")
+  git2r::push(repo, "origin", "refs/heads/master")
   
   it("gives a warning when no username and password are provided and returns TRUE", {
     dummy_add(repo.path = repo.path)
