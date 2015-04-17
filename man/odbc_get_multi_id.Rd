@@ -13,7 +13,7 @@ odbc_get_multi_id(data, id.field, merge.field, table, channel, create = FALSE)
 
 \item{merge.field}{the merge fields}
 
-\item{table}{the table name}
+\item{table}{The name of the table}
 
 \item{channel}{the open ODBC channel}
 

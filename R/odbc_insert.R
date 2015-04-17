@@ -5,7 +5,7 @@
 #' @param data the data.frame
 #' @export
 #' @importFrom RODBC sqlQuery
-odbc_insert <- function(channel, data, table){
+odbc_insert <- function(data, table, channel){
   if(!is.data.frame(data)){
     stop("data must be a data.frame")
   }

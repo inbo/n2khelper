@@ -2,14 +2,14 @@
 % Please edit documentation in R/git_connect.R
 \name{git_connect}
 \alias{git_connect}
-\title{returns the path of the datasource within the git repository}
+\title{Returns the path of the datasource within the git repository}
 \usage{
-git_connect(data.source.name, develop = TRUE)
+git_connect(data.source.name, channel = channel)
 }
 \arguments{
 \item{data.source.name}{The name of the data source}
 
-\item{develop}{Logical value. Indicates the location ton the results database}
+\item{channel}{the ODBC channel to the database with the connection strings}
 }
 \description{
 The details are stored in the results database.

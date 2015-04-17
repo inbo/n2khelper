@@ -4,7 +4,7 @@
 \alias{odbc_connect}
 \title{connect to a data source through ODBC}
 \usage{
-odbc_connect(data.source.name, username, password, develop = TRUE)
+odbc_connect(data.source.name, username, password, channel)
 }
 \arguments{
 \item{data.source.name}{The name of the data source}
@@ -13,7 +13,7 @@ odbc_connect(data.source.name, username, password, develop = TRUE)
 
 \item{password}{the password to be used in combination with the username.}
 
-\item{develop}{Logical value. Indicates the location ton the results database}
+\item{channel}{the ODBC channel to the database with the connection strings}
 }
 \description{
 The connection string is stored in the results database.

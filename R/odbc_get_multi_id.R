@@ -3,24 +3,20 @@
 #' @param data the data.frame
 #' @param id.field the id fields
 #' @param merge.field the merge fields
-#' @param table the table name
-#' @param channel the open ODBC channel
 #' @param create When TRUE, the function creates unmatching records AND updates attributes. Defaults to FALSE.
+#' @inheritParams check_dbtable_variable
 #' @export
 #' @return a data.frame with data and the id's
 #' @importFrom digest digest
-#' @importFrom RODBC sqlClear sqlQuery
+#' @importFrom RODBC sqlClear sqlQuery odbcClose
 odbc_get_multi_id <- function(data, id.field, merge.field, table, channel, create = FALSE){
+  create <- check_single_logical(create, name = "create")
   check_dataframe_variable(df = data, variable = merge.field, name = "data")
-  if(class(channel) != "RODBC"){
-    stop("channel is not an ODBC connection")
-  }
   check_dbtable_variable(
     table = paste0("dbo.", table), 
     variable = c(id.field, merge.field), 
     channel = channel
   )
-  create <- check_single_logical(create)
   
   # empty staging table and fill it
   sqlClear(channel = channel, sqtable = paste0("staging.", table))

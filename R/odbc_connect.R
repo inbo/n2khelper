@@ -4,13 +4,27 @@
 #' @param data.source.name The name of the data source
 #' @param username the username in case the ConnectMethod is "Credentials supplied by the user running the report". Ignored in all other cases.
 #' @param password the password to be used in combination with the username.
-#' @inheritParams connect_result
+#' @param channel the ODBC channel to the database with the connection strings
 #' @importFrom RODBC sqlQuery odbcClose odbcDriverConnect
 #' @export
-odbc_connect <- function(data.source.name, username, password, develop = TRUE){
+odbc_connect <- function(data.source.name, username, password, channel){
   data.source.name <- check_single_character(data.source.name)
-
-  channel <- connect_result(develop = develop)
+  check_dbtable_variable(
+    table = "Datasource", 
+    variable = c("ConnectionString", "Username", "Password", "TypeID", "ConnectMethodID"), 
+    channel = channel
+  )
+  check_dbtable_variable(
+    table = "DatasourceType", 
+    variable = c("ID", "Description"), 
+    channel = channel
+  )
+  check_dbtable_variable(
+    table = "ConnectMethod", 
+    variable = c("ID", "Description"), 
+    channel = channel
+  )
+  
   sql <- paste0("
     SELECT
       ConnectionString,
@@ -34,7 +48,6 @@ odbc_connect <- function(data.source.name, username, password, develop = TRUE){
       Datasource.Description = '", data.source.name, "'"
   )
   connection <- sqlQuery(channel = channel, query = sql)
-  odbcClose(channel)
   
   if(nrow(connection) == 0){
     stop("No connection information found for '", data.source.name, "'.")
@@ -60,6 +73,8 @@ odbc_connect <- function(data.source.name, username, password, develop = TRUE){
       }
     }
     if(connection$ConnectMethod == "Credentials supplied by the user running the report"){
+      username <- check_single_character(username, name = "username")
+      password <- check_single_character(password, name = "password")
       connection.string <- paste0(connection.string, "uid=", username, ";")
       connection.string <- paste0(connection.string, "pwd=", password, ";")
     }

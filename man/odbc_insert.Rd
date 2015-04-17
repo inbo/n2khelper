@@ -4,14 +4,14 @@
 \alias{odbc_insert}
 \title{Append a data.frame to a table through an ODBC connection}
 \usage{
-odbc_insert(channel, data, table)
+odbc_insert(data, table, channel)
 }
 \arguments{
-\item{channel}{An open ODBC channel}
-
 \item{data}{the data.frame}
 
-\item{table}{the table in which to look for the id}
+\item{table}{The name of the table}
+
+\item{channel}{the open ODBC channel}
 }
 \value{
 The status of the SQL INSERT for each row in returned but invisible.

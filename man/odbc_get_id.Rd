@@ -2,20 +2,20 @@
 % Please edit documentation in R/odbc_get_id.R
 \name{odbc_get_id}
 \alias{odbc_get_id}
-\title{Get the id of the mathcing records}
+\title{Get the id of the matching records}
 \usage{
-odbc_get_id(table, variable, value, develop = TRUE)
+odbc_get_id(table, variable, value, channel)
 }
 \arguments{
-\item{table}{the name of the}
+\item{table}{The name of the table}
 
-\item{variable}{the name of the variable}
+\item{variable}{A vector with the names of the columns}
 
 \item{value}{the content of the variable}
 
-\item{develop}{Logical value. Indicates the location ton the results database}
+\item{channel}{the open ODBC channel}
 }
 \description{
-Get the id of the mathcing records
+Get the id of the matching records
 }
 
