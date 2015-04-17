@@ -4,19 +4,16 @@
 #'@inheritParams read_delim_git
 #'@inheritParams base::list.files
 #'@export
-  path <- check_single_character(x = path, name = "path")
-  repo.path <- check_single_character(x = repo.path, name = "repo.path")
-  repo.path <- normalizePath(repo.path, winslash = "/", mustWork = FALSE)
-  if(!is_git_repo(path = repo.path)){
-    stop(repo.path, " is not a git repository")
-  }
-
-  full.path <- paste(repo.path, path, sep = "/")
-  full.path <- normalizePath(full.path, winslash = "/", mustWork = FALSE)
-  if(file_test("-d", full.path)){
-    file.remove(list.files(path = full.path, pattern = pattern, full.names = TRUE))
-  } else {
-    stop(full.path, " is not a directory")
 remove_files_git <- function(path, pattern = NULL, repo.path){
+  to.remove <- list_files_git(
+    path = path, 
+    pattern = pattern, 
+    repo.path = repo.path, 
+    full.names = TRUE
+  )
+  
+  success <- file.remove(to.remove)
+  if(length(success) > 0 && !all(success)){
+    stop("Error cleaning existing files in the git repository. Repository: '", repo.path, "', Path: '", path, "', pattern: '", pattern, "'")
   }
 }
