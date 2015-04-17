@@ -1,12 +1,11 @@
 #' Get the name associated with an NBN key
 #' @param nbn.key A vector with NBN keys
-#' @inheritParams connect_result
 #' @export
-#' @importFrom RODBC sqlQuery odbcClose
-get_nbn_name <- function(nbn.key, develop = TRUE){
+#' @importFrom RODBC odbcDriverConnect sqlQuery odbcClose
+get_nbn_name <- function(nbn.key){
   nbn.key <- check_character(nbn.key, name = "nbn.key")
   
-  channel <- odbc_connect(data.source.name = "NBN data", develop = develop)
+  channel <- odbcDriverConnect(connection = nbn.dsn)
   sql <- paste0("
     SELECT
       ns.RECOMMENDED_TAXON_VERSION_KEY AS NBNID,

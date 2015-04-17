@@ -4,14 +4,12 @@
 \alias{get_nbn_key}
 \title{Get the NBN key of a species}
 \usage{
-get_nbn_key(name, language = "la", develop = TRUE)
+get_nbn_key(name, language = "la")
 }
 \arguments{
 \item{name}{a vector of species names to check}
 
 \item{language}{The language to use. Defaults to "la" 'scientific name"}
-
-\item{develop}{Logical value. Indicates the location ton the results database}
 }
 \description{
 Get the NBN key of a species

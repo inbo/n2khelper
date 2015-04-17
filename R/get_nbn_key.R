@@ -1,15 +1,14 @@
 #' Get the NBN key of a species
 #' @param name a vector of species names to check
 #' @param language The language to use. Defaults to "la" 'scientific name"
-#' @inheritParams connect_result
 #' @export
-#' @importFrom RODBC sqlQuery odbcClose
+#' @importFrom RODBC odbcDriverConnect sqlQuery odbcClose
 #' @importFrom plyr ddply
-get_nbn_key <- function(name, language = "la", develop = TRUE){
+get_nbn_key <- function(name, language = "la"){
   name <- check_character(name, name = "name")
   language <- check_single_character(language, name = "language")
   
-  channel <- odbc_connect(data.source.name = "NBN data", develop = develop)
+  channel <- odbcDriverConnect(connection = nbn.dsn)
   sql <- paste0("
     SELECT
       Count(LANGUAGE) AS N

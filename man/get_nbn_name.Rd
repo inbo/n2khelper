@@ -4,12 +4,10 @@
 \alias{get_nbn_name}
 \title{Get the name associated with an NBN key}
 \usage{
-get_nbn_name(nbn.key, develop = TRUE)
+get_nbn_name(nbn.key)
 }
 \arguments{
 \item{nbn.key}{A vector with NBN keys}
-
-\item{develop}{Logical value. Indicates the location ton the results database}
 }
 \description{
 Get the name associated with an NBN key
