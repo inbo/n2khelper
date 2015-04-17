@@ -2,10 +2,12 @@
 #' 
 #' The connection string is stored in the results database.
 #' @param data.source.name The name of the data source
+#' @param username the username in case the ConnectMethod is "Credentials supplied by the user running the report". Ignored in all other cases.
+#' @param password the password to be used in combination with the username.
 #' @inheritParams connect_result
 #' @importFrom RODBC sqlQuery odbcClose odbcDriverConnect
 #' @export
-odbc_connect <- function(data.source.name, develop = TRUE){
+odbc_connect <- function(data.source.name, username, password, develop = TRUE){
   data.source.name <- check_single_character(data.source.name)
 
   channel <- connect_result(develop = develop)
@@ -46,14 +48,20 @@ odbc_connect <- function(data.source.name, develop = TRUE){
   
   if(connection$Type == "Microsoft SQL Server"){
     connection.string <- connection$ConnectionString
-    if(!is.na(connection$Username)){
-      connection.string <- paste0(connection.string, "uid=", connection$Username, ";")
-    }
-    if(!is.na(connection$Password)){
-      connection.string <- paste0(connection.string, "pwd=", connection$Password, ";")
-    }
-    if(is.na(connection$Username) & is.na(connection$Username)){
+    if(connection$ConnectMethod == "Windows integrated security"){
       connection.string <- paste0(connection.string, "Trusted_Connection=True;")
+    }
+    if(connection$ConnectMethod == "Credentials stored securely in the report server"){
+      if(!is.na(connection$Username)){
+        connection.string <- paste0(connection.string, "uid=", connection$Username, ";")
+      }
+      if(!is.na(connection$Password)){
+        connection.string <- paste0(connection.string, "pwd=", connection$Password, ";")
+      }
+    }
+    if(connection$ConnectMethod == "Credentials supplied by the user running the report"){
+      connection.string <- paste0(connection.string, "uid=", username, ";")
+      connection.string <- paste0(connection.string, "pwd=", password, ";")
     }
     data.channel <- odbcDriverConnect(connection.string)
     return(data.channel)
