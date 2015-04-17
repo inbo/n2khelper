@@ -4,11 +4,12 @@
 #' @inheritParams connect_result
 #' @export
 #' @importFrom RODBC sqlQuery odbcClose
+#' @importFrom plyr ddply
 get_nbn_key <- function(name, language = "la", develop = TRUE){
   name <- check_character(name, name = "name")
   language <- check_single_character(language, name = "language")
   
-  channel <- odbc_connect("NBN data", develop = develop)
+  channel <- odbc_connect(data.source.name = "NBN data", develop = develop)
   sql <- paste0("
     SELECT
       Count(LANGUAGE) AS N
@@ -38,7 +39,8 @@ get_nbn_key <- function(name, language = "la", develop = TRUE){
     SELECT
       t.ITEM_NAME AS InputName,
       ns.RECOMMENDED_TAXON_VERSION_KEY as NBNID,
-      tr.ITEM_NAME AS GenericName
+      tr.ITEM_NAME AS GenericName,
+      CASE WHEN tlir.TAXON_LIST_VERSION_KEY like 'INB%' THEN 1 ELSE 0 END AS Preference
     FROM
         (
           (
@@ -55,11 +57,17 @@ get_nbn_key <- function(name, language = "la", develop = TRUE){
         )
       INNER JOIN
         (
-          TAXON AS tr
+          (
+            TAXON AS tr
+          INNER JOIN
+            TAXON_VERSION AS tvr
+          ON
+            tr.TAXON_KEY = tvr.TAXON_KEY
+          )
         INNER JOIN
-          TAXON_VERSION AS tvr
+          TAXON_LIST_ITEM AS tlir
         ON
-          tr.TAXON_KEY = tvr.TAXON_KEY
+          tvr.TAXON_VERSION_KEY = tlir.TAXON_VERSION_KEY
         )
       ON
         ns.RECOMMENDED_TAXON_VERSION_KEY = tvr.TAXON_VERSION_KEY
@@ -69,9 +77,25 @@ get_nbn_key <- function(name, language = "la", develop = TRUE){
     GROUP BY
       t.ITEM_NAME,
       ns.RECOMMENDED_TAXON_VERSION_KEY,
-      tr.ITEM_NAME
+      tr.ITEM_NAME,
+      CASE WHEN tlir.TAXON_LIST_VERSION_KEY like 'INB%' THEN 1 ELSE 0 END
   ")
   output <- sqlQuery(channel = channel, query = sql, stringsAsFactors = FALSE)
   odbcClose(channel)
+  if(nrow(output) <= 1){
+    output$Preference <- NULL
+    return(output)
+  }
+  if(all(table(output$InputName) == 1)){
+    output$Preference <- NULL
+    return(output)
+  }
+  preferred <- output[output$Preference == 1, c("InputName", "NBNID", "GenericName")]
+  non.preferred <- output[output$Preference == 0, c("InputName", "NBNID", "GenericName")]
+  non.preferred <- non.preferred[!non.preferred$InputName %in% preferred$InputName, ]
+  output <- rbind(preferred, non.preferred)
+  if(any(table(output$InputName) > 1)){
+    warning("Duplicate matching keys")
+  }
   return(output)
 }

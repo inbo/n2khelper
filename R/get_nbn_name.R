@@ -6,7 +6,7 @@
 get_nbn_name <- function(nbn.key, develop = TRUE){
   nbn.key <- check_character(nbn.key, name = "nbn.key")
   
-  channel <- odbc_connect("NBN data", develop = develop)
+  channel <- odbc_connect(data.source.name = "NBN data", develop = develop)
   sql <- paste0("
     SELECT
       ns.RECOMMENDED_TAXON_VERSION_KEY AS NBNID,
