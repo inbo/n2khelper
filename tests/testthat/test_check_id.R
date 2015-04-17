@@ -17,8 +17,8 @@ describe("check_id()", {
   })
   it("tests if the table exists in the ODBC connection", {
     expect_that(
-      check_id(value = value, field = field, table = junk, channel = channel),
-      throws_error(paste0("The table '", junk, "' doesn't exists in the ODBC data source"))
+      check_id(value = value, variable = variable, table = junk, channel = channel),
+      throws_error(paste("Table\\(s\\) missing:", junk))
     )
   })
   it("tests if data type is correct", {

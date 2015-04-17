@@ -1,13 +1,12 @@
 #' Check if a variable is available in a given table
-#' @param table The name of the table
-#' @param variable A vector with the names of the columns
-#' @param channel the open ODBC channel
-#' @param error Indicates the behaviour when a variable is missing. Give an error when error = TRUE (default). Return FALSE otherwise.
+#' @param error Indicates the behaviour when a variable is missing. Gives an error when error = TRUE (default). Return FALSE otherwise.
+#' @inheritParams odbc_get_id
 #' @export
 #' @importFrom RODBC sqlColumns
 #' @return TRUE when all variables are present in the table. 
 check_dbtable_variable <- function(table, variable, channel, error = TRUE){
   table <- check_single_character(table, name = "table")
+  check_dbtable(table = table, channel = channel, error = TRUE)
   variable <- check_character(x = variable, name = "variable", na.action = na.fail)
   if(length(variable) == 0){
     stop("'variable' must contain at least one value")

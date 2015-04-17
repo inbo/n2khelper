@@ -28,7 +28,7 @@ describe("check_dbtable_variable()", {
   it("checks if table exists", {
     expect_that(
       check_dbtable_variable(table = junk, variable = variable, channel = channel, error = error),
-      throws_error(".*table not found.*")
+      throws_error(paste("Table\\(s\\) missing:", junk))
     )
   })
   
@@ -72,4 +72,5 @@ describe("check_dbtable_variable()", {
       throws_error(paste0("Variable\\(s\\) missing from '", table, "': ", paste(junk, collapse = ", ")))
     )
   })
+  RODBC::odbcClose(channel)
 })
