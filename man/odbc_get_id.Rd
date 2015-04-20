@@ -4,7 +4,7 @@
 \alias{odbc_get_id}
 \title{Get the id of the matching records}
 \usage{
-odbc_get_id(table, variable, value, channel)
+odbc_get_id(table, variable, value, schema = "dbo", channel)
 }
 \arguments{
 \item{table}{The name of the table}
@@ -12,6 +12,8 @@ odbc_get_id(table, variable, value, channel)
 \item{variable}{A vector with the names of the columns}
 
 \item{value}{the content of the variable}
+
+\item{schema}{The schema of the table. Defaults to dbo}
 
 \item{channel}{the open ODBC channel}
 }

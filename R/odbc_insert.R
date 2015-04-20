@@ -1,20 +1,25 @@
 #' Append a data.frame to a table through an ODBC connection
 #' 
 #' @return The status of the SQL INSERT for each row in returned but invisible.
-#' @inheritParams check_id
+#' @inheritParams odbc_get_id
 #' @param data the data.frame
+#' @param append Append the data or overwrite existing rows?
 #' @export
-#' @importFrom RODBC sqlQuery
-odbc_insert <- function(data, table, channel){
+#' @importFrom RODBC sqlClear sqlQuery
+odbc_insert <- function(data, table, channel, schema = "dbo", append = TRUE){
   if(!is.data.frame(data)){
     stop("data must be a data.frame")
   }
   check_dbtable_variable(
     table = table, 
     variable = colnames(data), 
-    channel = channel
+    channel = channel,
+    schema = schema
   )
   
+  if(!append){
+    sqlClear(channel = channel, sqtable = paste(schema, ".", table))
+  }
   # quote values when needed
   type <- sapply(data, class)
   type[type %in% c("integer", "numeric")] <- "done"
@@ -68,7 +73,7 @@ odbc_insert <- function(data, table, channel){
 
   sql <- paste0(
     "INSERT INTO
-    ", table, " (", columns, ")
+    ", schema, ".", table, " (", columns, ")
     VALUES
       (", values, ")"
   )

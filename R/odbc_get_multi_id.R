@@ -8,19 +8,19 @@
 #' @export
 #' @return a data.frame with data and the id's
 #' @importFrom digest digest
-#' @importFrom RODBC sqlClear sqlQuery odbcClose
+#' @importFrom RODBC sqlQuery odbcClose
 odbc_get_multi_id <- function(data, id.field, merge.field, table, channel, create = FALSE){
   create <- check_single_logical(create, name = "create")
   check_dataframe_variable(df = data, variable = merge.field, name = "data")
   check_dbtable_variable(
-    table = paste0("dbo.", table), 
-    variable = c(id.field, merge.field), 
+    table = table, 
+    variable = c(id.field, merge.field),
+    schema = "dbo",
     channel = channel
   )
   
   # empty staging table and fill it
-  sqlClear(channel = channel, sqtable = paste0("staging.", table))
-  odbc_insert(channel = channel, data = data, table = paste0("staging.", table))
+  odbc_insert(channel = channel, data = data, table = table, schema = "staging")
 
   join.on <- paste0(
     "(TARGET.", merge.field, " = SOURCE.", merge.field, " OR (TARGET.", merge.field, " IS NULL AND SOURCE.", merge.field, " IS NULL))",

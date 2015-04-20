@@ -4,7 +4,7 @@
 \alias{odbc_insert}
 \title{Append a data.frame to a table through an ODBC connection}
 \usage{
-odbc_insert(data, table, channel)
+odbc_insert(data, table, channel, schema = "dbo", append = TRUE)
 }
 \arguments{
 \item{data}{the data.frame}
@@ -12,6 +12,10 @@ odbc_insert(data, table, channel)
 \item{table}{The name of the table}
 
 \item{channel}{the open ODBC channel}
+
+\item{schema}{The schema of the table. Defaults to dbo}
+
+\item{append}{Append the data or overwrite existing rows?}
 }
 \value{
 The status of the SQL INSERT for each row in returned but invisible.

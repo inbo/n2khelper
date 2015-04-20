@@ -4,12 +4,15 @@
 \alias{check_dbtable_variable}
 \title{Check if a variable is available in a given table}
 \usage{
-check_dbtable_variable(table, variable, channel, error = TRUE)
+check_dbtable_variable(table, variable, schema = "dbo", channel,
+  error = TRUE)
 }
 \arguments{
 \item{table}{The name of the table}
 
 \item{variable}{A vector with the names of the columns}
+
+\item{schema}{The schema of the table. Defaults to dbo}
 
 \item{channel}{the open ODBC channel}
 

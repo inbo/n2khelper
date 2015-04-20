@@ -2,10 +2,11 @@
 #' @export
 #' @param table The name of the table
 #' @param variable A vector with the names of the columns
-#' @param channel the open ODBC channel
 #' @param value the content of the variable
+#' @param schema The schema of the table. Defaults to dbo
+#' @param channel the open ODBC channel
 #' @importFrom RODBC sqlQuery
-odbc_get_id <- function(table, variable, value, channel){
+odbc_get_id <- function(table, variable, value, schema = "dbo", channel){
   value <- check_character(value, name = "value")
   if(length(value) == 0){
     stop("at least one value is needed")
@@ -25,6 +26,5 @@ odbc_get_id <- function(table, variable, value, channel){
       ", where
   )
   id <- sqlQuery(channel = channel, query = sql)$ID
-  odbcClose(channel)
   return(id)
 }
