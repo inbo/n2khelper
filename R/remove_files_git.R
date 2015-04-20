@@ -50,5 +50,6 @@ setMethod(
       to.stage <- gsub(paste0("^", connection@Repository@path, "/"), "", to.remove[success])
       add(repo = connection@Repository, path = to.stage)
     }
+    return(invisible(TRUE))
   }
 )
