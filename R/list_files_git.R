@@ -1,20 +1,45 @@
 #' List the files in a path of a git repository
-#'@inheritParams read_delim_git
-#'@inheritParams base::list.files
-#'@export
-list_files_git <- function(path, pattern = NULL, repo.path, full.names = FALSE){
-  path <- check_single_character(x = path, name = "path")
-  repo.path <- check_single_character(x = repo.path, name = "repo.path")
-  repo.path <- normalizePath(repo.path, winslash = "/", mustWork = FALSE)
-  if(!is_git_repo(path = repo.path)){
-    stop(repo.path, " is not a git repository")
+#' @inheritParams write_delim_git
+#' @inheritParams base::list.files
+#' @name list_files_git
+#' @rdname list_files_git
+#' @exportMethod list_files_git 
+#' @docType methods
+#' @importFrom methods setGeneric
+#' @include git_connection.R
+setGeneric(
+  name = "list_files_git", 
+  def = function(connection, path, pattern = NULL, full.names = FALSE){
+    standard.generic(list_files_git)
   }
+)
 
-  full.path <- paste(repo.path, path, sep = "/")
-  full.path <- normalizePath(full.path, winslash = "/", mustWork = FALSE)
-  if(file_test("-d", full.path)){
-    list.files(path = full.path, pattern = pattern, full.names = full.names)
-  } else {
-    stop(full.path, " is not a directory")
+#' @rdname list_files_git
+#' @aliases list_files_git,git_connection-methods
+#' @importFrom methods setMethod
+setMethod(
+  f = "list_files_git", 
+  signature = "ANY", 
+  definition = function(connection, path, pattern, full.names){
+    this.connection <- git_connection(repo.path = connection, local.path = path)
+    list_files_git(connection = this.connection, pattern = pattern, full.names = full.names)
   }
-}
+)
+
+#' @rdname list_files_git
+#' @aliases list_files_git,git_connection-methods
+#' @importFrom methods setMethod
+setMethod(
+  f = "list_files_git", 
+  signature = signature(connection = "git_connection"), 
+  definition = function(connection, path, pattern = NULL, full.names = FALSE){
+    if(!is.null(pattern)){
+      pattern <- check_single_character(pattern, name = "pattern")
+    }
+    full.names <- check_single_logical(full.names, name = "full.names")
+    
+    full.path <- paste(connection@Repository@path, connection@LocalPath, sep = "/")
+    full.path <- normalizePath(path = full.path, winslash = "/", mustWork = FALSE)
+    list.files(path = full.path, pattern = pattern, full.names = full.names)
+  }
+)

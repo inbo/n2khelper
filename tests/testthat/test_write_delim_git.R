@@ -4,48 +4,49 @@ describe("write_delim_git()", {
   x1 <- data.frame(1)
   file <- "test.txt"
   path <- "test/subdir"
-  repo.path <- normalizePath(tempfile(pattern="git2r-"), winslash = "/", mustWork = FALSE)
+  connection <- normalizePath(tempfile(pattern="git2r-"), winslash = "/", mustWork = FALSE)
   
+  it("stops if connection is not a git repository", {
+    expect_that(
+      write_delim_git(x = x, file = file, path = path, connection = connection),
+      throws_error(paste0("'", connection, "' is not a git repository"))
+    )
+  })
+  
+  dir.create(connection)
+  repo <- git2r::init(connection)
+  it("stops is the path doesn't exist", {
+    expect_that(
+      write_delim_git(x = x, file = file, path = path, connection = connection),
+      throws_error(".*Wrong local path.*")
+    )
+  })
+  full.path <- paste(connection, path, sep = "/")
+  dir.create(full.path, recursive = TRUE)
   it("stops if x is not a data.frame", {
     expect_that(
-      write_delim_git(x = matrix(0), file = file, path = path, repo.path = repo.path),
+      write_delim_git(x = matrix(0), file = file, path = path, connection = connection),
       throws_error("x is not a data.frame")
     )
   })
-  it("stops is repo.path is not a git repository", {
-    expect_that(
-      write_delim_git(x = x, file = file, path = path, repo.path = repo.path),
-      throws_error(paste(repo.path, "is not a git repository"))
-    )
-  })
   
-  dir.create(repo.path)
-  repo <- git2r::init(repo.path)
-  it("creates path when it doesn't exists and gives a warning", {
+  full.file.path <- paste(connection, path, file, sep = "/")
+  it("returns the sha1 of the file", {
     expect_that(
-      write_delim_git(x = x, file = file, path = path, repo.path = repo.path),
-      gives_warning(paste(path, "is created"))
-    )
-    full.path <- paste(repo.path, path, sep = "/")
-    expect_that(
-      file_test("-d", full.path),
-      is_true()
-    )
-    full.path <- paste(repo.path, path, file, sep = "/")
-    expect_that(
-      file_test("-f", full.path),
-      is_true()
+      write_delim_git(x = x, file = file, path = path, connection = connection),
+      is_identical_to(git2r::hashfile(full.file.path))
     )
   })
+
   it("stages the file", {
     expect_that(
-      status(repo)$staged$new,
+      git2r::status(repo)$staged$new,
       is_identical_to(paste(path, file, sep = "/"))
     )
-    junk <- commit(repo, "a")
-    write_delim_git(x = x1, file = file, path = path, repo.path = repo.path)
+    junk <- git2r::commit(repo, "a")
+    write_delim_git(x = x1, file = file, path = path, connection = connection)
     expect_that(
-      status(repo)$staged$modified,
+      git2r::status(repo)$staged$modified,
       is_identical_to(paste(path, file, sep = "/"))
     )
   })

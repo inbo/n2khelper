@@ -1,42 +1,62 @@
-#' write a dataframe as a tab delimited file to a git repository and stage it
+#' Write a dataframe as a tab delimited file to a git repository and stage it
 #' 
 #' The existing file will be overwritten.
 #' @param x the data.frame
 #' @param file the name of the file
-#' @param path the subdirectory of the file relative to the root of the git repository
-#' @param repo.path path of the git repository.
-#' @export
-#' @importFrom git2r repository add hashfile
+#' @param connection The path of a git repository or a \code{git_connection} object
+#' @param path the subdirectory within the git repository. Ignored when \code{connection} is a \code{git connection} object.
 #' @return the SHA1 of the file
-write_delim_git <- function(x, file, path, repo.path){
-  if(class(x) != "data.frame"){
-    stop("x is not a data.frame")
+#' @name write_delim_git
+#' @rdname write_delim_git
+#' @exportMethod write_delim_git 
+#' @docType methods
+#' @importFrom methods setGeneric
+#' @include git_connection.R
+setGeneric(
+  name = "write_delim_git", 
+  def = function(x, file, connection, path){
+    standard.generic(write_delim_git)
   }
-  file <- check_single_character(x = file, name = "file")
-  path <- check_single_character(x = path, name = "path")
-  repo.path <- check_single_character(x = repo.path, name = "repo.path")
-  repo.path <- normalizePath(repo.path, winslash = "/", mustWork = FALSE)
-  if(!is_git_repo(path = repo.path)){
-    stop(repo.path, " is not a git repository")
+)
+
+#' @rdname write_delim_git
+#' @aliases write_delim_git,git_connection-methods
+#' @importFrom git2r repository add hashfile
+#' @importFrom methods setMethod
+setMethod(
+  f = "write_delim_git", 
+  signature = "ANY", 
+  definition = function(x, file, connection, path){
+    this.connection <- git_connection(repo.path = connection, local.path = path)
+    write_delim_git(x = x, file = file, connection = this.connection)
+  } 
+)
+
+#' @rdname write_delim_git
+#' @aliases write_delim_git,git_connection-methods
+#' @importFrom git2r add hashfile
+#' @importFrom methods setMethod
+setMethod(
+  f = "write_delim_git",
+  signature = signature(connection = "git_connection"),
+  definition = function(x, file, connection, path){
+    if(class(x) != "data.frame"){
+      stop("x is not a data.frame")
+    }
+    file <- check_single_character(x = file, name = "file")
+    
+    # write the file
+    filename.full <- paste(connection@Repository@path, connection@LocalPath, file, sep = "/")
+    filename.full <- normalizePath(path = filename.full, winslash = "/", mustWork = FALSE)
+    write.table(
+      x = x, file = filename.full, append = FALSE, 
+      quote = FALSE, sep = "\t", row.names = FALSE, fileEncoding = "UTF-8"
+    )
+    
+    # stage the file
+    filename.local <- paste(connection@LocalPath, file, sep = "/")
+    add(connection@Repository, filename.local)
+    
+    return(hashfile(filename.full))
   }
-  full.path <- paste(repo.path, path, sep = "/")
-  if(!file_test("-d", full.path)){
-    warning(path, " is created")
-    dir.create(full.path, recursive = TRUE)
-  }
-  
-  
-  # write the file
-  filename.full <- paste(repo.path, path, file, sep = "/")
-  write.table(
-    x = x, file = filename.full, append = FALSE, 
-    quote = FALSE, sep = "\t", row.names = FALSE, fileEncoding = "UTF-8"
-  )
-  
-  # stage the file
-  filename.local <- paste(path, file, sep = "/")
-  repo <- repository(repo.path, discover = FALSE)
-  add(repo, filename.local)
-  
-  return(hashfile(filename.full))
-}
+)

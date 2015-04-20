@@ -1,19 +1,54 @@
 #' Remove all the files in a path of a git repository
 #' 
-#' Note that the removal is not staged
-#'@inheritParams read_delim_git
-#'@inheritParams base::list.files
-#'@export
-remove_files_git <- function(path, pattern = NULL, repo.path){
-  to.remove <- list_files_git(
-    path = path, 
-    pattern = pattern, 
-    repo.path = repo.path, 
-    full.names = TRUE
-  )
-  
-  success <- file.remove(to.remove)
-  if(length(success) > 0 && !all(success)){
-    stop("Error cleaning existing files in the git repository. Repository: '", repo.path, "', Path: '", path, "', pattern: '", pattern, "'")
+#' @inheritParams write_delim_git
+#' @inheritParams base::list.files
+#' @name remove_files_git
+#' @rdname remove_files_git
+#' @exportMethod remove_files_git 
+#' @docType methods
+#' @importFrom methods setGeneric
+#' @include git_connection.R
+setGeneric(
+  name = "remove_files_git", 
+  def = function(connection, path, pattern = NULL){
+    standard.generic(remove_files_git)
   }
-}
+)
+
+#' @rdname remove_files_git
+#' @aliases remove_files_git,git_connection-methods
+#' @importFrom methods setMethod
+setMethod(
+  f = "remove_files_git", 
+  signature = "ANY", 
+  definition = function(connection, path, pattern){
+    this.connection <- git_connection(repo.path = connection, local.path = path)
+    remove_files_git(connection = this.connection, pattern = pattern)
+  }
+)
+
+#' @rdname remove_files_git
+#' @aliases remove_files_git,git_connection-methods
+#' @importFrom methods setMethod
+#' @importFrom git2r add
+setMethod(
+  f = "remove_files_git", 
+  signature = signature(connection = "git_connection"), 
+  definition = function(connection, path, pattern = NULL){
+    to.remove <- list_files_git(
+      connection = connection,
+      pattern = pattern, 
+      full.names = TRUE
+    )
+
+    success <- file.remove(to.remove)
+    
+    if(length(success) > 0 && !all(success)){
+      stop("Error cleaning existing files in the git repository. Repository: '", connection@Repository@path, "', Path: '", connection@LocalPath, "', pattern: '", pattern, "'")
+    }
+    if(any(success)){
+      to.stage <- gsub(paste0("^", connection@Repository@path, "/"), "", to.remove[success])
+      add(repo = connection@Repository, path = to.stage)
+    }
+  }
+)

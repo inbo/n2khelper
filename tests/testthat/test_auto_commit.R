@@ -6,63 +6,63 @@ describe("auto_commit()", {
   
   library(git2r)
   # function to create and stage a file
-  dummy_add <- function(repo.path){
+  dummy_add <- function(connection){
     content <- paste(sample(letters, 8, replace = TRUE), collapse = "")
-    writeLines(content, paste(repo.path, content, sep = "/"))
-    git2r::add(repository(repo.path), content)
+    writeLines(content, paste(connection, content, sep = "/"))
+    git2r::add(repository(connection), content)
   }
   
   # create test repository
   origin.path <- tempfile(pattern="git2r-")
-  repo.path <- tempfile(pattern="git2r-")
+  connection <- tempfile(pattern="git2r-")
   dir.create(origin.path)
-  dir.create(repo.path)
+  dir.create(connection)
   repo_bare <- git2r::init(origin.path, bare = TRUE)
-  repo <- git2r::clone(origin.path, repo.path)
-  dummy_add(repo.path)
+  repo <- git2r::clone(origin.path, connection)
+  dummy_add(connection)
   git2r::commit(repo, "inital")
   git2r::push(repo, "origin", "refs/heads/master")
   
   it("gives a warning when no username and password are provided and returns TRUE", {
-    dummy_add(repo.path = repo.path)
+    dummy_add(connection = connection)
     expect_that(
-      auto_commit(package = package, repo.path = repo.path),
+      auto_commit(package = package, connection = connection),
       gives_warning("changes committed but not pushed")
     )
-    dummy_add(repo.path = repo.path)
+    dummy_add(connection = connection)
     expect_that(
-      auto_commit(package = package, repo.path = repo.path),
+      auto_commit(package = package, connection = connection),
       is_true()
     )
   })
   it("returns TRUE when nothing to commit", {
     expect_that(
-      auto_commit(package = package, repo.path = repo.path),
+      auto_commit(package = package, connection = connection),
       is_true()
     )
   })
   it("returns TRUE when nothing to commit", {
-    dummy_add(repo.path = repo.path)
+    dummy_add(connection = connection)
     expect_that(
-      auto_commit(package = package, repo.path = repo.path, username = user),
+      auto_commit(package = package, connection = connection, username = user),
       throws_error("No password provided. Changes committed but not pushed.*")
     )
-    dummy_add(repo.path = repo.path)
+    dummy_add(connection = connection)
     expect_that(
-      auto_commit(package = package, repo.path = repo.path, password = pwd),
+      auto_commit(package = package, connection = connection, password = pwd),
       throws_error("No username provided. Changes committed but not pushed.*")
     )
   })
   it("returns TRUE when changes are pushed", {
-    dummy_add(repo.path = repo.path)
+    dummy_add(connection = connection)
     expect_that(
-      auto_commit(package = package, repo.path = repo.path, username = user, password = pwd),
+      auto_commit(package = package, connection = connection, username = user, password = pwd),
       is_true()
     )
   })
   it("writes a correct message title", {
-    dummy_add(repo.path = repo.path)
-    auto_commit(package = package, repo.path = repo.path, username = user, password = pwd)
+    dummy_add(connection = connection)
+    auto_commit(package = package, connection = connection, username = user, password = pwd)
     expect_that(
       reflog(repo)[[1]]@message,
       is_identical_to(paste("commit: Automatic commit from", package))

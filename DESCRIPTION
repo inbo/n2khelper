@@ -16,5 +16,35 @@ Imports:
     RODBC
 License: GPL-3
 LazyData: true
-Suggests: 
-  testthat
+Suggests:
+    testthat
+Collate:
+    'git_connection.R'
+    'auto_commit.R'
+    'check_character.R'
+    'check_dataframe_covariate.R'
+    'check_dataframe_variable.R'
+    'check_dbtable.R'
+    'check_dbtable_variable.R'
+    'check_git_repo.R'
+    'check_id.R'
+    'check_single_character.R'
+    'check_single_logical.R'
+    'check_single_probability.R'
+    'check_single_strictly_positive_integer.R'
+    'connect_result.R'
+    'cut_date.R'
+    'get_nbn_key.R'
+    'get_nbn_name.R'
+    'git_connect.R'
+    'git_sha.R'
+    'is_git_repo.R'
+    'list_files_git.R'
+    'odbc_connect.R'
+    'odbc_get_id.R'
+    'odbc_get_multi_id.R'
+    'odbc_insert.R'
+    'read_delim_git.R'
+    'read_object_environment.R'
+    'remove_files_git.R'
+    'write_delim_git.R'

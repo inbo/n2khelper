@@ -1,36 +1,30 @@
 context("read data.frame from git")
 describe("read_delim_git()", {
-  library(git2r)
   file <- "test.txt"
   path <- "test"
-  repo.path <- normalizePath(tempfile(pattern="git2r-"), winslash = "/", mustWork = FALSE)
+  connection <- normalizePath(tempfile(pattern="git2r-"), winslash = "/", mustWork = FALSE)
   df <- data.frame(x = 1, y = 1:10)
   
   
-  it("stops is repo.path is not a git repository", {
+  it("stops is connection is not a git repository", {
     expect_that(
-      read_delim_git(file = file, path = path, repo.path = repo.path),
-      throws_error(paste(repo.path, "is not a git repository.*"))
+      read_delim_git(file = file, path = path, connection = connection),
+      throws_error(paste0("'", connection, "' is not a git repository.*"))
     )
   })
 
-  dir.create(repo.path)
-  repo <- git2r::init(repo.path)
+  dir.create(paste(connection, path, sep = "/"), recursive = TRUE)
+  repo <- git2r::init(connection)
   it("returns FALSE when the file doesn't exists", {
     expect_that(
-      read_delim_git(file = file, path = path, repo.path = repo.path),
-      is_false()
-    )
-    dir.create(paste(repo.path, path, sep = "/"))
-    expect_that(
-      read_delim_git(file = file, path = path, repo.path = repo.path),
+      read_delim_git(file = file, path = path, connection = connection),
       is_false()
     )
   })
-  write_delim_git(x = df, file = file, path = path, repo.path = repo.path)
+  write_delim_git(x = df, file = file, path = path, connection = connection)
   it("read the tab-delimited file", {
     expect_that(
-      read_delim_git(file = file, path = path, repo.path = repo.path),
+      read_delim_git(file = file, path = path, connection = connection),
       is_equivalent_to(df)
     )
   })
