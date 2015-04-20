@@ -40,6 +40,7 @@ Collate:
     'git_sha.R'
     'is_git_repo.R'
     'list_files_git.R'
+    'match_nbn_key.R'
     'odbc_connect.R'
     'odbc_get_id.R'
     'odbc_get_multi_id.R'
