@@ -39,16 +39,23 @@ get_nbn_key <- function(name, language = "la"){
       t.ITEM_NAME AS InputName,
       ns.RECOMMENDED_TAXON_VERSION_KEY as NBNID,
       tr.ITEM_NAME AS GenericName,
-      CASE WHEN tlir.TAXON_LIST_VERSION_KEY like 'INB%' THEN 1 ELSE 0 END AS Preference,
+      CASE WHEN tli.TAXON_LIST_VERSION_KEY like 'INB%' THEN 1 ELSE 0 END AS PreferenceInput,
+      CASE WHEN tlir.TAXON_LIST_VERSION_KEY like 'INB%' THEN 1 ELSE 0 END AS PreferenceOutput,
       tv.COMMENT AS Comment
     FROM
         (
           (
-            TAXON AS t
+            (
+              TAXON AS t
+            INNER JOIN
+              TAXON_VERSION AS tv
+            ON
+              t.TAXON_KEY = tv.TAXON_KEY
+            )
           INNER JOIN
-            TAXON_VERSION AS tv
+            TAXON_LIST_ITEM AS tli
           ON
-            t.TAXON_KEY = tv.TAXON_KEY
+            tv.TAXON_VERSION_KEY = tli.TAXON_VERSION_KEY
           )
         INNER JOIN
           NAMESERVER AS ns
@@ -78,19 +85,54 @@ get_nbn_key <- function(name, language = "la"){
   output <- unique(sqlQuery(channel = channel, query = sql, stringsAsFactors = FALSE))
   odbcClose(channel)
   if(nrow(output) <= 1){
-    output$Preference <- NULL
+    output$PreferenceInput <- NULL
+    output$PreferenceOutput <- NULL
     return(output)
   }
-  if(all(table(output$InputName) == 1)){
-    output$Preference <- NULL
+  
+  if(all(table(output$InputName, output$Comment, useNA = "ifany") <= 1)){
+    output$PreferenceInput <- NULL
+    output$PreferenceOutput <- NULL
     return(output)
   }
   preferred <- output[
-    output$Preference == 1, 
-    c("InputName", "NBNID", "GenericName", "Comment")
+    output$PreferenceInput == 1, 
+    c("InputName", "NBNID", "GenericName", "Comment", "PreferenceOutput")
   ]
   non.preferred <- output[
     output$Preference == 0, 
+    c("InputName", "NBNID", "GenericName", "Comment", "PreferenceOutput")
+  ]
+  non.preferred <- non.preferred[!non.preferred$InputName %in% preferred$InputName, ]
+  output <- rbind(unique(preferred), unique(non.preferred))
+
+  
+  if(all(table(output$InputName, output$Comment, useNA = "ifany") <= 1)){
+    output$PreferenceOutput <- NULL
+    return(output)
+  }
+  preferred <- output[
+    output$PreferenceOutput == 1, 
+    c("InputName", "NBNID", "GenericName", "Comment")
+  ]
+  non.preferred <- output[
+    output$PreferenceOutput == 0, 
+    c("InputName", "NBNID", "GenericName", "Comment")
+  ]
+  non.preferred <- non.preferred[!non.preferred$InputName %in% preferred$InputName, ]
+  output <- rbind(unique(preferred), unique(non.preferred))
+  
+  if(all(table(output$InputName, output$Comment, useNA = "ifany") <= 1)){
+    return(output)
+  }
+  output$INBO <- FALSE
+  output$INBO[grep("^INB", output$NBNID)] <- TRUE
+  preferred <- output[
+    output$INBO, 
+    c("InputName", "NBNID", "GenericName", "Comment")
+  ]
+  non.preferred <- output[
+    !output$INBO, 
     c("InputName", "NBNID", "GenericName", "Comment")
   ]
   non.preferred <- non.preferred[!non.preferred$InputName %in% preferred$InputName, ]
