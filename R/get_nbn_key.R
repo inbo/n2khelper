@@ -39,7 +39,8 @@ get_nbn_key <- function(name, language = "la"){
       t.ITEM_NAME AS InputName,
       ns.RECOMMENDED_TAXON_VERSION_KEY as NBNID,
       tr.ITEM_NAME AS GenericName,
-      CASE WHEN tlir.TAXON_LIST_VERSION_KEY like 'INB%' THEN 1 ELSE 0 END AS Preference
+      CASE WHEN tlir.TAXON_LIST_VERSION_KEY like 'INB%' THEN 1 ELSE 0 END AS Preference,
+      tv.COMMENT AS Comment
     FROM
         (
           (
@@ -73,13 +74,8 @@ get_nbn_key <- function(name, language = "la"){
     WHERE
       t.LANGUAGE = '", language, "' AND
       t.ITEM_NAME IN (", paste0("'", name, "'", collapse = ", "), ")
-    GROUP BY
-      t.ITEM_NAME,
-      ns.RECOMMENDED_TAXON_VERSION_KEY,
-      tr.ITEM_NAME,
-      CASE WHEN tlir.TAXON_LIST_VERSION_KEY like 'INB%' THEN 1 ELSE 0 END
   ")
-  output <- sqlQuery(channel = channel, query = sql, stringsAsFactors = FALSE)
+  output <- unique(sqlQuery(channel = channel, query = sql, stringsAsFactors = FALSE))
   odbcClose(channel)
   if(nrow(output) <= 1){
     output$Preference <- NULL
@@ -89,8 +85,14 @@ get_nbn_key <- function(name, language = "la"){
     output$Preference <- NULL
     return(output)
   }
-  preferred <- output[output$Preference == 1, c("InputName", "NBNID", "GenericName")]
-  non.preferred <- output[output$Preference == 0, c("InputName", "NBNID", "GenericName")]
+  preferred <- output[
+    output$Preference == 1, 
+    c("InputName", "NBNID", "GenericName", "Comment")
+  ]
+  non.preferred <- output[
+    output$Preference == 0, 
+    c("InputName", "NBNID", "GenericName", "Comment")
+  ]
   non.preferred <- non.preferred[!non.preferred$InputName %in% preferred$InputName, ]
   output <- rbind(preferred, non.preferred)
   if(any(table(output$InputName) > 1)){
