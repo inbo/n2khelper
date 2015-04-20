@@ -3,6 +3,7 @@
 #' The details are stored in the results database.
 #' @inheritParams odbc_connect
 #' @importFrom RODBC sqlQuery odbcClose odbcDriverConnect
+#' @importFrom git2r repository cred_user_pass
 #' @export
 git_connect <- function(data.source.name, channel = channel){
   data.source.name <- check_single_character(data.source.name)
@@ -25,6 +26,8 @@ git_connect <- function(data.source.name, channel = channel){
   sql <- paste0("
     SELECT
       ConnectionString,
+      Username,
+      Password,
       DatasourceType.Description AS Type,
       ConnectMethod.Description AS ConnectMethod
     FROM
@@ -53,8 +56,29 @@ git_connect <- function(data.source.name, channel = channel){
   if(connection$Type != "git, tab delimited"){
     stop("'", data.source.name, "' is not a git repository but '", connection$Type, "'.")
   }
-  path <- gsub("'.*$", "", gsub("^path='", "", connection$ConnectionString))
-  repo <- gsub("'.*$", "", gsub("^.*repo='", "", connection$ConnectionString))
+  if(length(grep("path='.*'", connection$ConnectionString))){
+    path <- gsub("'.*$", "", gsub("^.*path='", "", connection$ConnectionString))
+  } else {
+    stop("Path not defined in ", connection$ConnectionString)
+  }
+  if(length(grep("repo='.*'", connection$ConnectionString))){
+    repo.path <- gsub("'.*$", "", gsub("^.*repo='", "", connection$ConnectionString))
+  } else {
+    stop("Repository not defined in ", connection$ConnectionString)
+  }
+  if(length(grep("branch='.*'", connection$ConnectionString))){
+    branch <- gsub("'.*$", "", gsub("^.*branch='", "", connection$ConnectionString))
+  } else {
+    branch <- "master"
+  }
   
-  return(c(Path = path, Repo = repo))
+  
+  if(!is.na(connection$Username) & !is.na(connection$Password)){
+    cred <- cred_user_pass(username = connection$Username, password = connection$Password)
+  } else {
+    cred <- NULL
+  }
+  
+  output <- git_connection(repo.path = repo.path, local.path = path)
+  return(output)
 }
