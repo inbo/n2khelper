@@ -39,7 +39,6 @@ setMethod(
     full.names <- check_single_logical(full.names, name = "full.names")
     
     full.path <- paste(connection@Repository@path, connection@LocalPath, sep = "/")
-    full.path <- normalizePath(path = full.path, winslash = "/", mustWork = FALSE)
     list.files(path = full.path, pattern = pattern, full.names = full.names)
   }
 )

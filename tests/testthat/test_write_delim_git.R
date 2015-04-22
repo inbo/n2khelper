@@ -9,16 +9,24 @@ describe("write_delim_git()", {
   it("stops if connection is not a git repository", {
     expect_that(
       write_delim_git(x = x, file = file, path = path, connection = connection),
-      throws_error(paste0("'", connection, "' is not a git repository"))
+      throws_error(paste0("'", connection, "' is not a directory"))
     )
   })
   
   dir.create(connection)
   repo <- git2r::init(connection)
-  it("stops is the path doesn't exist", {
+  it("stops if the path doesn't exist", {
     expect_that(
       write_delim_git(x = x, file = file, path = path, connection = connection),
-      throws_error(".*Wrong local path.*")
+      throws_error(paste0(
+        "'", 
+        paste(
+          normalizePath(connection, winslash = "/", mustWork = FALSE),
+          path, 
+          sep = "/"
+        ),
+        "' is not a directory"
+      ))
     )
   })
   full.path <- paste(connection, path, sep = "/")

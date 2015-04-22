@@ -24,12 +24,9 @@ setValidity(
   "git_connection",
   function(object){
     root <- paste(object@Repository@path, ".", sep = "/")
-    root <- normalizePath(root, winslash = "/", mustWork = FALSE)
+    root <- check_path(path = root, type = "directory")
     full.path <- paste(root, object@LocalPath, sep = "/")
-    full.path <- normalizePath(full.path, winslash = "/", mustWork = FALSE)
-    if(!file_test("-d", full.path)){
-      return(paste0("Wrong local path. '", full.path, "' is not a directory"))
-    }
+    full.path <- check_path(full.path, type = "directory")
     if(length(grep(root, full.path)) == 0){
       return(paste0("Wrong local path. '", full.path, "' is not a subdirectory of '", root, "'"))
     }

@@ -4,15 +4,15 @@
 #' @param error What to do in case \code{path} is not a git repository. Throw an error when \code{error = TRUE}. Return \code{FALSE} when \code{error = FALSE}
 #' @export
 check_git_repo <- function(path, error = TRUE){
-  path <- check_single_character(x = path, name = "path")
   error <- check_single_logical(x = error, name = "error")
   
-  full.path <- normalizePath(path, winslash = "/", mustWork = FALSE)
-  if(file_test("-d", paste0(full.path, "/.git"))){
-    return(full.path)
+  full.path <- check_path(path, type = "directory")
+  git.path <- check_path(paste0(full.path, "/.git"), type = "directory", error = FALSE)
+  if(is.logical(git.path)){
+    if(error){
+      stop("'", full.path, "' is not a git repository")
+    }
+    return(FALSE)
   }
-  if(error){
-    stop("'", full.path, "' is not a git repository")
-  }
-  return(FALSE)
+  return(full.path)
 }

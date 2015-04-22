@@ -9,7 +9,7 @@ describe("list_files_git()", {
   it("stops is connection is not a git repository", {
     expect_that(
       list_files_git(path = path, connection = connection),
-      throws_error(paste0("'", connection, "' is not a git repository.*"))
+      throws_error(paste0("'", connection, "' is not a directory"))
     )
   })
 
@@ -21,7 +21,7 @@ describe("list_files_git()", {
   it("stops is the path doesn't exist", {
     expect_that(
       list_files_git(path = path, connection = connection),
-      throws_error("Wrong local path")
+      throws_error(paste0("'", connection, "/", path, "' is not a directory"))
     )
   })
   

@@ -9,7 +9,7 @@ describe("read_delim_git()", {
   it("stops is connection is not a git repository", {
     expect_that(
       read_delim_git(file = file, path = path, connection = connection),
-      throws_error(paste0("'", connection, "' is not a git repository.*"))
+      throws_error(paste0("'", connection, "' is not a directory"))
     )
   })
 

@@ -4,7 +4,6 @@ describe("auto_commit()", {
   user <- "test"
   pwd <- "test"
   
-  library(git2r)
   # function to create and stage a file
   dummy_add <- function(connection){
     content <- paste(sample(letters, 8, replace = TRUE), collapse = "")
@@ -64,7 +63,7 @@ describe("auto_commit()", {
     dummy_add(connection = connection)
     auto_commit(package = package, connection = connection, username = user, password = pwd)
     expect_that(
-      reflog(repo)[[1]]@message,
+      git2r::reflog(repo)[[1]]@message,
       is_identical_to(paste("commit: Automatic commit from", package))
     )
   })

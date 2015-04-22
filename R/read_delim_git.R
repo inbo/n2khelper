@@ -35,11 +35,10 @@ setMethod(
     file <- check_single_character(x = file, name = "file")
     
     filename <- paste(connection@Repository@path, connection@LocalPath, file, sep = "/")
-    filename <- normalizePath(path = filename, winslash = "/", mustWork = FALSE)
-    if(file_test("-f", filename)){
-      return(read.delim(filename))
-    } else {
-      return(FALSE)
+    filename <- check_path(path = filename, type = "file", error = FALSE)
+    if(is.logical(filename)){
+      return(filename)
     }
+    return(read.delim(filename))
   }
 )
