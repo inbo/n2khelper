@@ -1,10 +1,10 @@
 Package: n2khelper
-Title: Auxiliary functions for the analysis and reporting of the Natura 2000
-    monitoring
+Title: Auxiliary Functions for the Analysis and Reporting of the Natura 2000
+    Monitoring
 Version: 0.0
 Authors@R: c(person("Thierry", "Onkelinx", email = "thierry.onkelinx@inbo.be", role = c("aut", "cre")))
-Description: This package contains several simple functions to facilitate the
-    analysis and reporting.
+Description: Functions for importing the raw data, creating analysis dataset
+    and running the analysis for the Common Breeding Bird Survey in Flanders.
 Depends:
     R (>= 3.1.2)
 Imports:
@@ -28,6 +28,7 @@ Collate:
     'check_dbtable_variable.R'
     'check_git_repo.R'
     'check_id.R'
+    'check_path.R'
     'check_single_character.R'
     'check_single_logical.R'
     'check_single_probability.R'
