@@ -6,7 +6,7 @@ Authors@R: c(person("Thierry", "Onkelinx", email = "thierry.onkelinx@inbo.be", r
 Description: Functions for importing the raw data, creating analysis dataset
     and running the analysis for the Common Breeding Bird Survey in Flanders.
 Depends:
-    R (>= 3.1.2)
+    R (>= 3.2.0)
 Imports:
     git2r,
     digest,
