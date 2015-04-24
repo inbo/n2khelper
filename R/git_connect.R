@@ -5,7 +5,7 @@
 #' @importFrom RODBC sqlQuery odbcClose odbcDriverConnect
 #' @importFrom git2r repository cred_user_pass
 #' @export
-git_connect <- function(data.source.name, channel = channel){
+git_connect <- function(data.source.name, channel, username, password){
   data.source.name <- check_single_character(data.source.name)
   check_dbtable_variable(
     table = "Datasource", 
@@ -72,13 +72,13 @@ git_connect <- function(data.source.name, channel = channel){
     branch <- "master"
   }
   
-  
-  if(!is.na(connection$Username) & !is.na(connection$Password)){
-    cred <- cred_user_pass(username = connection$Username, password = connection$Password)
-  } else {
-    cred <- NULL
+  if(connection$ConnectMethod == "Credentials stored securely in the report server"){
+    username <- connection$Username 
+    password <- connection$Password
   }
   
-  output <- git_connection(repo.path = repo.path, local.path = path)
+  output <- git_connection(
+    repo.path = repo.path, local.path = path, username = username, password = password
+  )
   return(output)
 }

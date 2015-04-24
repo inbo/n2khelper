@@ -27,7 +27,12 @@ setMethod(
   f = "write_delim_git", 
   signature = "ANY", 
   definition = function(x, file, connection, path){
-    this.connection <- git_connection(repo.path = connection, local.path = path)
+    this.connection <- git_connection(
+      repo.path = connection, 
+      local.path = path, 
+      username = character(0),
+      password = character(0)
+    )
     write_delim_git(x = x, file = file, connection = this.connection)
   } 
 )

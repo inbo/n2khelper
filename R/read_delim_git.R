@@ -20,7 +20,12 @@ setMethod(
   f = "read_delim_git", 
   signature = "ANY", 
   definition = function(file, connection, path){
-    this.connection <- git_connection(repo.path = connection, local.path = path)
+    this.connection <- git_connection(
+      repo.path = connection, 
+      local.path = path, 
+      username = character(0),
+      password = character(0)
+    )
     read_delim_git(file = file, connection = this.connection)
   }
 )

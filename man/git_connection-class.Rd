@@ -6,12 +6,17 @@
 \alias{git_connection-class}
 \title{The git_connection class}
 \usage{
-git_connection(repo.path, local.path = ".")
+git_connection(repo.path, local.path = ".", username = character(0),
+  password = character(0))
 }
 \arguments{
 \item{repo.path}{The path of the root of the repository}
 
 \item{local.path}{A path within the repository}
+
+\item{username}{the username in case the ConnectMethod is "Credentials supplied by the user running the report". Ignored in all other cases.}
+
+\item{password}{the password to be used in combination with the username.}
 }
 \description{
 The git_connection class
@@ -23,6 +28,7 @@ Open a git connection
   \describe{
    \item{\code{Repository}}{a git repository}
    \item{\code{LocalPath}}{a subdirectory wihtin the repository}
+   \item{\code{Credential}}{the credentials for the repository}
   }
 }
 

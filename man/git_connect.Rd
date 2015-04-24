@@ -4,12 +4,16 @@
 \alias{git_connect}
 \title{Returns the path of the datasource within the git repository}
 \usage{
-git_connect(data.source.name, channel = channel)
+git_connect(data.source.name, channel, username, password)
 }
 \arguments{
 \item{data.source.name}{The name of the data source}
 
 \item{channel}{the ODBC channel to the database with the connection strings}
+
+\item{username}{the username in case the ConnectMethod is "Credentials supplied by the user running the report". Ignored in all other cases.}
+
+\item{password}{the password to be used in combination with the username.}
 }
 \description{
 The details are stored in the results database.

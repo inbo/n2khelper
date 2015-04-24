@@ -4,6 +4,7 @@
 #'   \describe{
 #'    \item{\code{Repository}}{a git repository}
 #'    \item{\code{LocalPath}}{a subdirectory wihtin the repository}
+#'    \item{\code{Credential}}{the credentials for the repository}
 #'   }
 #' @name git_connection-class
 #' @rdname git_connection-class
@@ -16,7 +17,8 @@ setClass(
   Class = "git_connection",
   representation = representation(
     Repository = "git_repository",
-    LocalPath = "character"
+    LocalPath = "character",
+    Credential = "cred_user_pass"
   )
 )
 
@@ -39,14 +41,27 @@ setValidity(
 #' @rdname git_connection-class
 #' @param repo.path The path of the root of the repository
 #' @param local.path A path within the repository
+#' @inheritParams odbc_connect
 #' @export
 #' @importFrom methods new
-#' @importFrom git2r repository
-git_connection <- function(repo.path, local.path = "."){
+#' @importFrom git2r repository cred_user_pass
+git_connection <- function(
+  repo.path, 
+  local.path = ".", 
+  username = character(0), 
+  password = character(0)
+){
   repo.path <- check_git_repo(path = repo.path)
+  if(length(username) != length(password)){
+    stop("Provide either both username and password or neither.")
+  }
+  if(length(username) > 1){
+    stop("Multiple usernames are not accepted")
+  }
   new(
     "git_connection",
     Repository = repository(repo.path),
-    LocalPath = local.path
+    LocalPath = local.path,
+    Credential = cred_user_pass(username = username, password = password)
   )
 }

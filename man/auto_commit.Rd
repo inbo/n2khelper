@@ -8,12 +8,14 @@
 \alias{auto_commit,git_connection-methods}
 \title{Commit staged changes in a git repository with automated message}
 \usage{
-auto_commit(package, connection, username, password)
+auto_commit(package, connection, username = character(0),
+  password = character(0))
 
-\S4method{auto_commit}{ANY,ANY}(package, connection, username, password)
+\S4method{auto_commit}{ANY,ANY}(package, connection, username = character(0),
+  password = character(0))
 
-\S4method{auto_commit}{ANY,git_connection}(package, connection, username,
-  password)
+\S4method{auto_commit}{ANY,git_connection}(package, connection,
+  username = character(0), password = character(0))
 }
 \arguments{
 \item{package}{The name of the package from which we autocommit}

@@ -13,7 +13,12 @@
 #' @include git_connection.R
 setGeneric(
   name = "auto_commit", 
-  def = function(package, connection, username, password){
+  def = function(
+    package, 
+    connection, 
+    username = character(0), 
+    password = character(0)
+  ){
     standard.generic(autocommit)
   }
 )
@@ -25,13 +30,20 @@ setGeneric(
 setMethod(
   f = "auto_commit", 
   signature = "ANY", 
-  definition = function(package, connection, username, password){
-    this.connection <- git_connection(repo.path = connection)
+  definition = function(
+    package, 
+    connection, 
+    username = character(0), 
+    password = character(0)
+  ){
+    this.connection <- git_connection(
+      repo.path = connection,
+      username = username,
+      password = password
+    )
     auto_commit(
       package = package, 
-      connection = this.connection, 
-      username = username, 
-      password = password
+      connection = this.connection
     )
   }
 )
@@ -44,7 +56,12 @@ setMethod(
 setMethod(
   f = "auto_commit",
   signature = signature(connection = "git_connection"),
-  definition = function(package, connection, username, password){
+  definition = function(
+    package, 
+    connection, 
+    username = character(0), 
+    password = character(0)
+  ){
     package <- check_single_character(package)
     
     #format commit message based on sessionInfo()
@@ -77,19 +94,11 @@ setMethod(
     if(class(committed) != "git_commit"){
       return(invisible(TRUE))
     }
-    if(missing(username) & missing(password)){
+    if(length(connection@Credential@username) == 0){
       warning("changes committed but not pushed")
-      return(invisible(TRUE))
+    } else {
+      push(head(connection@Repository), credentials = connection@Credential)
     }
-    if(missing(username)){
-      stop("No username provided. Changes committed but not pushed.")
-    }
-    if(missing(password)){
-      stop("No password provided. Changes committed but not pushed.")
-    }
-    credentials <- cred_user_pass(username = username, password = password)
-    push(head(connection@Repository), credentials = credentials)
-    
     return(invisible(TRUE))
   }
 )

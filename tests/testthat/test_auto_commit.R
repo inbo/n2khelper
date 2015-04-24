@@ -8,12 +8,12 @@ describe("auto_commit()", {
   dummy_add <- function(connection){
     content <- paste(sample(letters, 8, replace = TRUE), collapse = "")
     writeLines(content, paste(connection, content, sep = "/"))
-    git2r::add(repository(connection), content)
+    git2r::add(git2r::repository(connection), content)
   }
   
   # create test repository
   origin.path <- tempfile(pattern="git2r-")
-  connection <- tempfile(pattern="git2r-")
+  connection <- tempfile(pattern="git2rclone-")
   dir.create(origin.path)
   dir.create(connection)
   repo_bare <- git2r::init(origin.path, bare = TRUE)
@@ -38,18 +38,6 @@ describe("auto_commit()", {
     expect_that(
       auto_commit(package = package, connection = connection),
       is_true()
-    )
-  })
-  it("returns TRUE when nothing to commit", {
-    dummy_add(connection = connection)
-    expect_that(
-      auto_commit(package = package, connection = connection, username = user),
-      throws_error("No password provided. Changes committed but not pushed.*")
-    )
-    dummy_add(connection = connection)
-    expect_that(
-      auto_commit(package = package, connection = connection, password = pwd),
-      throws_error("No username provided. Changes committed but not pushed.*")
     )
   })
   it("returns TRUE when changes are pushed", {
