@@ -5,7 +5,12 @@
 #' @importFrom RODBC sqlQuery odbcClose odbcDriverConnect
 #' @importFrom git2r repository cred_user_pass
 #' @export
-git_connect <- function(data.source.name, channel, username, password){
+git_connect <- function(
+  data.source.name, 
+  channel, 
+  username = character(0), 
+  password = character(0)
+){
   data.source.name <- check_single_character(data.source.name)
   check_dbtable_variable(
     table = "Datasource", 

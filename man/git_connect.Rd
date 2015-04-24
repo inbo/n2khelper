@@ -4,7 +4,8 @@
 \alias{git_connect}
 \title{Returns the path of the datasource within the git repository}
 \usage{
-git_connect(data.source.name, channel, username, password)
+git_connect(data.source.name, channel, username = character(0),
+  password = character(0))
 }
 \arguments{
 \item{data.source.name}{The name of the data source}
