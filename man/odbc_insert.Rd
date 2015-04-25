@@ -4,7 +4,8 @@
 \alias{odbc_insert}
 \title{Append a data.frame to a table through an ODBC connection}
 \usage{
-odbc_insert(data, table, channel, schema = "dbo", append = TRUE)
+odbc_insert(data, table, channel, schema = "dbo", append = TRUE,
+  rows.at.time = 1000)
 }
 \arguments{
 \item{data}{the data.frame}
@@ -16,6 +17,8 @@ odbc_insert(data, table, channel, schema = "dbo", append = TRUE)
 \item{schema}{The schema of the table. Defaults to dbo}
 
 \item{append}{Append the data or overwrite existing rows?}
+
+\item{rows.at.time}{Number of rows to insert in one SQL statement}
 }
 \value{
 The status of the SQL INSERT for each row in returned but invisible.
