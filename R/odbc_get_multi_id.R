@@ -20,7 +20,13 @@ odbc_get_multi_id <- function(data, id.field, merge.field, table, channel, creat
   )
   
   # empty staging table and fill it
-  odbc_insert(channel = channel, data = data, table = table, schema = "staging")
+  odbc_insert(
+    channel = channel, 
+    data = data, 
+    table = table, 
+    schema = "staging", 
+    append = FALSE
+  )
 
   join.on <- paste0(
     "(TARGET.", merge.field, " = SOURCE.", merge.field, " OR (TARGET.", merge.field, " IS NULL AND SOURCE.", merge.field, " IS NULL))",

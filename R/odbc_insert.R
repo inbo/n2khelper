@@ -18,8 +18,9 @@ odbc_insert <- function(data, table, channel, schema = "dbo", append = TRUE){
   )
   
   if(!append){
-    sqlClear(channel = channel, sqtable = paste(schema, ".", table))
+    sqlClear(channel = channel, sqtable = paste0(schema, ".", table))
   }
+  
   # quote values when needed
   type <- sapply(data, class)
   type[type %in% c("integer", "numeric")] <- "done"
