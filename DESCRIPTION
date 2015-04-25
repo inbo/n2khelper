@@ -36,6 +36,7 @@ Collate:
     'connect_result.R'
     'cut_date.R'
     'get_nbn_key.R'
+    'get_nbn_key_multi.R'
     'get_nbn_name.R'
     'git_connect.R'
     'git_sha.R'
