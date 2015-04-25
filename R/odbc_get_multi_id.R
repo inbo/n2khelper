@@ -5,11 +5,12 @@
 #' @param merge.field the merge fields
 #' @param create When TRUE, the function creates unmatching records AND updates attributes. Defaults to FALSE.
 #' @inheritParams check_dbtable_variable
+#' @inheritParams odbc_insert
 #' @export
 #' @return a data.frame with data and the id's
 #' @importFrom digest digest
 #' @importFrom RODBC sqlQuery odbcClose
-odbc_get_multi_id <- function(data, id.field, merge.field, table, channel, create = FALSE){
+odbc_get_multi_id <- function(data, id.field, merge.field, table, channel, create = FALSE, rows.at.time = 1000){
   create <- check_single_logical(create, name = "create")
   check_dataframe_variable(df = data, variable = merge.field, name = "data")
   check_dbtable_variable(
@@ -25,7 +26,8 @@ odbc_get_multi_id <- function(data, id.field, merge.field, table, channel, creat
     data = data, 
     table = table, 
     schema = "staging", 
-    append = FALSE
+    append = FALSE,
+    rows.at.time = rows.at.time
   )
 
   join.on <- paste0(

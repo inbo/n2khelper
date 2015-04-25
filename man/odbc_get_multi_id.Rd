@@ -4,7 +4,8 @@
 \alias{odbc_get_multi_id}
 \title{Get the corresponding id's}
 \usage{
-odbc_get_multi_id(data, id.field, merge.field, table, channel, create = FALSE)
+odbc_get_multi_id(data, id.field, merge.field, table, channel, create = FALSE,
+  rows.at.time = 1000)
 }
 \arguments{
 \item{data}{the data.frame}
@@ -18,6 +19,8 @@ odbc_get_multi_id(data, id.field, merge.field, table, channel, create = FALSE)
 \item{channel}{the open ODBC channel}
 
 \item{create}{When TRUE, the function creates unmatching records AND updates attributes. Defaults to FALSE.}
+
+\item{rows.at.time}{Number of rows to insert in one SQL statement}
 }
 \value{
 a data.frame with data and the id's
