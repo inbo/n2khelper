@@ -16,6 +16,7 @@ get_nbn_key_multi <- function(species, orders = c("la", "nl", "en")){
   
   if("NBNID" %in% colnames(species)){
     warning("Existing NBNID will be overwritten.")
+    species$NBNID <- NULL
   }
   
   to.do <- species
