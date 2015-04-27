@@ -15,7 +15,7 @@ check_dbtable_variable <- function(table, variable, schema = "dbo", channel, err
     stop("channel is not an ODBC connection")
   }
   
-  available <- sqlColumns(channel = channel, sqtable = table)$COLUMN_NAME
+  available <- sqlColumns(channel = channel, sqtable = table, schema = schema)$COLUMN_NAME
   check <- variable %in% available
   if(all(check)){
     return(TRUE)
