@@ -42,6 +42,7 @@ odbc_get_multi_id <- function(data, id.field, merge.field, table, channel, creat
     } else {
       update.clause <- paste0(
         "TARGET.", attribute.field, " <> SOURCE.", attribute.field, 
+        " OR TARGET.", attribute.field, " IS NULL OR SOURCE.", attribute.field, " IS NULL",
         collapse = " OR "
       )
       update.set <- paste0(
