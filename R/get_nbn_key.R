@@ -37,7 +37,7 @@ get_nbn_key <- function(name, language = "la"){
   sql <- paste0("
     SELECT
       t.ITEM_NAME AS InputName,
-      ns.RECOMMENDED_TAXON_VERSION_KEY as NBNID,
+      ns.RECOMMENDED_TAXON_VERSION_KEY as NBNKey,
       tr.ITEM_NAME AS GenericName,
       CASE WHEN tli.TAXON_LIST_VERSION_KEY like 'INB%' THEN 1 ELSE 0 END AS PreferenceInput,
       CASE WHEN tlir.TAXON_LIST_VERSION_KEY like 'INB%' THEN 1 ELSE 0 END AS PreferenceOutput,
@@ -97,11 +97,11 @@ get_nbn_key <- function(name, language = "la"){
   }
   preferred <- output[
     output$PreferenceInput == 1, 
-    c("InputName", "NBNID", "GenericName", "Comment", "PreferenceOutput")
+    c("InputName", "NBNKey", "GenericName", "Comment", "PreferenceOutput")
   ]
   non.preferred <- output[
     output$Preference == 0, 
-    c("InputName", "NBNID", "GenericName", "Comment", "PreferenceOutput")
+    c("InputName", "NBNKey", "GenericName", "Comment", "PreferenceOutput")
   ]
   non.preferred <- non.preferred[!non.preferred$InputName %in% preferred$InputName, ]
   output <- rbind(unique(preferred), unique(non.preferred))
@@ -113,11 +113,11 @@ get_nbn_key <- function(name, language = "la"){
   }
   preferred <- output[
     output$PreferenceOutput == 1, 
-    c("InputName", "NBNID", "GenericName", "Comment")
+    c("InputName", "NBNKey", "GenericName", "Comment")
   ]
   non.preferred <- output[
     output$PreferenceOutput == 0, 
-    c("InputName", "NBNID", "GenericName", "Comment")
+    c("InputName", "NBNKey", "GenericName", "Comment")
   ]
   non.preferred <- non.preferred[!non.preferred$InputName %in% preferred$InputName, ]
   output <- rbind(unique(preferred), unique(non.preferred))
@@ -126,14 +126,14 @@ get_nbn_key <- function(name, language = "la"){
     return(output)
   }
   output$INBO <- FALSE
-  output$INBO[grep("^INB", output$NBNID)] <- TRUE
+  output$INBO[grep("^INB", output$NBNKey)] <- TRUE
   preferred <- output[
     output$INBO, 
-    c("InputName", "NBNID", "GenericName", "Comment")
+    c("InputName", "NBNKey", "GenericName", "Comment")
   ]
   non.preferred <- output[
     !output$INBO, 
-    c("InputName", "NBNID", "GenericName", "Comment")
+    c("InputName", "NBNKey", "GenericName", "Comment")
   ]
   non.preferred <- non.preferred[!non.preferred$InputName %in% preferred$InputName, ]
   output <- rbind(preferred, non.preferred)

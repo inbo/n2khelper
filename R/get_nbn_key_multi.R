@@ -14,20 +14,20 @@ get_nbn_key_multi <- function(species, orders = c("la", "nl", "en")){
     name = "species"
   )
   
-  if("NBNID" %in% colnames(species)){
-    warning("Existing NBNID will be overwritten.")
-    species$NBNID <- NULL
+  if("NBNKey" %in% colnames(species)){
+    warning("Existing NBNKey will be overwritten.")
+    species$NBNKey <- NULL
   }
   
   to.do <- species
   done <- species[integer(0), ]
-  done$NBNID <- character(0)
+  done$NBNKey <- character(0)
   
   for(language in orders){
     nbn.key <- get_nbn_key(name = to.do[, lang.name[language]], language = language)
     if(max(table(nbn.key$InputName)) > 1){
       nbn.key$INBO <- FALSE
-      nbn.key$INBO[grep("^INB", nbn.key$NBNID)] <- TRUE
+      nbn.key$INBO[grep("^INB", nbn.key$NBNKey)] <- TRUE
       max.key <- aggregate(
         nbn.key[, "INBO", drop = FALSE],
         nbn.key[, "InputName", drop = FALSE],
@@ -39,16 +39,16 @@ get_nbn_key_multi <- function(species, orders = c("la", "nl", "en")){
       stop("Duplicate matching keys for ", lang.name[language])
     }
     to.do <- match_nbn_key(species = to.do, nbn.key = nbn.key, variable = lang.name[language])
-    done <- rbind(done, to.do[!is.na(to.do$NBNID), ])
-    to.do <- to.do[is.na(to.do$NBNID), ]
+    done <- rbind(done, to.do[!is.na(to.do$NBNKey), ])
+    to.do <- to.do[is.na(to.do$NBNKey), ]
     if(nrow(to.do) == 0){
       break
     }
-    to.do$NBNID <- NULL
+    to.do$NBNKey <- NULL
   }
   if(nrow(to.do) > 0){
     warning("No matches found for some records")
-    to.do$NBNID <- NA
+    to.do$NBNKey <- NA
     done <- rbind(done, to.do)
   }
   return(done)

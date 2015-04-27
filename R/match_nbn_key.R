@@ -12,14 +12,14 @@ match_nbn_key <- function(species, nbn.key, variable){
   )
   check_dataframe_variable(
     df = nbn.key,
-    variable = c("InputName", "NBNID"),
+    variable = c("InputName", "NBNKey"),
     name = "nbn.key"
   )
   if(any(table(nbn.key$InputName) > 1)){
     stop("Duplicate 'InputName' in 'nbn.key'")
   }
-  if("NBNID" %in% colnames(species)){
-    stop("NBNID present")
+  if("NBNKey" %in% colnames(species)){
+    stop("NBNKey present")
   }
   
   input <- data.frame(
@@ -27,6 +27,6 @@ match_nbn_key <- function(species, nbn.key, variable){
   )
   input$LowerCase <- tolower(input$Original)
   nbn.key$LowerCase <- tolower(nbn.key$InputName)
-  input <- merge(input, nbn.key[, c("LowerCase", "NBNID")], all.x = TRUE)
-  merge(species, input[, c("Original", "NBNID")], by.x = variable, by.y = "Original")
+  input <- merge(input, nbn.key[, c("LowerCase", "NBNKey")], all.x = TRUE)
+  merge(species, input[, c("Original", "NBNKey")], by.x = variable, by.y = "Original")
 }

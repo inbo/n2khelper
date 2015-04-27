@@ -9,7 +9,7 @@ get_nbn_name <- function(nbn.key){
   sql <- paste0("
     SELECT
       CASE WHEN tli.TAXON_LIST_VERSION_KEY like 'INB%' THEN 1 ELSE 0 END AS Preference,
-      ns.RECOMMENDED_TAXON_VERSION_KEY AS NBNID,
+      ns.RECOMMENDED_TAXON_VERSION_KEY AS NBNKey,
       t.LANGUAGE AS Language,
       t.ITEM_NAME AS Name, 
       ns.TAXON_TYPE AS Type,
@@ -46,11 +46,11 @@ get_nbn_name <- function(nbn.key){
   odbcClose(channel)
  
   if(nrow(output) <= 1){
-    return(output[, c("NBNID", "Language", "Name")])
+    return(output[, c("NBNKey", "Language", "Name")])
   }
   output <- ddply(
     .data = output,
-    .variables = c("NBNID", "Language"),
+    .variables = c("NBNKey", "Language"),
     function(this.key){
       if(nrow(this.key) == 1){
         return(this.key[, "Name", drop = FALSE])
