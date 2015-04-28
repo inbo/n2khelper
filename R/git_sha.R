@@ -35,13 +35,22 @@ setMethod(
   definition = function(file, connection, path){
     file <- check_character(x = file, name = "file")
     
-    blobs <- odb_blobs(connection@Repository)
-    blobs <- blobs[
-      blobs$path == connection@LocalPath & 
-      blobs$name %in% file &
-      blobs$commit == branch_target(head(connection@Repository))
-      , 
-    ]
+    old.wd <- getwd()
+    setwd(connection@Repository@path)
+    blobs <- system("git ls-tree -r HEAD", intern = TRUE)
+    setwd(old.wd)
+    blobs <- read.table(
+      textConnection(paste(blobs, collapse = "\n")),
+      header = FALSE,
+      sep = "\t",
+      col.names = c("SHA", "Path")
+    )
+    blobs$File <- basename(blobs$Path)
+    blobs <- blobs[blobs$File %in% file, ]
+    blobs$Path <- dirname(blobs$Path)
+    blobs <- blobs[blobs$Path %in% connection@LocalPath, ]
+    blobs$SHA <- gsub("^.*blob ", "", blobs$SHA)
+    
     return(blobs)
   }
 )
