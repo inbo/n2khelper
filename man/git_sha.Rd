@@ -6,7 +6,7 @@
 \alias{git_sha,ANY,ANY-method}
 \alias{git_sha,ANY,git_connection-method}
 \alias{git_sha,git_connection-methods}
-\title{Get the SHA of the files in the HEAD}
+\title{Get the SHA of the files at the HEAD}
 \usage{
 git_sha(file, connection, path)
 
@@ -22,6 +22,6 @@ git_sha(file, connection, path)
 \item{path}{the subdirectory within the git repository. Ignored when \code{connection} is a \code{git connection} object.}
 }
 \description{
-Get the SHA of the files in the HEAD
+Get the SHA of the files at the HEAD
 }
 

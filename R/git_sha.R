@@ -36,7 +36,13 @@ setMethod(
     
     old.wd <- getwd()
     setwd(connection@Repository@path)
-    blobs <- system("git ls-tree -r HEAD", intern = TRUE)
+    blobs <- system(
+      paste(
+        "git ls-tree -r HEAD",
+        connection@LocalPath
+      ),
+      intern = TRUE
+    )
     setwd(old.wd)
     blobs <- read.table(
       textConnection(paste(blobs, collapse = "\n")),
@@ -47,7 +53,6 @@ setMethod(
     blobs$File <- basename(blobs$Path)
     blobs <- blobs[blobs$File %in% file, ]
     blobs$Path <- dirname(blobs$Path)
-    blobs <- blobs[blobs$Path %in% connection@LocalPath, ]
     blobs$SHA <- gsub("^.*blob ", "", blobs$SHA)
     
     return(blobs)
