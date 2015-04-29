@@ -28,7 +28,6 @@ setMethod(
 #' @rdname git_sha
 #' @aliases git_sha,git_connection-methods
 #' @importFrom methods setMethod
-#' @importFrom git2r odb_blobs head branch_target
 setMethod(
   f = "git_sha",
   signature = signature(connection = "git_connection"),
