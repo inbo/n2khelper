@@ -33,8 +33,17 @@ odbc_insert <- function(data, table, channel, schema = "dbo", append = TRUE, row
   # quote values when needed
   type <- sapply(data, class)
   type[type %in% c("integer", "numeric")] <- "done"
-  if(any(type == "character")){
-    relevant <- which(type == "character")
+  
+  relevant <- which(type == "factor")
+  if(length(relevant) > 0){
+    data[, relevant] <- sapply(relevant, function(i){
+      levels(data[, i])[data[, i]]
+    })
+    type[relevant] <- "character"
+  }
+  
+  relevant <- which(type == "character")
+  if(length(relevant) > 0){
     data[, relevant] <- sapply(relevant, function(i){
       gsub("\\'", "\\'\\'", data[, i])
     })
