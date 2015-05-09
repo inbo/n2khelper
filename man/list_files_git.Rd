@@ -4,22 +4,20 @@
 \name{list_files_git}
 \alias{list_files_git}
 \alias{list_files_git,ANY-method}
-\alias{list_files_git,git_connection-method}
+\alias{list_files_git,gitConnection-method}
 \alias{list_files_git,git_connection-methods}
 \title{List the files in a path of a git repository}
 \usage{
-list_files_git(connection, path, pattern = NULL, full.names = FALSE)
+list_files_git(connection, pattern = NULL, full.names = FALSE, ...)
 
-\S4method{list_files_git}{ANY}(connection, path, pattern = NULL,
-  full.names = FALSE)
+\S4method{list_files_git}{ANY}(connection, pattern = NULL,
+  full.names = FALSE, ...)
 
-\S4method{list_files_git}{git_connection}(connection, path, pattern = NULL,
-  full.names = FALSE)
+\S4method{list_files_git}{gitConnection}(connection, pattern = NULL,
+  full.names = FALSE, ...)
 }
 \arguments{
-\item{connection}{The path of a git repository or a \code{git_connection} object}
-
-\item{path}{the subdirectory within the git repository. Ignored when \code{connection} is a \code{git connection} object.}
+\item{connection}{The path of a git repository or a \code{gitConnection} object}
 
 \item{pattern}{an optional \link{regular expression}.  Only file names
     which match the regular expression will be returned.}
@@ -27,6 +25,8 @@ list_files_git(connection, path, pattern = NULL, full.names = FALSE)
 \item{full.names}{a logical value.  If \code{TRUE}, the directory
     path is prepended to the file names to give a relative file path.
     If \code{FALSE}, the file names (rather than paths) are returned.}
+
+\item{...}{parameters passed to \code{git_connection()} when \code{connection} is a path}
 }
 \description{
 List the files in a path of a git repository

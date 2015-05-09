@@ -4,27 +4,23 @@
 \name{auto_commit}
 \alias{auto_commit}
 \alias{auto_commit,ANY,ANY-method}
-\alias{auto_commit,ANY,git_connection-method}
+\alias{auto_commit,ANY,gitConnection-method}
+\alias{auto_commit,gitConnection-methods}
 \alias{auto_commit,git_connection-methods}
 \title{Commit staged changes in a git repository with automated message}
 \usage{
-auto_commit(package, connection, username = character(0),
-  password = character(0))
+auto_commit(package, connection, ...)
 
-\S4method{auto_commit}{ANY,ANY}(package, connection, username = character(0),
-  password = character(0))
+\S4method{auto_commit}{ANY,ANY}(package, connection, ...)
 
-\S4method{auto_commit}{ANY,git_connection}(package, connection,
-  username = character(0), password = character(0))
+\S4method{auto_commit}{ANY,gitConnection}(package, connection, ...)
 }
 \arguments{
 \item{package}{The name of the package from which we autocommit}
 
 \item{connection}{The path of the repository. Default to \code{rawdata.path}}
 
-\item{username}{the username for the git repository}
-
-\item{password}{the user's password for the git repository}
+\item{...}{parameters passed to \code{git_connection} when relevant}
 }
 \description{
 The mesagge is based on the information returned by \code{\link[utils]{sessionInfo}}

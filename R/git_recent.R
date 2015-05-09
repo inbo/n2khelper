@@ -8,8 +8,8 @@
 #' @include git_connection.R
 setGeneric(
   name = "git_recent", 
-  def = function(file, connection, path){
-    standard.generic(git_recent)
+  def = function(file, connection, ...){
+    standard.generic("git_recent")
   }
 )
 
@@ -18,9 +18,9 @@ setGeneric(
 #' @importFrom methods setMethod
 setMethod(
   f = "git_recent", 
-  signature = "ANY", 
-  definition = function(file, connection, path){
-    this.connection <- git_connection(repo.path = connection, local.path = path)
+  signature = signature(connection = "ANY"), 
+  definition = function(file, connection, ...){
+    this.connection <- git_connection(repo.path = connection, ...)
     git_recent(file = file, connection = this.connection)
   } 
 )
@@ -30,8 +30,8 @@ setMethod(
 #' @importFrom methods setMethod
 setMethod(
   f = "git_recent",
-  signature = signature(connection = "git_connection"),
-  definition = function(file, connection, path){
+  signature = signature(connection = "gitConnection"),
+  definition = function(file, connection, ...){
     file <- check_single_character(x = file, name = "file")
     
     old.wd <- getwd()

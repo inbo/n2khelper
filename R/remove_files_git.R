@@ -10,8 +10,8 @@
 #' @include git_connection.R
 setGeneric(
   name = "remove_files_git", 
-  def = function(connection, path, pattern = NULL){
-    standard.generic(remove_files_git)
+  def = function(connection, pattern = NULL, ...){
+    standard.generic("remove_files_git")
   }
 )
 
@@ -20,9 +20,9 @@ setGeneric(
 #' @importFrom methods setMethod
 setMethod(
   f = "remove_files_git", 
-  signature = "ANY", 
-  definition = function(connection, path, pattern){
-    this.connection <- git_connection(repo.path = connection, local.path = path)
+  signature = signature(connection = "ANY"), 
+  definition = function(connection, pattern = NULL, ...){
+    this.connection <- git_connection(repo.path = connection, local.path = list(...)$path)
     remove_files_git(connection = this.connection, pattern = pattern)
   }
 )
@@ -33,8 +33,8 @@ setMethod(
 #' @importFrom git2r add
 setMethod(
   f = "remove_files_git", 
-  signature = signature(connection = "git_connection"), 
-  definition = function(connection, path, pattern = NULL){
+  signature = signature(connection = "gitConnection"), 
+  definition = function(connection, pattern = NULL, ...){
     to.remove <- list_files_git(
       connection = connection,
       pattern = pattern, 

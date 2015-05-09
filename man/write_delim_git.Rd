@@ -4,24 +4,24 @@
 \name{write_delim_git}
 \alias{write_delim_git}
 \alias{write_delim_git,ANY,ANY,ANY-method}
-\alias{write_delim_git,ANY,ANY,git_connection-method}
+\alias{write_delim_git,ANY,ANY,gitConnection-method}
 \alias{write_delim_git,git_connection-methods}
 \title{Write a dataframe as a tab delimited file to a git repository and stage it}
 \usage{
-write_delim_git(x, file, connection, path)
+write_delim_git(x, file, connection, ...)
 
-\S4method{write_delim_git}{ANY,ANY,ANY}(x, file, connection, path)
+\S4method{write_delim_git}{ANY,ANY,ANY}(x, file, connection, ...)
 
-\S4method{write_delim_git}{ANY,ANY,git_connection}(x, file, connection, path)
+\S4method{write_delim_git}{ANY,ANY,gitConnection}(x, file, connection, ...)
 }
 \arguments{
 \item{x}{the data.frame}
 
 \item{file}{the name of the file}
 
-\item{connection}{The path of a git repository or a \code{git_connection} object}
+\item{connection}{The path of a git repository or a \code{gitConnection} object}
 
-\item{path}{the subdirectory within the git repository. Ignored when \code{connection} is a \code{git connection} object.}
+\item{...}{parameters passed to \code{git_connection()} when \code{connection} is a path}
 }
 \value{
 the SHA1 of the file

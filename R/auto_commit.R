@@ -3,47 +3,37 @@
 #' The mesagge is based on the information returned by \code{\link[utils]{sessionInfo}}
 #' @param package The name of the package from which we autocommit
 #' @param connection The path of the repository. Default to \code{rawdata.path}
-#' @param username the username for the git repository
-#' @param password the user's password for the git repository
+#' @param ... parameters passed to \code{git_connection} when relevant
 #' @name auto_commit
 #' @rdname auto_commit
 #' @exportMethod auto_commit 
 #' @docType methods
 #' @importFrom methods setGeneric
-#' @include git_connection.R
+#' @include gitConnection_class.R
 setGeneric(
   name = "auto_commit", 
   def = function(
-    package, 
-    connection, 
-    username = character(0), 
-    password = character(0)
+    package, connection, ...
   ){
-    standard.generic(autocommit)
+    standard.generic("autocommit")
   }
 )
 
 #' @rdname auto_commit
-#' @aliases auto_commit,git_connection-methods
+#' @aliases auto_commit,gitConnection-methods
 #' @importFrom methods setMethod
 #' @importFrom git2r repository commit cred_user_pass head push
 setMethod(
   f = "auto_commit", 
-  signature = "ANY", 
+  signature = signature(connection = "ANY"), 
   definition = function(
     package, 
     connection, 
-    username = character(0), 
-    password = character(0)
+    ...
   ){
-    this.connection <- git_connection(
-      repo.path = connection,
-      username = username,
-      password = password
-    )
     auto_commit(
       package = package, 
-      connection = this.connection
+      connection = git_connection(repo.path = connection, ...)
     )
   }
 )
@@ -55,13 +45,8 @@ setMethod(
 #' @importFrom git2r commit cred_user_pass head push
 setMethod(
   f = "auto_commit",
-  signature = signature(connection = "git_connection"),
-  definition = function(
-    package, 
-    connection, 
-    username = character(0), 
-    password = character(0)
-  ){
+  signature = signature(connection = "gitConnection"),
+  definition = function(package, connection, ...){
     package <- check_single_character(package)
     
     #format commit message based on sessionInfo()
@@ -94,7 +79,7 @@ setMethod(
     if(class(committed) != "git_commit"){
       return(invisible(TRUE))
     }
-    if(length(connection@Credential@username) == 0){
+    if(is.null(connection@Credentials)){
       warning("changes committed but not pushed")
     } else {
       push(head(connection@Repository), credentials = connection@Credential)

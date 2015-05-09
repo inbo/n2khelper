@@ -8,8 +8,8 @@
 #' @include git_connection.R
 setGeneric(
   name = "read_delim_git", 
-  def = function(file, connection, path){
-    standard.generic(read_delim_git)
+  def = function(file, connection, ...){
+    standard.generic("read_delim_git")
   }
 )
 
@@ -18,14 +18,9 @@ setGeneric(
 #' @importFrom methods setMethod
 setMethod(
   f = "read_delim_git", 
-  signature = "ANY", 
-  definition = function(file, connection, path){
-    this.connection <- git_connection(
-      repo.path = connection, 
-      local.path = path, 
-      username = character(0),
-      password = character(0)
-    )
+  signature = signature(connection = "ANY"),
+  definition = function(file, connection, ...){
+    this.connection <- git_connection(repo.path = connection, ...)
     read_delim_git(file = file, connection = this.connection)
   }
 )
@@ -35,8 +30,8 @@ setMethod(
 #' @importFrom methods setMethod
 setMethod(
   f = "read_delim_git",
-  signature = signature(connection = "git_connection"),
-  definition = function(file, connection, path){
+  signature = signature(connection = "gitConnection"),
+  definition = function(file, connection, ...){
     file <- check_single_character(x = file, name = "file")
     
     filename <- paste(connection@Repository@path, connection@LocalPath, file, sep = "/")
@@ -44,6 +39,6 @@ setMethod(
     if(is.logical(filename)){
       return(filename)
     }
-    return(read.delim(filename))
+    return(read.delim(filename, stringsAsFactors = FALSE))
   }
 )

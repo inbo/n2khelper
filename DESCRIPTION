@@ -19,7 +19,7 @@ LazyData: true
 Suggests:
     testthat
 Collate:
-    'git_connection.R'
+    'gitConnection_class.R'
     'auto_commit.R'
     'check_character.R'
     'check_dataframe_covariate.R'
@@ -40,6 +40,7 @@ Collate:
     'get_nbn_key_multi.R'
     'get_nbn_name.R'
     'git_connect.R'
+    'git_connection.R'
     'git_recent.R'
     'git_sha.R'
     'is_git_repo.R'

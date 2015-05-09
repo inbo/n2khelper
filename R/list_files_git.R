@@ -9,8 +9,8 @@
 #' @include git_connection.R
 setGeneric(
   name = "list_files_git", 
-  def = function(connection, path, pattern = NULL, full.names = FALSE){
-    standard.generic(list_files_git)
+  def = function(connection, pattern = NULL, full.names = FALSE, ...){
+    standard.generic("list_files_git")
   }
 )
 
@@ -19,9 +19,9 @@ setGeneric(
 #' @importFrom methods setMethod
 setMethod(
   f = "list_files_git", 
-  signature = "ANY", 
-  definition = function(connection, path, pattern, full.names){
-    this.connection <- git_connection(repo.path = connection, local.path = path)
+  signature = signature(connection = "ANY"), 
+  definition = function(connection, pattern = NULL, full.names = FALSE, ...){
+    this.connection <- git_connection(repo.path = connection, ...)
     list_files_git(connection = this.connection, pattern = pattern, full.names = full.names)
   }
 )
@@ -31,8 +31,8 @@ setMethod(
 #' @importFrom methods setMethod
 setMethod(
   f = "list_files_git", 
-  signature = signature(connection = "git_connection"), 
-  definition = function(connection, path, pattern = NULL, full.names = FALSE){
+  signature = signature(connection = "gitConnection"), 
+  definition = function(connection, pattern = NULL, full.names = FALSE, ...){
     if(!is.null(pattern)){
       pattern <- check_single_character(pattern, name = "pattern")
     }

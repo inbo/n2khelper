@@ -3,8 +3,8 @@
 #' The existing file will be overwritten.
 #' @param x the data.frame
 #' @param file the name of the file
-#' @param connection The path of a git repository or a \code{git_connection} object
-#' @param path the subdirectory within the git repository. Ignored when \code{connection} is a \code{git connection} object.
+#' @param connection The path of a git repository or a \code{gitConnection} object
+#' @param ... parameters passed to \code{git_connection()} when \code{connection} is a path
 #' @return the SHA1 of the file
 #' @name write_delim_git
 #' @rdname write_delim_git
@@ -14,8 +14,8 @@
 #' @include git_connection.R
 setGeneric(
   name = "write_delim_git", 
-  def = function(x, file, connection, path){
-    standard.generic(write_delim_git)
+  def = function(x, file, connection, ...){
+    standard.generic("write_delim_git")
   }
 )
 
@@ -25,14 +25,9 @@ setGeneric(
 #' @importFrom methods setMethod
 setMethod(
   f = "write_delim_git", 
-  signature = "ANY", 
-  definition = function(x, file, connection, path){
-    this.connection <- git_connection(
-      repo.path = connection, 
-      local.path = path, 
-      username = character(0),
-      password = character(0)
-    )
+  signature = signature(connection = "ANY"), 
+  definition = function(x, file, connection, ...){
+    this.connection <- git_connection(repo.path = connection, ...)
     write_delim_git(x = x, file = file, connection = this.connection)
   } 
 )
@@ -43,8 +38,8 @@ setMethod(
 #' @importFrom methods setMethod
 setMethod(
   f = "write_delim_git",
-  signature = signature(connection = "git_connection"),
-  definition = function(x, file, connection, path){
+  signature = signature(connection = "gitConnection"), 
+  definition = function(x, file, connection, ...){
     if(class(x) != "data.frame"){
       stop("x is not a data.frame")
     }

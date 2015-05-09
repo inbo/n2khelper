@@ -58,7 +58,7 @@ git_connect <- function(
   if(nrow(connection) > 1){
     stop("Multiple lines with connection information found for '", data.source.name, "'.")
   }
-  if(connection$Type != "git, tab delimited"){
+  if(!grepl("^git, tab delimited", connection$Type)){
     stop("'", data.source.name, "' is not a git repository but '", connection$Type, "'.")
   }
   if(length(grep("path='.*'", connection$ConnectionString))){
@@ -82,8 +82,16 @@ git_connect <- function(
     password <- connection$Password
   }
   
-  output <- git_connection(
-    repo.path = repo.path, local.path = path, username = username, password = password
+  if(connection$Type == "git, tab delimited ssh"){
+    return(
+      git_connection(
+        repo.path = repo.path, local.path = path, key = username, password = password
+      )
+    )
+  }
+  return(
+    git_connection(
+      repo.path = repo.path, local.path = path, username = username, password = password
+    )
   )
-  return(output)
 }

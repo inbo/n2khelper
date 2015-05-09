@@ -4,22 +4,22 @@
 \name{git_recent}
 \alias{git_recent}
 \alias{git_recent,ANY,ANY-method}
-\alias{git_recent,ANY,git_connection-method}
+\alias{git_recent,ANY,gitConnection-method}
 \alias{git_recent,git_connection-methods}
 \title{Get the info from the latest commit of a file}
 \usage{
-git_recent(file, connection, path)
+git_recent(file, connection, ...)
 
-\S4method{git_recent}{ANY,ANY}(file, connection, path)
+\S4method{git_recent}{ANY,ANY}(file, connection, ...)
 
-\S4method{git_recent}{ANY,git_connection}(file, connection, path)
+\S4method{git_recent}{ANY,gitConnection}(file, connection, ...)
 }
 \arguments{
 \item{file}{the name of the file}
 
-\item{connection}{The path of a git repository or a \code{git_connection} object}
+\item{connection}{The path of a git repository or a \code{gitConnection} object}
 
-\item{path}{the subdirectory within the git repository. Ignored when \code{connection} is a \code{git connection} object.}
+\item{...}{parameters passed to \code{git_connection()} when \code{connection} is a path}
 }
 \description{
 Get the info from the latest commit of a file

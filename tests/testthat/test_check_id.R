@@ -4,7 +4,7 @@ describe("check_id()", {
   table <- "DatasourceType"
   variable <- "ID"
   variable.text <- "Description"
-  value.text <- "'git, tab delimited'"
+  value.text <- "'git, tab delimited ssh'"
   sql <- paste("SELECT", variable, "FROM", table, "WHERE", variable.text, "=", value.text)
   value <- RODBC::sqlQuery(channel = channel, query = sql)[, 1]
   junk <- "junk"
