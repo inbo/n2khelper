@@ -82,7 +82,12 @@ setMethod(
     if(is.null(connection@Credentials)){
       warning("changes committed but not pushed")
     } else {
-      push(head(connection@Repository), credentials = connection@Credential)
+      tryCatch(
+        push(head(connection@Repository), credentials = connection@Credentials),
+        error = function(e){
+          warning(e)
+        }
+      )
     }
     return(invisible(TRUE))
   }
