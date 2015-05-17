@@ -2,15 +2,18 @@
 #' 
 #' The details are stored in the results database.
 #' @inheritParams odbc_connect
+#' @param type Use 'ssh' or 'https' for authentication
 #' @importFrom RODBC sqlQuery odbcClose odbcDriverConnect
 #' @importFrom git2r repository cred_user_pass
 #' @export
 git_connect <- function(
   data.source.name, 
   channel, 
+  type = c("ssh", "https"),
   username = character(0), 
   password = character(0)
 ){
+  type <- match.arg(type)
   data.source.name <- check_single_character(data.source.name)
   check_dbtable_variable(
     table = "Datasource", 
@@ -48,7 +51,8 @@ git_connect <- function(
       ON
         Datasource.ConnectMethodID = ConnectMethod.ID
     WHERE
-      Datasource.Description = '", data.source.name, "'"
+      Datasource.Description = '", data.source.name, "' AND
+      DatasourceType.Description = 'git, tab delimited ", type, "'"
   )
   connection <- sqlQuery(channel = channel, query = sql)
   
@@ -57,9 +61,6 @@ git_connect <- function(
   }
   if(nrow(connection) > 1){
     stop("Multiple lines with connection information found for '", data.source.name, "'.")
-  }
-  if(!grepl("^git, tab delimited", connection$Type)){
-    stop("'", data.source.name, "' is not a git repository but '", connection$Type, "'.")
   }
   if(length(grep("path='.*'", connection$ConnectionString))){
     path <- gsub("'.*$", "", gsub("^.*path='", "", connection$ConnectionString))
@@ -82,7 +83,7 @@ git_connect <- function(
     password <- connection$Password
   }
   
-  if(connection$Type == "git, tab delimited ssh"){
+  if(type == "ssh"){
     return(
       git_connection(
         repo.path = repo.path, local.path = path, key = username, password = password
