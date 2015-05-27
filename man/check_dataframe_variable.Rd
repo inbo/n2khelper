@@ -9,7 +9,7 @@ check_dataframe_variable(df, variable, name = "df", error = TRUE)
 \arguments{
 \item{df}{the \code{data.frame} to check}
 
-\item{variable}{a vector with the names of the variable to check}
+\item{variable}{either a character vector with the names of the variable to check or a named list. The names of the list must match the names of the required variables in the data.frame. The elements of the list contain the accepted classes for each varaible.}
 
 \item{name}{the name of the \code{data.frame} to use in the error message}
 
@@ -25,6 +25,10 @@ Check if a data.frame contains variables
 check_dataframe_variable(
  df = data.frame(a = integer(0)),
  variable = "a"
+)
+check_dataframe_variable(
+ df = data.frame(a = integer(0)),
+ variable = list(a = c("integer", "numeric"))
 )
 }
 
