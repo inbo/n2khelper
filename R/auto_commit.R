@@ -82,6 +82,7 @@ setMethod(
     if(is.null(connection@Credentials)){
       warning("changes committed but not pushed")
     } else {
+      message("Pushing changes to remote repository")
       tryCatch(
         push(head(connection@Repository), credentials = connection@Credentials),
         error = function(e){
