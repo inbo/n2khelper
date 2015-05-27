@@ -24,11 +24,11 @@ describe("check_single_probability()", {
   it("checks if the input is a single probability", {
     expect_that(
       check_single_probability(x = numeric(0), name = name),
-      throws_error(paste(name, "must be a single probability"))
+      throws_error(paste(name, "must be a single numeric"))
     )
     expect_that(
       check_single_probability(x = numeric(2), name = name),
-      throws_error(paste(name, "must be a single probability"))
+      throws_error(paste(name, "must be a single numeric"))
     )
   })
   it("checks if the input is with the 0:1 range", {

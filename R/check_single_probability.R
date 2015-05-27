@@ -7,13 +7,7 @@
 #' @examples
 #' check_single_probability(0.5)
 check_single_probability <- function(x, name = "x"){
-  name <- check_single_character(x = name, name = "name")
-  if(class(x) != "numeric"){
-    stop(name, " must be numeric")
-  }
-  if(length(x) != 1){
-    stop(name, " must be a single probability")
-  }
+  x <- check_single_numeric(x = x, name = name)
   if(x < 0){
     stop(name, " must be positive")
   }
