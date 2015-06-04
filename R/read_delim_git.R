@@ -35,10 +35,7 @@ setMethod(
     file <- check_single_character(x = file, name = "file")
     
     filename <- paste(connection@Repository@path, connection@LocalPath, file, sep = "/")
-    filename <- check_path(path = filename, type = "file", error = FALSE)
-    if(is.logical(filename)){
-      return(filename)
-    }
+    filename <- check_path(path = filename, type = "file", error = TRUE)
     return(read.delim(filename, stringsAsFactors = FALSE))
   }
 )

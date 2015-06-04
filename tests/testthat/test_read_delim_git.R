@@ -15,10 +15,11 @@ describe("read_delim_git()", {
 
   dir.create(paste(connection, local.path, sep = "/"), recursive = TRUE)
   repo <- git2r::init(connection)
+  
   it("returns FALSE when the file doesn't exists", {
     expect_that(
       read_delim_git(file = file, local.path = local.path, connection = connection),
-      is_false()
+      throws_error(paste0("'", repo@path, "/", local.path, "/", file, "' is not a file"))
     )
   })
   write_delim_git(x = df, file = file, local.path = local.path, connection = connection)
