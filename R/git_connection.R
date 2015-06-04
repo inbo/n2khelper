@@ -9,6 +9,7 @@
 #' @export
 #' @importFrom methods new
 #' @importFrom git2r repository cred_ssh_key cred_user_pass
+#' @include gitConnection_class.R
 git_connection <- function(repo.path, local.path = ".", key, username, password){
   repo.path <- check_git_repo(path = repo.path)
   if(missing(key) & missing(username)){
