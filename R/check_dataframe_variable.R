@@ -49,14 +49,15 @@ check_dataframe_variable <- function(df, variable, name = "df", error = TRUE){
     return(TRUE)
   }
   
-  current.class <- sapply(df[, variable], class)
+  all.NA <- sapply(df[, variable], function(x){all(is.na(x))})
+  current.class <- sapply(df[, variable[!all.NA]], class)
   correct.class <- sapply(seq_along(current.class), function(i){
-    any(current.class[[i]] %in% required.class[[i]])
+    any(current.class[[i]] %in% required.class[!all.NA][[i]])
   })
   if(!all(correct.class)){
     wrong.class <- current.class[!correct.class]
     wrong.class <- sapply(wrong.class, paste, collapse = "', '")
-    expected.class <- required.class[names(wrong.class)]
+    expected.class <- required.class[!all.NA][names(wrong.class)]
     expected.class <- sapply(expected.class, paste, collapse = "', '")
     stop(
       "Wrong class for following variable(s)\n", 
