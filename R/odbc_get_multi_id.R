@@ -4,14 +4,28 @@
 #' @param id.field the id fields
 #' @param merge.field the merge fields
 #' @param create When TRUE, the function creates unmatching records AND updates attributes. Defaults to FALSE.
+#' @param select Return the matching ID's when TRUE. Returns invisible NULL when FALSE. select = FALSE is only relevant in combination with create = TRUE.
 #' @inheritParams check_dbtable_variable
 #' @inheritParams odbc_insert
 #' @export
 #' @return a data.frame with data and the id's
 #' @importFrom digest digest
 #' @importFrom RODBC sqlQuery odbcClose
-odbc_get_multi_id <- function(data, id.field, merge.field, table, channel, create = FALSE, rows.at.time = 1000){
+odbc_get_multi_id <- function(
+  data, 
+  id.field, 
+  merge.field, 
+  table, 
+  channel, 
+  create = FALSE,
+  select = TRUE, 
+  rows.at.time = 1000
+){
   create <- check_single_logical(create, name = "create")
+  select <- check_single_logical(select, name = "select")
+  if (! create && ! select) {
+    stop("The combination of select = FALSE and create = FALSE is meaningless")
+  }
   check_dataframe_variable(df = data, variable = merge.field, name = "data")
   check_dbtable_variable(
     table = table, 
@@ -35,9 +49,9 @@ odbc_get_multi_id <- function(data, id.field, merge.field, table, channel, creat
     collapse = " AND\n        "
   )
   
-  if(create){
+  if (create) {
     attribute.field <- colnames(data)[!colnames(data) %in% merge.field]
-    if(length(attribute.field) == 0){
+    if (length(attribute.field) == 0) {
       update.command <- ""
     } else {
       update.clause <- paste0(
@@ -68,15 +82,19 @@ odbc_get_multi_id <- function(data, id.field, merge.field, table, channel, creat
       ;
     ")
     output <- sqlQuery(channel = channel, query = sql)
-    if(length(output) > 0){
+    if (length(output) > 0) {
       true.error <- grep(
         paste0("^[RODBC] ERROR: Could not SQLExecDirect '", sql), 
         output
       )
-      if(length(true.error) > 0){
+      if (length(true.error) > 0) {
         warning(output)
       }
     }
+  }
+  
+  if (! select) {
+    return(invisible(NULL))
   }
   
   # select matching id's
