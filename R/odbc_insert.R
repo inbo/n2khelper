@@ -8,14 +8,17 @@
 #' @export
 #' @importFrom RODBC sqlClear sqlQuery
 odbc_insert <- function(data, table, channel, schema = "dbo", append = TRUE, rows.at.time = 1000){
-  if(!is.data.frame(data)){
+  if (!is.data.frame(data)) {
     stop("data must be a data.frame")
   }
-  if(nrow(data) == 0){
+  if (nrow(data) == 0) {
     return(invisible(-2))
   }
-  rows.at.time <- check_single_strictly_positive_integer(rows.at.time, name = "rows.at.time")
-  if(rows.at.time > 1000){
+  rows.at.time <- check_single_strictly_positive_integer(
+    rows.at.time, 
+    name = "rows.at.time"
+  )
+  if (rows.at.time > 1000) {
     rows.at.time <- 1000
     warning("'rows.at.time' is limited to 1000")
   }
@@ -26,7 +29,7 @@ odbc_insert <- function(data, table, channel, schema = "dbo", append = TRUE, row
     schema = schema
   )
   
-  if(!append){
+  if (!append) {
     sqlClear(channel = channel, sqtable = paste0(schema, ".", table))
   }
   
@@ -35,7 +38,7 @@ odbc_insert <- function(data, table, channel, schema = "dbo", append = TRUE, row
   type[type %in% c("integer", "numeric")] <- "done"
   
   relevant <- which(type == "factor")
-  if(length(relevant) > 0){
+  if (length(relevant) > 0) {
     data[, relevant] <- sapply(relevant, function(i){
       levels(data[, i])[data[, i]]
     })
@@ -43,7 +46,7 @@ odbc_insert <- function(data, table, channel, schema = "dbo", append = TRUE, row
   }
   
   relevant <- which(type == "character")
-  if(length(relevant) > 0){
+  if (length(relevant) > 0) {
     data[, relevant] <- sapply(relevant, function(i){
       gsub("\\'", "\\'\\'", data[, i])
     })
@@ -60,7 +63,7 @@ odbc_insert <- function(data, table, channel, schema = "dbo", append = TRUE, row
   
   # Format POSIX fields to datetime
   relevant <- which(sapply(type,  identical, c("POSIXct", "POSIXt")))
-  if(length(relevant) > 0){
+  if (length(relevant) > 0) {
     data[, relevant] <- apply(
       data[, relevant, drop = FALSE], 
       2, 
@@ -72,13 +75,13 @@ odbc_insert <- function(data, table, channel, schema = "dbo", append = TRUE, row
   
   # Convert TRUE / FALSE to 1 / 0
   relevant <- which(sapply(type, identical, "logical"))
-  if(length(relevant) > 0){
+  if (length(relevant) > 0) {
     data[, relevant] <- 1L * data[, relevant]
     type[relevant] <- "done"
   }
   
   # test if all data types are handled
-  if(any(type != "done")){
+  if (any(type != "done")) {
     stop(
       "Unhandled data types: ", 
       unique(type[type != "done"])
@@ -90,7 +93,7 @@ odbc_insert <- function(data, table, channel, schema = "dbo", append = TRUE, row
   
   # prepare values
   values <- apply(data, 1, paste, collapse = ", ")
-  if(rows.at.time > 1){
+  if (rows.at.time > 1) {
     set <- seq_along(values) %/% rows.at.time
     tmp <- aggregate(values, list(set), FUN = paste, collapse = "),\n(")
     values <- tmp$x
@@ -111,8 +114,8 @@ odbc_insert <- function(data, table, channel, schema = "dbo", append = TRUE, row
     channel = channel, 
     errors = FALSE
   )
-  if(any(sql.status == -1)){
-    if(rows.at.time == 1){
+  if (any(sql.status == -1)) {
+    if (rows.at.time == 1) {
       warning(
         "Inserting data failed on rows: ", 
         paste(unname(which(sql.status == -1)), collapse = ", ")
