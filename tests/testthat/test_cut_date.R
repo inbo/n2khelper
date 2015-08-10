@@ -1,14 +1,21 @@
 context("convert a date to a period")
 describe("cut_date()", {
-  x <- as.POSIXct(c("2015-01-01 0:0:0", "2014-01-02 0:0:0", "2013-01-03 0:0:0", "2012-01-31 23:59:59", "2011-02-01 0:0:0", "2012-12-31 23:59:59.999999"))
+  x <- as.POSIXct(
+    c(
+      "2015-01-01 0:0:0", "2014-01-02 0:0:0", "2013-01-03 0:0:0",
+      "2012-01-31 23:59:59", "2011-02-01 0:0:0", "2012-12-31 23:59:59.999999"
+    )
+    )
   dm <- c("1-1", "15-1", "1-2", "31-12")
   dm.format <- c("1/1", "01/01", "40-1", "1 1", "1-1-2015")
   include.last <- TRUE
-  
+
   it("yields the correct periods", {
     expect_that(
       cut_date(x = x, dm = c("1-1", "31-12"), include.last = FALSE),
-      is_identical_to(factor(c(rep(1, length(x) - 1), NA), labels = "[1-1, 31-12)"))
+      is_identical_to(
+        factor(c(rep(1, length(x) - 1), NA), labels = "[1-1, 31-12)")
+      )
     )
     expect_that(
       cut_date(x = x, dm = c("1-1", "31-12"), include.last = TRUE),
@@ -18,7 +25,7 @@ describe("cut_date()", {
       cut_date(x = x, dm = c("1-1", "1-2", "31-12"), include.last = TRUE),
       is_identical_to(
         factor(
-          c(1, 1, 1, 1, 2, 2), 
+          c(1, 1, 1, 1, 2, 2),
           labels = c("[1-1, 1-2)", "[1-2, 31-12]")
         )
       )
@@ -34,7 +41,7 @@ describe("cut_date()", {
       is_identical_to(factor(c(rep(1, length(x))), labels = "[1-1, 31-12]"))
     )
   })
-  
+
   it("checks if the input is POSIXt or Date", {
     expect_that(
       cut_date(x = 1, dm = dm),
@@ -46,7 +53,7 @@ describe("cut_date()", {
       cut_date(x = x, dm = dm.format),
       throws_error(
         paste(
-          "'dm' requires a day-month format. Mismatching values:", 
+          "'dm' requires a day-month format. Mismatching values:",
           paste0("'", dm.format, "'", collapse = ", ")
         )
       )
@@ -58,5 +65,5 @@ describe("cut_date()", {
       is_identical_to(factor(c(rep(1, length(x))), labels = "[1-1, 31-12]"))
     )
   })
-  
+
 })

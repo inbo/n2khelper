@@ -2,7 +2,7 @@ context("check a single probability")
 describe("check_single_probability()", {
   x <- 0.5
   name <- "name"
-  
+
   it("checks if the input is probability", {
     expect_that(
       check_single_probability(x = "a", name = name),

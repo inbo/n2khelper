@@ -8,14 +8,14 @@
 #' @importFrom RODBC sqlQuery
 odbc_get_id <- function(table, variable, value, schema = "dbo", channel){
   value <- check_character(value, name = "value")
-  if(length(value) == 0){
+  if (length(value) == 0) {
     stop("at least one value is needed")
   }
   check_dbtable_variable(table = table, variable = variable, channel = channel)
-  if(length(value) != length(variable)){
+  if (length(value) != length(variable)) {
     stop("the number of values doesn't match the number of variables")
   }
-  
+
   where <- paste0(variable, " = '", value, "'", collapse = " AND \n")
   sql <- paste0("
     SELECT

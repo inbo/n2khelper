@@ -1,7 +1,7 @@
 context("calculate sha1 fingerprints")
 describe("get_sha1", {
   x.numeric <- 1.2345678901234567890123456789
-  x.list <- list(letters, x.numeric) 
+  x.list <- list(letters, x.numeric)
   x.dataframe <- data.frame(
     X = letters,
     Y = x.numeric
@@ -33,7 +33,7 @@ describe("get_sha1", {
       get_sha1(x.list),
       is_identical_to(
         digest::digest(
-          sapply(x.list, get_sha1), 
+          sapply(x.list, get_sha1),
           algo = "sha1"
         )
       )

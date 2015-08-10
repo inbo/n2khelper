@@ -7,7 +7,7 @@
 get_nbn_key <- function(name, language = "la"){
   name <- check_character(name, name = "name")
   language <- check_single_character(language, name = "language")
-  
+
   channel <- odbcDriverConnect(connection = nbn.dsn)
   sql <- paste0("
     SELECT
@@ -17,7 +17,7 @@ get_nbn_key <- function(name, language = "la"){
     WHERE
       LANGUAGE = '", language, "'
   ")
-  if(sqlQuery(channel = channel, query = sql)$N == 0){
+  if (sqlQuery(channel = channel, query = sql)$N == 0) {
     sql <- "
       SELECT
         LANGUAGE AS Language
@@ -25,22 +25,31 @@ get_nbn_key <- function(name, language = "la"){
         TAXON
       GROUP BY
         LANGUAGE
-    "    
-    available <- sqlQuery(channel = channel, query = sql, stringsAsFactors = FALSE)$Language
+    "
+    available <- sqlQuery(
+      channel = channel,
+      query = sql,
+      stringsAsFactors = FALSE
+    )$Language
     odbcClose(channel)
     stop(
-      "No records found for language '", language, "'. Available languages are ", 
+      "No records found for language '", language,
+      "'. Available languages are ",
       paste0("'", available, "'", collapse = ", ")
     )
   }
-  
+
   sql <- paste0("
     SELECT
       t.ITEM_NAME AS InputName,
       ns.RECOMMENDED_TAXON_VERSION_KEY as NBNKey,
       tr.ITEM_NAME AS GenericName,
-      CASE WHEN tli.TAXON_LIST_VERSION_KEY like 'INB%' THEN 1 ELSE 0 END AS PreferenceInput,
-      CASE WHEN tlir.TAXON_LIST_VERSION_KEY like 'INB%' THEN 1 ELSE 0 END AS PreferenceOutput,
+      CASE
+        WHEN tli.TAXON_LIST_VERSION_KEY like 'INB%'
+        THEN 1 ELSE 0 END AS PreferenceInput,
+      CASE
+        WHEN tlir.TAXON_LIST_VERSION_KEY like 'INB%'
+        THEN 1 ELSE 0 END AS PreferenceOutput,
       tv.COMMENT AS Comment
     FROM
         (
@@ -82,62 +91,70 @@ get_nbn_key <- function(name, language = "la"){
       t.LANGUAGE = '", language, "' AND
       t.ITEM_NAME IN (", paste0("'", name, "'", collapse = ", "), ")
   ")
-  output <- unique(sqlQuery(channel = channel, query = sql, stringsAsFactors = FALSE))
+  output <- unique(
+    sqlQuery(channel = channel, query = sql, stringsAsFactors = FALSE)
+  )
   odbcClose(channel)
-  if(nrow(output) <= 1){
+  if (nrow(output) <= 1) {
     output$PreferenceInput <- NULL
     output$PreferenceOutput <- NULL
     return(output)
   }
-  
-  if(all(table(output$InputName, output$Comment, useNA = "ifany") <= 1)){
+
+  if (all(table(output$InputName, output$Comment, useNA = "ifany") <= 1)) {
     output$PreferenceInput <- NULL
     output$PreferenceOutput <- NULL
     return(output)
   }
   preferred <- output[
-    output$PreferenceInput == 1, 
+    output$PreferenceInput == 1,
     c("InputName", "NBNKey", "GenericName", "Comment", "PreferenceOutput")
   ]
   non.preferred <- output[
-    output$Preference == 0, 
+    output$Preference == 0,
     c("InputName", "NBNKey", "GenericName", "Comment", "PreferenceOutput")
   ]
-  non.preferred <- non.preferred[!non.preferred$InputName %in% preferred$InputName, ]
+  non.preferred <- non.preferred[
+    !non.preferred$InputName %in% preferred$InputName,
+  ]
   output <- rbind(unique(preferred), unique(non.preferred))
 
-  
-  if(all(table(output$InputName, output$Comment, useNA = "ifany") <= 1)){
+
+  if (all(table(output$InputName, output$Comment, useNA = "ifany") <= 1)) {
     output$PreferenceOutput <- NULL
     return(output)
   }
   preferred <- output[
-    output$PreferenceOutput == 1, 
+    output$PreferenceOutput == 1,
     c("InputName", "NBNKey", "GenericName", "Comment")
   ]
   non.preferred <- output[
-    output$PreferenceOutput == 0, 
+    output$PreferenceOutput == 0,
     c("InputName", "NBNKey", "GenericName", "Comment")
   ]
-  non.preferred <- non.preferred[!non.preferred$InputName %in% preferred$InputName, ]
+  non.preferred <- non.preferred[
+    !non.preferred$InputName %in% preferred$InputName,
+  ]
   output <- rbind(unique(preferred), unique(non.preferred))
-  
-  if(all(table(output$InputName, output$Comment, useNA = "ifany") <= 1)){
+
+  if (all(table(output$InputName, output$Comment, useNA = "ifany") <= 1)) {
     return(output)
   }
   output$INBO <- FALSE
   output$INBO[grep("^INB", output$NBNKey)] <- TRUE
   preferred <- output[
-    output$INBO, 
+    output$INBO,
     c("InputName", "NBNKey", "GenericName", "Comment")
   ]
   non.preferred <- output[
-    !output$INBO, 
+    !output$INBO,
     c("InputName", "NBNKey", "GenericName", "Comment")
   ]
-  non.preferred <- non.preferred[!non.preferred$InputName %in% preferred$InputName, ]
+  non.preferred <- non.preferred[
+    !non.preferred$InputName %in% preferred$InputName,
+  ]
   output <- rbind(preferred, non.preferred)
-  if(any(table(output$InputName) > 1)){
+  if (any(table(output$InputName) > 1)) {
     warning("Duplicate matching keys")
   }
   return(output)

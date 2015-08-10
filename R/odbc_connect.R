@@ -1,5 +1,5 @@
 #' connect to a data source through ODBC
-#' 
+#'
 #' The connection string is stored in the results database.
 #' @param data.source.name The name of the data source
 #' @param username the username in case the ConnectMethod is "Credentials supplied by the user running the report". Ignored in all other cases.
@@ -10,21 +10,23 @@
 odbc_connect <- function(data.source.name, username, password, channel){
   data.source.name <- check_single_character(data.source.name)
   check_dbtable_variable(
-    table = "Datasource", 
-    variable = c("ConnectionString", "Username", "Password", "TypeID", "ConnectMethodID"), 
+    table = "Datasource",
+    variable = c(
+      "ConnectionString", "Username", "Password", "TypeID", "ConnectMethodID"
+    ),
     channel = channel
   )
   check_dbtable_variable(
-    table = "DatasourceType", 
-    variable = c("ID", "Description"), 
+    table = "DatasourceType",
+    variable = c("ID", "Description"),
     channel = channel
   )
   check_dbtable_variable(
-    table = "ConnectMethod", 
-    variable = c("ID", "Description"), 
+    table = "ConnectMethod",
+    variable = c("ID", "Description"),
     channel = channel
   )
-  
+
   sql <- paste0("
     SELECT
       ConnectionString,
@@ -48,31 +50,45 @@ odbc_connect <- function(data.source.name, username, password, channel){
       Datasource.Description = '", data.source.name, "'"
   )
   connection <- sqlQuery(channel = channel, query = sql)
-  
-  if(nrow(connection) == 0){
+
+  if (nrow(connection) == 0) {
     stop("No connection information found for '", data.source.name, "'.")
   }
-  if(nrow(connection) > 1){
-    stop("Multiple lines with connection information found for '", data.source.name, "'.")
+  if (nrow(connection) > 1) {
+    stop(
+      "Multiple lines with connection information found for '",
+      data.source.name, "'."
+    )
   }
-  if(connection$Type %in% "git, tab delimited"){
-    stop("ODBC connection not available for '", data.source.name, "'. Use a connection for '", connection$Type, "'")
+  if (connection$Type %in% "git, tab delimited") {
+    stop(
+      "ODBC connection not available for '", data.source.name,
+      "'. Use a connection for '", connection$Type, "'"
+    )
   }
-  
-  if(connection$Type == "Microsoft SQL Server"){
+
+  if (connection$Type == "Microsoft SQL Server") {
     connection.string <- connection$ConnectionString
-    if(connection$ConnectMethod == "Windows integrated security"){
+    if (connection$ConnectMethod == "Windows integrated security") {
       connection.string <- paste0(connection.string, "Trusted_Connection=True;")
     }
-    if(connection$ConnectMethod == "Credentials stored securely in the report server"){
-      if(!is.na(connection$Username)){
-        connection.string <- paste0(connection.string, "uid=", connection$Username, ";")
+    if (connection$ConnectMethod ==
+        "Credentials stored securely in the report server"
+    ) {
+      if (!is.na(connection$Username)) {
+        connection.string <- paste0(
+          connection.string, "uid=", connection$Username, ";"
+        )
       }
-      if(!is.na(connection$Password)){
-        connection.string <- paste0(connection.string, "pwd=", connection$Password, ";")
+      if (!is.na(connection$Password)) {
+        connection.string <- paste0(
+          connection.string, "pwd=", connection$Password, ";"
+        )
       }
     }
-    if(connection$ConnectMethod == "Credentials supplied by the user running the report"){
+    if (connection$ConnectMethod ==
+        "Credentials supplied by the user running the report"
+    ) {
       username <- check_single_character(username, name = "username")
       password <- check_single_character(password, name = "password")
       connection.string <- paste0(connection.string, "uid=", username, ";")

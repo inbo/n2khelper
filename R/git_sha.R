@@ -2,12 +2,12 @@
 #' @inheritParams write_delim_git
 #' @name git_sha
 #' @rdname git_sha
-#' @exportMethod git_sha 
+#' @exportMethod git_sha
 #' @docType methods
 #' @importFrom methods setGeneric
 #' @include git_connection.R
 setGeneric(
-  name = "git_sha", 
+  name = "git_sha",
   def = function(file, connection, ...){
     standard.generic("git_sha")
   }
@@ -17,12 +17,12 @@ setGeneric(
 #' @aliases git_sha,git_connection-methods
 #' @importFrom methods setMethod
 setMethod(
-  f = "git_sha", 
-  signature = signature(connection = "ANY"), 
+  f = "git_sha",
+  signature = signature(connection = "ANY"),
   definition = function(file, connection, ...){
     this.connection <- git_connection(repo.path = connection, ...)
     git_sha(file = file, connection = this.connection)
-  } 
+  }
 )
 
 #' @rdname git_sha
@@ -33,7 +33,7 @@ setMethod(
   signature = signature(connection = "gitConnection"),
   definition = function(file, connection, ...){
     file <- check_character(x = file, name = "file")
-    
+
     old.wd <- getwd()
     setwd(connection@Repository@path)
     blobs <- system(
@@ -54,7 +54,7 @@ setMethod(
     blobs <- blobs[blobs$File %in% file, ]
     blobs$Path <- dirname(blobs$Path)
     blobs$SHA <- gsub("^.*blob ", "", blobs$SHA)
-    
+
     return(blobs)
   }
 )

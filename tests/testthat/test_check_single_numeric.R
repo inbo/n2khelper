@@ -2,7 +2,7 @@ context("check a single numeric")
 describe("check_single_numeric()", {
   x <- 0.5
   name <- "name"
-  
+
   it("checks if the input is numeric", {
     expect_that(
       check_single_numeric(x = "a", name = name),

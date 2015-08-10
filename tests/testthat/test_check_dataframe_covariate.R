@@ -19,10 +19,15 @@ describe("check_dataframe_covariate()", {
     "0 + A + (0 + B|C)",
     "A + (A * B|C)"
   )
-  df <- data.frame(Count = integer(0), A = character(0), B = character(0), C = character(0))
-  
+  df <- data.frame(
+    Count = integer(0),
+    A = character(0),
+    B = character(0),
+    C = character(0)
+  )
+
   it("returns TRUE if all variables exist in dataframe", {
-    for(covariate in c(covariates.one, covariates.two, covariates.three)){
+    for (covariate in c(covariates.one, covariates.two, covariates.three)) {
       expect_that(
         check_dataframe_covariate(
           df = df, covariate = covariate, response = response, error = TRUE
@@ -31,55 +36,63 @@ describe("check_dataframe_covariate()", {
       )
     }
   })
-  
-  it("returns FALSE with warning if at least one variable doesn't exist in dataframe", {
-    for(covariate in covariates.one){
+
+  it(
+    "returns FALSE with warning if at least one variable doesn't exist in
+    dataframe", {
+    for (covariate in covariates.one) {
       expect_that(
         check_dataframe_covariate(
-          df = df[, c("Count", "B", "C")], 
-          covariate = covariate, 
-          response = response, 
+          df = df[, c("Count", "B", "C")],
+          covariate = covariate,
+          response = response,
           error = FALSE
         ),
         is_false()
       )
       expect_that(
         check_dataframe_covariate(
-          df = df[, c("Count", "B", "C")], 
-          covariate = covariate, 
-          response = response, 
+          df = df[, c("Count", "B", "C")],
+          covariate = covariate,
+          response = response,
           error = FALSE
         ),
         gives_warning("Variables missing in df: A")
       )
       expect_that(
         check_dataframe_covariate(
-          df = df, covariate = covariate, response = missing.response, error = FALSE
-        ),
-        is_false()
-      )
-      expect_that(
-        check_dataframe_covariate(
-          df = df, covariate = covariate, response = missing.response, error = FALSE
-        ),
-        gives_warning(paste("Variables missing in df:", missing.response))
-      )
-    }
-    for(covariate in covariates.two){
-      expect_that(
-        check_dataframe_covariate(
-          df = df[, c("Count", "C")], 
-          covariate = covariate, 
-          response = response, 
+          df = df,
+          covariate = covariate,
+          response = missing.response,
           error = FALSE
         ),
         is_false()
       )
       expect_that(
         check_dataframe_covariate(
-          df = df[, c("Count", "C")], 
-          covariate = covariate, 
-          response = response, 
+          df = df,
+          covariate = covariate,
+          response = missing.response,
+          error = FALSE
+        ),
+        gives_warning(paste("Variables missing in df:", missing.response))
+      )
+    }
+    for (covariate in covariates.two) {
+      expect_that(
+        check_dataframe_covariate(
+          df = df[, c("Count", "C")],
+          covariate = covariate,
+          response = response,
+          error = FALSE
+        ),
+        is_false()
+      )
+      expect_that(
+        check_dataframe_covariate(
+          df = df[, c("Count", "C")],
+          covariate = covariate,
+          response = response,
           error = FALSE
         ),
         gives_warning("Variables missing in df: A, B")
@@ -88,29 +101,32 @@ describe("check_dataframe_covariate()", {
   })
 
   it("stops if at least one variable doesn't exist in dataframe", {
-    for(covariate in covariates.one){
+    for (covariate in covariates.one) {
       expect_that(
         check_dataframe_covariate(
-          df = df[, c("Count", "B", "C")], 
-          covariate = covariate, 
-          response = response, 
+          df = df[, c("Count", "B", "C")],
+          covariate = covariate,
+          response = response,
           error = TRUE
         ),
         throws_error("Variables missing in df: A")
       )
       expect_that(
         check_dataframe_covariate(
-          df = df, covariate = covariate, response = missing.response, error = TRUE
+          df = df,
+          covariate = covariate,
+          response = missing.response,
+          error = TRUE
         ),
         throws_error(paste("Variables missing in df:", missing.response))
       )
     }
-    for(covariate in covariates.two){
+    for (covariate in covariates.two) {
       expect_that(
         check_dataframe_covariate(
-          df = df[, c("Count", "C")], 
-          covariate = covariate, 
-          response = response, 
+          df = df[, c("Count", "C")],
+          covariate = covariate,
+          response = response,
           error = TRUE
         ),
         throws_error("Variables missing in df: A, B")
