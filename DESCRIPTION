@@ -1,14 +1,58 @@
 Package: n2khelper
-Title: Auxiliary functions for the analysis and reporting of the Natura 2000 monitoring
+Title: Auxiliary Functions for the Analysis and Reporting of the Natura 2000
+    Monitoring
 Version: 0.0
 Authors@R: c(person("Thierry", "Onkelinx", email = "thierry.onkelinx@inbo.be", role = c("aut", "cre")))
-Description: This package contains several simple functions to facilitate the analysis and reporting.
-Depends: 
-  R (>= 3.1.2)
-Imports: 
-  RODBC
+Description: Functions for importing the raw data, creating analysis dataset
+    and running the analysis for the Common Breeding Bird Survey in Flanders.
+Depends:
+    R (>= 3.2.0)
+Imports:
+    git2r,
+    digest,
+    plyr,
+    lubridate,
+    methods,
+    RODBC
 License: GPL-3
 LazyData: true
-Suggests: 
-  watervogelanalysis,
-  testthat
+Suggests:
+    testthat
+Collate:
+    'gitConnection_class.R'
+    'auto_commit.R'
+    'check_character.R'
+    'check_dataframe_covariate.R'
+    'check_dataframe_variable.R'
+    'check_dbtable.R'
+    'check_dbtable_variable.R'
+    'check_git_repo.R'
+    'check_id.R'
+    'check_path.R'
+    'check_single_character.R'
+    'check_single_logical.R'
+    'check_single_numeric.R'
+    'check_single_posix.R'
+    'check_single_probability.R'
+    'check_single_strictly_positive_integer.R'
+    'connect_result.R'
+    'cut_date.R'
+    'get_nbn_key.R'
+    'get_nbn_key_multi.R'
+    'get_nbn_name.R'
+    'get_sha1.R'
+    'git_connect.R'
+    'git_connection.R'
+    'git_recent.R'
+    'git_sha.R'
+    'is_git_repo.R'
+    'list_files_git.R'
+    'match_nbn_key.R'
+    'odbc_connect.R'
+    'odbc_get_id.R'
+    'odbc_get_multi_id.R'
+    'odbc_insert.R'
+    'read_delim_git.R'
+    'read_object_environment.R'
+    'remove_files_git.R'
+    'write_delim_git.R'
