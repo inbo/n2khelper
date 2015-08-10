@@ -1,6 +1,6 @@
 context("check if a database table contains a variable")
+skip_on_cran()
 describe("check_dbtable_variable()", {
-  skip_on_cran()
   channel <- connect_result()
   junk <- "junk"
   table <- "Location"
