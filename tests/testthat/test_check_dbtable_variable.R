@@ -1,5 +1,4 @@
 context("check if a database table contains a variable")
-skip_on_cran()
 describe("check_dbtable_variable()", {
   channel <- connect_result()
   junk <- "junk"
@@ -56,6 +55,7 @@ describe("check_dbtable_variable()", {
   })
   
   it("gives correct output", {
+    skip_on_cran()
     expect_that(
       check_dbtable_variable(table = table, variable = variable, channel = channel, error = error),
       is_true()
