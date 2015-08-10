@@ -1,0 +1,10 @@
+box: rocker/hadleyverse
+build:
+  steps:
+    - script:
+        name: install RODBC
+        code: |
+          sudo apt-get update -y
+          sudo apt-get install -y r-cran-RODBC
+    - jimhester/r-dependencies
+    - jimhester/r-check
