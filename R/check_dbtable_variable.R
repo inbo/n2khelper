@@ -6,11 +6,11 @@
 #' @return TRUE when all variables are present in the table. 
 check_dbtable_variable <- function(table, variable, schema = "dbo", channel, error = TRUE){
   table <- check_single_character(table, name = "table")
-  check_dbtable(table = table, schema = schema, channel = channel, error = TRUE)
   variable <- check_character(x = variable, name = "variable", na.action = na.fail)
   if(length(variable) == 0){
     stop("'variable' must contain at least one value")
   }
+  check_dbtable(table = table, schema = schema, channel = channel, error = TRUE)
   
   available <- sqlColumns(channel = channel, sqtable = table, schema = schema)$COLUMN_NAME
   check <- variable %in% available
