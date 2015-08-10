@@ -4,7 +4,6 @@ build:
     - script:
         name: install RODBC
         code: |
-          apt-get update -y
           apt-get install -y r-cran-RODBC
     - jimhester/r-dependencies
     - jimhester/r-check
