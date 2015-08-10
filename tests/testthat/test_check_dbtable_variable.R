@@ -73,5 +73,6 @@ describe("check_dbtable_variable()", {
       throws_error(paste0("Variable\\(s\\) missing from '", table, "': ", paste(junk, collapse = ", ")))
     )
   })
+  skip_on_cran()
   RODBC::odbcClose(channel)
 })
