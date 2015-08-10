@@ -55,21 +55,32 @@ describe("check_dbtable_variable()", {
   })
   
   it("gives correct output", {
-    testthat::skip_on_cran()
     expect_that(
-      check_dbtable_variable(table = table, variable = variable, channel = channel, error = error),
+      {
+        testthat::skip_on_cran()
+        check_dbtable_variable(table = table, variable = variable, channel = channel, error = error)
+      },
       is_true()
     )
     expect_that(
-      check_dbtable_variable(table = table, variable = junk, channel = channel, error = FALSE),
+      {
+        testthat::skip_on_cran()
+        check_dbtable_variable(table = table, variable = junk, channel = channel, error = FALSE)
+      },
       is_false()
     )
     expect_that(
-      check_dbtable_variable(table = table, variable = junk, channel = channel, error = FALSE),
+      {
+        testthat::skip_on_cran()
+        check_dbtable_variable(table = table, variable = junk, channel = channel, error = FALSE)
+      },
       is_false()
     )
     expect_that(
-      check_dbtable_variable(table = table, variable = junk, channel = channel, error = TRUE),
+      {
+        testthat::skip_on_cran()
+        check_dbtable_variable(table = table, variable = junk, channel = channel, error = TRUE)
+      },
       throws_error(paste0("Variable\\(s\\) missing from '", table, "': ", paste(junk, collapse = ", ")))
     )
   })
