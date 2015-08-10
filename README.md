@@ -1,4 +1,4 @@
-Wercker branch [![wercker status](https://app.wercker.com/status/9f6c69b5cc40a32aeffeb5e8ee42b552/s/wercker "wercker status")](https://app.wercker.com/project/bykey/9f6c69b5cc40a32aeffeb5e8ee42b552)
+Wercker branch [![wercker status](https://app.wercker.com/status/9f6c69b5cc40a32aeffeb5e8ee42b552/s/wercker "wercker status")](https://app.wercker.com/project/bykey/9f6c69b5cc40a32aeffeb5e8ee42b552) [![codecov.io](http://codecov.io/bitbucket/thierry_onkelinx/n2khelper/coverage.svg?branch=wercker)](http://codecov.io/bitbucket/thierry_onkelinx/n2khelper?branch=wercker)
 
 # The n2khelper package
 
