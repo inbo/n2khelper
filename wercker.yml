@@ -8,3 +8,4 @@ build:
           apt-get install -y r-cran-RODBC
     - jimhester/r-dependencies
     - jimhester/r-check
+    - jimhester/r-coverage
