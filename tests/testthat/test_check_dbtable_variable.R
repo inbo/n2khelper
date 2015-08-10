@@ -55,7 +55,7 @@ describe("check_dbtable_variable()", {
   })
   
   it("gives correct output", {
-    skip_on_cran()
+    testthat::skip_on_cran()
     expect_that(
       check_dbtable_variable(table = table, variable = variable, channel = channel, error = error),
       is_true()
@@ -73,6 +73,7 @@ describe("check_dbtable_variable()", {
       throws_error(paste0("Variable\\(s\\) missing from '", table, "': ", paste(junk, collapse = ", ")))
     )
   })
-  skip_on_cran()
-  RODBC::odbcClose(channel)
+  if (!identical(Sys.getenv("NOT_CRAN", unset = "false"), "true")) {
+    RODBC::odbcClose(channel)
+  }
 })

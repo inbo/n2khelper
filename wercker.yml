@@ -1,5 +1,4 @@
 box: rocker/hadleyverse
-env: NOT_CRAN="false"
 build:
   steps:
     - script:
