@@ -73,8 +73,6 @@ describe("check_dbtable_variable()", {
       check_dbtable_variable(table = table, variable = junk, channel = channel, error = TRUE),
       throws_error(paste0("Variable\\(s\\) missing from '", table, "': ", paste(junk, collapse = ", ")))
     )
-  })
-  if (!identical(Sys.getenv("NOT_CRAN", unset = "false"), "true")) {
     RODBC::odbcClose(channel)
-  }
+  })
 })
