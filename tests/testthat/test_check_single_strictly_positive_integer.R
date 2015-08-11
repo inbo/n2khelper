@@ -2,10 +2,14 @@ context("check a single strictly positive integer")
 describe("check_single_strictly_positive_integer()", {
   name <- "name"
   tolerance <- 1e-10
-  
+
   it("checks if the input is integer", {
     expect_that(
-      check_single_strictly_positive_integer(x = "a", name = name, tolerance = tolerance),
+      check_single_strictly_positive_integer(
+        x = "a",
+        name = name,
+        tolerance = tolerance
+      ),
       throws_error(paste(name, "must be integer"))
     )
   })
@@ -37,15 +41,27 @@ describe("check_single_strictly_positive_integer()", {
   })
   it("checks if the input can be rounded to an integer when it is numeric", {
     expect_that(
-      check_single_strictly_positive_integer(x = 1e-6, name = name, tolerance = 1e-5),
+      check_single_strictly_positive_integer(
+        x = 1e-6,
+        name = name,
+        tolerance = 1e-5
+      ),
       throws_error(paste(name, "must be strictly positive"))
     )
     expect_that(
-      check_single_strictly_positive_integer(x = 1e-6, name = name, tolerance = 1e-7),
+      check_single_strictly_positive_integer(
+        x = 1e-6,
+        name = name,
+        tolerance = 1e-7
+      ),
       throws_error(paste(name, "is not integer"))
     )
     expect_that(
-      check_single_strictly_positive_integer(x = 1 + 1e-6, name = name, tolerance = 1e-5),
+      check_single_strictly_positive_integer(
+        x = 1 + 1e-6,
+        name = name,
+        tolerance = 1e-5
+      ),
       is_identical_to(1L)
     )
   })

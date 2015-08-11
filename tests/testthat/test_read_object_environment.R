@@ -5,7 +5,7 @@ describe("read_object_environment()", {
   value <- TRUE
   env <- new.env()
   assign(x = object, value = value, envir = env)
-  
+
   it("checks if env is an environment", {
     expect_that(
       read_object_environment(object = object, env = object),

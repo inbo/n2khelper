@@ -2,7 +2,7 @@ context("check a single character")
 describe("check_single_character()", {
   x <- "test"
   name <- "name"
-  
+
   it("checks if the input is character", {
     expect_that(
       check_single_character(x = 1, name = name),

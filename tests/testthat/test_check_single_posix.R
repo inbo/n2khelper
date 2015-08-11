@@ -4,7 +4,7 @@ describe("check_single_posix()", {
   old.lt <- as.POSIXlt("1900-01-01 01:02:03")
   future <- as.POSIXct("2100-01-01 01:02:03")
   name <- "junk"
-  
+
   it("checks if the input is POSIX", {
     expect_that(
       check_single_posix(x = name, name = name),

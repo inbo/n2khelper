@@ -6,7 +6,7 @@ describe("check_character()", {
   x.na.factor <- factor(x.na)
   name <- "name"
   na <- na.fail
-  
+
   it("checks if the input is character", {
     expect_that(
       check_character(x = 1, name = name, na.action = na),
@@ -22,11 +22,15 @@ describe("check_character()", {
   it("handles NA depending on na.action", {
     expect_that(
       check_character(x = x.na, name = name),
-      throws_error('Error in na.fail.default\\(x\\) : missing values in object\\n')
+      throws_error(
+        "Error in na.fail.default\\(x\\) : missing values in object\\n"
+      )
     )
     expect_that(
       check_character(x = x.na, name = name, na.action = na.fail),
-      throws_error('Error in na.fail.default\\(x\\) : missing values in object\\n')
+      throws_error(
+        "Error in na.fail.default\\(x\\) : missing values in object\\n"
+      )
     )
     expect_that(
       check_character(x = x.na, name = name, na.action = na.pass),

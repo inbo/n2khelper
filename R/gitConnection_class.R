@@ -3,7 +3,7 @@
 setClassUnion("gitCredentials", c("NULL", "cred_user_pass", "cred_ssh_key"))
 
 #' The gitConnection class
-#' 
+#'
 #' @section Slots:
 #'   \describe{
 #'    \item{\code{Repository}}{a git repository}
@@ -34,8 +34,13 @@ setValidity(
     root <- check_path(path = root, type = "directory")
     full.path <- paste(root, object@LocalPath, sep = "/")
     full.path <- check_path(full.path, type = "directory")
-    if(length(grep(root, full.path)) == 0){
-      return(paste0("Wrong local path. '", full.path, "' is not a subdirectory of '", root, "'"))
+    if (length(grep(root, full.path)) == 0) {
+      return(
+        paste0(
+          "Wrong local path. '", full.path,
+          "' is not a subdirectory of '", root, "'"
+        )
+      )
     }
     return(TRUE)
   }

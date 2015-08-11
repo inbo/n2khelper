@@ -5,7 +5,7 @@ describe("check_path()", {
   file.path <- paste(path, name, sep = "/")
   full.path <- normalizePath(path, winslash = "/", mustWork = FALSE)
   full.file.path <- normalizePath(file.path, winslash = "/", mustWork = FALSE)
-  
+
   it("stops if path doesn't exists", {
     expect_that(
       check_path(path = path, type = "directory", error = TRUE),
@@ -43,15 +43,23 @@ describe("check_path()", {
   dir.create(full.path)
   content <- paste(sample(letters, 8, replace = TRUE), collapse = "")
   writeLines(content, con = full.file.path)
-  
+
   it("stops when path exists but is not the correct type", {
     expect_that(
       check_path(path = file.path, type = "directory", error = TRUE),
-      throws_error(paste0("'", normalizePath(full.file.path, winslash = "/"), "' is not a directory"))
+      throws_error(
+        paste0(
+          "'",
+          normalizePath(full.file.path, winslash = "/"),
+          "' is not a directory"
+        )
+      )
     )
     expect_that(
       check_path(path = path, type = "file", error = TRUE),
-      throws_error(paste0("'", normalizePath(full.path, winslash = "/"), "' is not a file"))
+      throws_error(
+        paste0("'", normalizePath(full.path, winslash = "/"), "' is not a file")
+      )
     )
     expect_that(
       check_path(path = file.path, type = "directory", error = FALSE),

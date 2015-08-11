@@ -2,7 +2,7 @@ context("check a single logical")
 describe("check_single_logical()", {
   x <- TRUE
   name <- "name"
-  
+
   it("checks if the input is logical", {
     expect_that(
       check_single_logical(x = 1, name = name),

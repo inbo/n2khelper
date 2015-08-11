@@ -4,8 +4,8 @@ describe("list_files_git()", {
   local.path <- "test"
   connection <- tempfile(pattern="git2r-")
   connection <- normalizePath(connection, winslash = "/", mustWork = FALSE)
-  
-  
+
+
   it("stops is connection is not a git repository", {
     expect_that(
       list_files_git(local.path = local.path, connection = connection),
@@ -21,19 +21,29 @@ describe("list_files_git()", {
   it("stops is the local.path doesn't exist", {
     expect_that(
       list_files_git(local.path = local.path, connection = connection),
-      throws_error(paste0("'", connection, "/", local.path, "' is not a directory"))
+      throws_error(
+        paste0("'", connection, "/", local.path, "' is not a directory")
+      )
     )
   })
-  
+
   dir.create(paste(connection, local.path, sep = "/"))
   file.create(paste(full.path, files, sep = "/"))
   it("list the files according to the pattern", {
     expect_that(
-      list_files_git(local.path = local.path, pattern = "^[0123456789].*\\.txt$", connection = connection),
+      list_files_git(
+        local.path = local.path,
+        pattern = "^[0123456789].*\\.txt$",
+        connection = connection
+      ),
       is_identical_to(files[grep("^[0123456789].*\\.txt$", files)])
     )
     expect_that(
-      list_files_git(local.path = local.path, pattern = "\\.txt$", connection = connection),
+      list_files_git(
+        local.path = local.path,
+        pattern = "\\.txt$",
+        connection = connection
+      ),
       is_identical_to(files[grep("\\.txt$", files)])
     )
     expect_that(
@@ -41,7 +51,11 @@ describe("list_files_git()", {
       is_identical_to(files)
     )
     expect_that(
-      list_files_git(local.path = local.path, pattern = ".exe", connection = connection),
+      list_files_git(
+        local.path = local.path,
+        pattern = ".exe",
+        connection = connection
+      ),
       is_identical_to(character(0))
     )
   })
