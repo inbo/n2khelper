@@ -1,4 +1,7 @@
-Wercker branch [![wercker status](https://app.wercker.com/status/9f6c69b5cc40a32aeffeb5e8ee42b552/s/wercker "wercker status")](https://app.wercker.com/project/bykey/9f6c69b5cc40a32aeffeb5e8ee42b552) [![codecov.io](http://codecov.io/bitbucket/thierry_onkelinx/n2khelper/coverage.svg?branch=wercker)](http://codecov.io/bitbucket/thierry_onkelinx/n2khelper?branch=wercker)
+**Branch** | **Build status** | **Test coverage**
+-- | -- | --
+master | [![wercker status](https://app.wercker.com/status/9f6c69b5cc40a32aeffeb5e8ee42b552/s/master "wercker status master branch")](https://app.wercker.com/project/bykey/9f6c69b5cc40a32aeffeb5e8ee42b552) | [![codecov.io](http://codecov.io/bitbucket/thierry_onkelinx/n2khelper/coverage.svg?branch=master)](http://codecov.io/bitbucket/thierry_onkelinx/n2khelper?branch=master)
+develop | [![wercker status](https://app.wercker.com/status/9f6c69b5cc40a32aeffeb5e8ee42b552/s/develop "wercker status develop branch")](https://app.wercker.com/project/bykey/9f6c69b5cc40a32aeffeb5e8ee42b552) | [![codecov.io](http://codecov.io/bitbucket/thierry_onkelinx/n2khelper/coverage.svg?branch=develop)](http://codecov.io/bitbucket/thierry_onkelinx/n2khelper?branch=develop)
 
 # The n2khelper package
 
