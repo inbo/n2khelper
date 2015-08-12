@@ -26,7 +26,10 @@ describe("get_sha1", {
   it("returns the correct SHA1", {
     expect_identical(
       get_sha1(x.numeric),
-      digest::digest(signif(x.numeric, n2khelper:::sha1_digits()), algo = "sha1")
+      digest::digest(
+        signif(x.numeric, n2khelper:::sha1_digits()),
+        algo = "sha1"
+      )
     )
     expect_that(
       get_sha1(letters),
@@ -47,7 +50,10 @@ describe("get_sha1", {
     )
     expect_identical(
       get_sha1(x.matrix.num),
-      digest::digest(signif(x.matrix.num, n2khelper:::sha1_digits()), algo = "sha1")
+      digest::digest(
+        signif(x.matrix.num, n2khelper:::sha1_digits()),
+        algo = "sha1"
+      )
     )
     expect_that(
       get_sha1(x.matrix.letter),
