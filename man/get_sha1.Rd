@@ -5,6 +5,7 @@
 \alias{get_sha1}
 \alias{get_sha1,ANY-method}
 \alias{get_sha1,data.frame-method}
+\alias{get_sha1,factor-method}
 \alias{get_sha1,list-method}
 \alias{get_sha1,matrix-method}
 \alias{get_sha1,numeric-method}
@@ -13,6 +14,8 @@
 get_sha1(x)
 
 \S4method{get_sha1}{ANY}(x)
+
+\S4method{get_sha1}{factor}(x)
 
 \S4method{get_sha1}{list}(x)
 
