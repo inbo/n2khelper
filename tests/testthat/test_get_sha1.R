@@ -1,6 +1,8 @@
 context("calculate sha1 fingerprints")
 describe("get_sha1", {
   x.numeric <- 1.2345678901234567890123456789
+  #digest::digest(signif(x.numeric, n2khelper:::sha1_digits()), algo = "sha1")
+  x.numeric.sha1 <- "007da406bbe456a2a3b6ab258efe17cf88206600" #32-bit, 14 digit, windows
   x.list <- list(letters, x.numeric)
   x.dataframe <- data.frame(
     X = letters,
@@ -30,6 +32,10 @@ describe("get_sha1", {
         signif(x.numeric, n2khelper:::sha1_digits()),
         algo = "sha1"
       )
+    )
+    expect_identical(
+      get_sha1(x.numeric),
+      x.numeric.sha1
     )
     expect_that(
       get_sha1(letters),
