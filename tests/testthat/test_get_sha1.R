@@ -4,12 +4,15 @@ describe("get_sha1", {
   x.list <- list(letters, x.numeric)
   x.dataframe <- data.frame(
     X = letters,
-    Y = x.numeric
+    Y = x.numeric,
+    Z = factor(letters),
+    stringsAsFactors = FALSE
   )
   x.matrix.num <- as.matrix(x.numeric)
   x.matrix.letter <- as.matrix(letters)
   x.dataframe.round <- x.dataframe
   x.dataframe.round$Y <- signif(x.dataframe.round$Y, n2khelper:::sha1_digits())
+  x.factor <- factor(letters)
   it("tests using detailed numbers", {
     expect_that(
       identical(x.numeric, signif(x.numeric, n2khelper:::sha1_digits())),
@@ -49,6 +52,10 @@ describe("get_sha1", {
     expect_that(
       get_sha1(x.matrix.letter),
       is_identical_to(digest::digest(x.matrix.letter, algo = "sha1"))
+    )
+    expect_identical(
+      get_sha1(x.factor),
+      digest::digest(x.factor, algo = "sha1")
     )
   })
 })

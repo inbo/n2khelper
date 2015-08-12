@@ -28,6 +28,18 @@ setMethod(
   }
 )
 
+
+#' @rdname get_sha1
+#' @importFrom methods setMethod
+#' @importFrom digest digest
+setMethod(
+  f = "get_sha1",
+  signature = "factor",
+  definition = function(x){
+    digest(x, algo = "sha1")
+  }
+)
+
 #' @rdname get_sha1
 #' @importFrom methods setMethod
 #' @importFrom digest digest
