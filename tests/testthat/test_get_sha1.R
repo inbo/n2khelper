@@ -9,21 +9,21 @@ describe("get_sha1", {
   x.matrix.num <- as.matrix(x.numeric)
   x.matrix.letter <- as.matrix(letters)
   x.dataframe.round <- x.dataframe
-  x.dataframe.round$Y <- signif(x.dataframe.round$Y, 16)
+  x.dataframe.round$Y <- signif(x.dataframe.round$Y, n2khelper:::sha1_digits())
   it("tests using detailed numbers", {
     expect_that(
-      identical(x.numeric, signif(x.numeric, 16)),
+      identical(x.numeric, signif(x.numeric, n2khelper:::sha1_digits())),
       is_false()
     )
     expect_that(
-      identical(x.matrix.num, signif(x.matrix.num, 16)),
+      identical(x.matrix.num, signif(x.matrix.num, n2khelper:::sha1_digits())),
       is_false()
     )
   })
   it("returns the correct SHA1", {
-    expect_that(
+    expect_identical(
       get_sha1(x.numeric),
-      is_identical_to(digest::digest(signif(x.numeric, 16), algo = "sha1"))
+      digest::digest(signif(x.numeric, n2khelper:::sha1_digits()), algo = "sha1")
     )
     expect_that(
       get_sha1(letters),
@@ -38,13 +38,13 @@ describe("get_sha1", {
         )
       )
     )
-    expect_that(
+    expect_identical(
       get_sha1(x.dataframe),
-      is_identical_to(digest::digest(x.dataframe.round, algo = "sha1"))
+      digest::digest(x.dataframe.round, algo = "sha1")
     )
-    expect_that(
+    expect_identical(
       get_sha1(x.matrix.num),
-      is_identical_to(digest::digest(signif(x.matrix.num, 16), algo = "sha1"))
+      digest::digest(signif(x.matrix.num, n2khelper:::sha1_digits()), algo = "sha1")
     )
     expect_that(
       get_sha1(x.matrix.letter),
