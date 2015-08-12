@@ -1,6 +1,6 @@
 #' Define the number of digits to use when rounding numeric values
 sha1_digits <- function(){
-  15
+  14
 }
 
 #' Calculate a SHA1 hash of an object
