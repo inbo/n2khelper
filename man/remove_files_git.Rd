@@ -15,12 +15,14 @@ remove_files_git(connection, pattern = NULL, ...)
 \S4method{remove_files_git}{gitConnection}(connection, pattern = NULL, ...)
 }
 \arguments{
-\item{connection}{The path of a git repository or a \code{gitConnection} object}
+\item{connection}{The path of a git repository or a \code{gitConnection}
+object}
 
 \item{pattern}{an optional \link{regular expression}.  Only file names
     which match the regular expression will be returned.}
 
-\item{...}{parameters passed to \code{git_connection()} when \code{connection} is a path}
+\item{...}{parameters passed to \code{git_connection()} when
+\code{connection} is a path}
 }
 \description{
 Remove all the files in a path of a git repository

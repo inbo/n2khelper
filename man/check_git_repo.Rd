@@ -10,7 +10,8 @@ check_git_repo(path, error = TRUE)
 \arguments{
 \item{path}{the path to check}
 
-\item{error}{What to do in case \code{path} is not a git repository. Throw an error when \code{error = TRUE}. Return \code{FALSE} when \code{error = FALSE}}
+\item{error}{What to do in case \code{path} is not a git repository. Throw an
+error when \code{error = TRUE}. Return \code{FALSE} when \code{error = FALSE}}
 }
 \description{
 Check if the path a git repository

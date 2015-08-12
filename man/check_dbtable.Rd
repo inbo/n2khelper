@@ -13,7 +13,8 @@ check_dbtable(table, schema = "dbo", channel, error = TRUE)
 
 \item{channel}{the open ODBC channel}
 
-\item{error}{Indicates the behaviour when a table is missing. Gives an error when error = TRUE (default). Return FALSE otherwise.}
+\item{error}{Indicates the behaviour when a table is missing. Gives an error
+when error = TRUE (default). Return FALSE otherwise.}
 }
 \value{
 TRUE when all tables are present in the ODBC connection.

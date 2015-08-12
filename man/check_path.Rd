@@ -11,7 +11,8 @@ check_path(path, type = c("file", "directory"), error = TRUE)
 
 \item{type}{either "file" or "directory"}
 
-\item{error}{When TRUE (default), the function returns an error when a variable is missing. Otherwise it returns a warning.}
+\item{error}{When TRUE (default), the function returns an error when a
+variable is missing. Otherwise it returns a warning.}
 }
 \description{
 check if a path is an exisiting file or directory

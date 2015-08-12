@@ -9,14 +9,19 @@ check_dataframe_variable(df, variable, name = "df", error = TRUE)
 \arguments{
 \item{df}{the \code{data.frame} to check}
 
-\item{variable}{either a character vector with the names of the variable to check or a named list. The names of the list must match the names of the required variables in the data.frame. The elements of the list contain the accepted classes for each varaible.}
+\item{variable}{either a character vector with the names of the variable to
+check or a named list. The names of the list must match the names of the
+required variables in the data.frame. The elements of the list contain the
+accepted classes for each varaible.}
 
 \item{name}{the name of the \code{data.frame} to use in the error message}
 
-\item{error}{When TRUE (default), the function returns an error when a variable is missing. Otherwise it returns a warning.}
+\item{error}{When TRUE (default), the function returns an error when a
+variable is missing. Otherwise it returns a warning.}
 }
 \value{
-The function returns TRUE when all variables are present. If returns FALSE when a variable is missing and \code{error = FALSE}.
+The function returns TRUE when all variables are present. If returns
+   FALSE when a variable is missing and \code{error = FALSE}.
 }
 \description{
 Check if a data.frame contains variables

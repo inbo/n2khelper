@@ -17,9 +17,11 @@ git_recent(file, connection, ...)
 \arguments{
 \item{file}{the name of the file}
 
-\item{connection}{The path of a git repository or a \code{gitConnection} object}
+\item{connection}{The path of a git repository or a \code{gitConnection}
+object}
 
-\item{...}{parameters passed to \code{git_connection()} when \code{connection} is a path}
+\item{...}{parameters passed to \code{git_connection()} when
+\code{connection} is a path}
 }
 \description{
 Get the info from the latest commit of a file

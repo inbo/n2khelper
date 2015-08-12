@@ -11,10 +11,12 @@ read_object_environment(object, env, warn = TRUE)
 
 \item{env}{the environment}
 
-\item{warn}{Issue a warning if the object is not found in the environment. Defaults to TRUE}
+\item{warn}{Issue a warning if the object is not found in the environment.
+Defaults to TRUE}
 }
 \value{
-the object or \code{NULL} is the object doesn't exists in the environment
+the object or \code{NULL} is the object doesn't exists in the
+   environment
 }
 \description{
 Read an object from an environment

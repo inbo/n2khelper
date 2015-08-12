@@ -13,7 +13,8 @@ check_dataframe_covariate(df, covariate, response = "Count", error = TRUE)
 
 \item{response}{The left hand side of the model as a character}
 
-\item{error}{When TRUE (default), the function returns an error when a variable is missing. Otherwise it returns a warning.}
+\item{error}{When TRUE (default), the function returns an error when a
+variable is missing. Otherwise it returns a warning.}
 }
 \description{
 Check if the covariates are available in a dataframe

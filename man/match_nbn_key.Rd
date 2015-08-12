@@ -11,7 +11,8 @@ match_nbn_key(species, nbn.key, variable)
 
 \item{nbn.key}{a data.frame with the NBN keys}
 
-\item{variable}{the name of the variable of species to match with InputName from nbn.key}
+\item{variable}{the name of the variable of species to match with InputName
+from nbn.key}
 }
 \description{
 Merge NBN keys into a species dataframe

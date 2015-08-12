@@ -17,7 +17,8 @@ list_files_git(connection, pattern = NULL, full.names = FALSE, ...)
   full.names = FALSE, ...)
 }
 \arguments{
-\item{connection}{The path of a git repository or a \code{gitConnection} object}
+\item{connection}{The path of a git repository or a \code{gitConnection}
+object}
 
 \item{pattern}{an optional \link{regular expression}.  Only file names
     which match the regular expression will be returned.}
@@ -26,7 +27,8 @@ list_files_git(connection, pattern = NULL, full.names = FALSE, ...)
     path is prepended to the file names to give a relative file path.
     If \code{FALSE}, the file names (rather than paths) are returned.}
 
-\item{...}{parameters passed to \code{git_connection()} when \code{connection} is a path}
+\item{...}{parameters passed to \code{git_connection()} when
+\code{connection} is a path}
 }
 \description{
 List the files in a path of a git repository
