@@ -16,7 +16,8 @@ odbc_connect <- function(data.source.name, username, password, channel){
     ),
     channel = channel
   )
-  check_dbtable_variable( # nocov start
+  # nocov start
+  check_dbtable_variable(
     table = "DatasourceType",
     variable = c("ID", "Description"),
     channel = channel
