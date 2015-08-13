@@ -7,6 +7,7 @@ check_id <- function(value, variable, table, channel){
   variable <- check_single_character(variable, name = "variable")
   check_dbtable_variable(table = table, variable = variable, channel = channel)
 
+  # nocov start
   sql <- paste("SELECT", variable, "FROM", table, "WHERE", variable, "=", value)
   selection <- sqlQuery(channel = channel, query = sql)
   if (class(selection) != "data.frame") {
@@ -31,4 +32,5 @@ check_id <- function(value, variable, table, channel){
     }
     return(TRUE)
   }
+  # nocov end
 }
