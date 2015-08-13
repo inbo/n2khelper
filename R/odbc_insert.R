@@ -36,9 +36,11 @@ odbc_insert <- function(
     schema = schema
   )
 
-  if (!append) { # nocov start
+  # nocov start
+  if (!append) {
     sqlClear(channel = channel, sqtable = paste0(schema, ".", table))
-  } # nocov end
+  }
+  # nocov end
 
   # quote values when needed
   type <- sapply(data, class)

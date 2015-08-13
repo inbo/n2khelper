@@ -12,7 +12,8 @@ odbc_get_id <- function(table, variable, value, schema = "dbo", channel){
     stop("at least one value is needed")
   }
   check_dbtable_variable(table = table, variable = variable, channel = channel)
-  if (length(value) != length(variable)) { #nocov start
+  # nocov start
+  if (length(value) != length(variable)) {
     stop("the number of values doesn't match the number of variables")
   }
 
