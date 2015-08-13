@@ -45,7 +45,7 @@ get_nbn_name <- function(nbn.key){
       ns.TAXON_TYPE,
       ns.TAXON_VERSION_STATUS
   ")
-  output <- sqlQuery(channel = channel, query = sql)
+  output <- sqlQuery(channel = channel, query = sql) # nocov start
   odbcClose(channel)
 
   if (nrow(output) <= 1) {
@@ -88,5 +88,5 @@ get_nbn_name <- function(nbn.key){
       stop("yet to be written")
     }
   )
-  return(output)
+  return(output) # nocov end
 }
