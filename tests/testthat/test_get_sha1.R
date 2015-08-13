@@ -74,7 +74,8 @@ describe("get_sha1", {
     # scalar
     TRUE, FALSE, 1L, 1, "a",
     # vector
-    c(TRUE, FALSE), 1:3, seq(0, 10, length = 4), letters[1:3], factor(letters[4:6])
+    c(TRUE, FALSE), 1:3, seq(0, 10, length = 4), letters[1:3],
+    factor(letters[4:6])
   )
   select.vector <- which(sapply(test.element, length) > 1)
   test.element <- c(
