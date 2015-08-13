@@ -24,7 +24,7 @@ get_nbn_key_multi <- function(species, orders = c("la", "nl", "en")){
   done$NBNKey <- character(0)
 
   for (language in orders) {
-    nbn.key <- get_nbn_key(
+    nbn.key <- get_nbn_key( #nocov start
       name = to.do[, lang.name[language]],
       language = language
     )
@@ -51,12 +51,12 @@ get_nbn_key_multi <- function(species, orders = c("la", "nl", "en")){
     if(nrow(to.do) == 0){
       break
     }
-    to.do$NBNKey <- NULL
+    to.do$NBNKey <- NULL # nocov end
   }
-  if(nrow(to.do) > 0){
+  if(nrow(to.do) > 0){ # nocov start
     warning("No matches found for some records")
     to.do$NBNKey <- NA
     done <- rbind(done, to.do)
   }
-  return(done)
+  return(done) #nocov end
 }

@@ -15,6 +15,7 @@ check_dbtable <- function(table, schema = "dbo", channel, error = TRUE){
   if (class(channel) != "RODBC") {
     stop("channel is not an ODBC connection")
   }
+  # nocov start
 
   available <- sqlTables(channel = channel, schema = schema)$TABLE_NAME
   check <- table %in% available
@@ -29,4 +30,6 @@ check_dbtable <- function(table, schema = "dbo", channel, error = TRUE){
   } else {
     return(FALSE)
   }
+
+  # nocov end
 }

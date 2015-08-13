@@ -36,9 +36,9 @@ odbc_insert <- function(
     schema = schema
   )
 
-  if (!append) {
+  if (!append) { # nocov start
     sqlClear(channel = channel, sqtable = paste0(schema, ".", table))
-  }
+  } # nocov end
 
   # quote values when needed
   type <- sapply(data, class)
@@ -115,7 +115,7 @@ odbc_insert <- function(
     VALUES
     (", values, ")"
   )
-  sql.status <- sapply(
+  sql.status <- sapply( # nocov start
     sql,
     sqlQuery,
     channel = channel,
@@ -134,5 +134,5 @@ odbc_insert <- function(
       )
     }
   }
-  return(invisible(sql.status))
+  return(invisible(sql.status)) # nocov end
 }

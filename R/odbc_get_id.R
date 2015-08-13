@@ -12,7 +12,7 @@ odbc_get_id <- function(table, variable, value, schema = "dbo", channel){
     stop("at least one value is needed")
   }
   check_dbtable_variable(table = table, variable = variable, channel = channel)
-  if (length(value) != length(variable)) {
+  if (length(value) != length(variable)) { #nocov start
     stop("the number of values doesn't match the number of variables")
   }
 
@@ -26,5 +26,5 @@ odbc_get_id <- function(table, variable, value, schema = "dbo", channel){
       ", where
   )
   id <- sqlQuery(channel = channel, query = sql)$ID
-  return(id)
+  return(id) # nocov end
 }
