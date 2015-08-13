@@ -22,7 +22,7 @@ git_connect <- function(
     ),
     channel = channel
   )
-  check_dbtable_variable(
+  check_dbtable_variable( #nocov start
     table = "DatasourceType",
     variable = c("ID", "Description"),
     channel = channel
@@ -116,5 +116,5 @@ git_connect <- function(
       username = username,
       password = password
     )
-  )
+  ) #nocov end
 }

@@ -21,6 +21,7 @@ check_dbtable_variable <- function(
     stop("'variable' must contain at least one value")
   }
   check_dbtable(table = table, schema = schema, channel = channel, error = TRUE)
+  # nocov start
 
   available <- sqlColumns(
     channel = channel,
@@ -39,4 +40,5 @@ check_dbtable_variable <- function(
   } else {
     return(FALSE)
   }
+  # nocov end
 }
