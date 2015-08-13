@@ -73,9 +73,12 @@ describe("get_sha1", {
     logical(0), integer(0), numeric(0), character(0),
     # scalar
     TRUE, FALSE, 1L, 1, "a",
+    # date. Make sure to add the time zone. Otherwise the test might fail
+    as.POSIXct("2015-01-02 03:04:06.07", tz = "UTC"),
     # vector
     c(TRUE, FALSE), 1:3, seq(0, 10, length = 4), letters[1:3],
-    factor(letters[4:6])
+    factor(letters[4:6]),
+    as.POSIXct(c("2015-01-02 03:04:06.07", "1960-12-31 23:59:59"), tz = "UTC")
   )
   select.vector <- which(sapply(test.element, length) > 1)
   test.element <- c(
@@ -106,21 +109,25 @@ describe("get_sha1", {
     "6c30934a0ea2c0473d37b6d8bb5b955b435a8bc1",
     "6c30934a0ea2c0473d37b6d8bb5b955b435a8bc1",
     "1f9928593251410322823fefea8c3ef79b4d0254",
+    "c799247ef7cc5eb0a3544aa1aef1039e270579a4",
     "692ff1b9390cfc01625d8dbb850d04426e193889",
     "6fdccc872a60a9170f5cb5eee74312f4cbc384af",
     "8e67ddb0502dfe87c6d4341ab7592d98a154c676",
     "3bc1c85261b958307340b7a8a9fcff3e2586516b",
     "3c23872b9b4e17b16c1d640fe3c29f251202b012",
-    "8411ad341f0f5f0956b74210d4df33456139b974",
-    "70288494246a97032176bdb731cfdbc638d27efd",
-    "236a88147b4a15c6560fc9635b9233a43754ac23",
-    "4893b157a9a7553b7952f265c565acc735f449b4",
-    "7d64f263aa3566e966ce23d003296b5e9c5ae680",
+    "0fc188b4fd874e5ea411a241feb0e247faada054",
+    "188710fe63fedb3f4637db5eeb2ecdbc824aa179",
+    "d0ea20695ef505b589e92aacb7ce89ebbaae13a0",
+    "6106eaf5ef08d1c7b6272ef26fd6612438bb6164",
+    "25228aa01875f7c88b51c299a332c6bd82257d06",
+    "51fe9849f2b30d02c73cd7870d5d9b3a19e83654",
+    "c165458381d503502e811a153f262fe6a1dfa55e",
     "692ff1b9390cfc01625d8dbb850d04426e193889",
     "6fdccc872a60a9170f5cb5eee74312f4cbc384af",
     "8e67ddb0502dfe87c6d4341ab7592d98a154c676",
     "3bc1c85261b958307340b7a8a9fcff3e2586516b",
     "3c23872b9b4e17b16c1d640fe3c29f251202b012",
+    "0fc188b4fd874e5ea411a241feb0e247faada054",
     "6c30934a0ea2c0473d37b6d8bb5b955b435a8bc1",
     "315a5aa84aa6cfa4f3fb4b652a596770be0365e8",
     "a05091ea911bb9665d685c99b42f20e08c8a1927",
