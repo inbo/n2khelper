@@ -14,25 +14,6 @@ describe("get_sha1", {
   x.dataframe.round$Y <- signif(x.dataframe.round$Y, n2khelper:::sha1_digits())
   x.factor <- factor(letters)
 
-
-  set.seed(1345)
-  dummy.data <- expand.grid(
-    rep = seq_len(3),
-    x = seq(0, 1, length = 10)
-  )
-  dummy.data$eta <- 0.9 + 2 * dummy.data$x
-  dummy.data$y <- rpois(nrow(dummy.data), lambda = exp(dummy.data$eta))
-
-  lm.model.0 <- lm(y ~ x, data = dummy.data)
-  lm.model.1 <- lm(y ~ 1, data = dummy.data)
-  glm.model.0 <- glm(y ~ x, data = dummy.data, family = poisson)
-  glm.model.1 <- glm(y ~ 1, data = dummy.data, family = poisson)
-
-  anova.list <- list(
-    lm = anova(lm.model.0, lm.model.1),
-    glm = anova(glm.model.0, glm.model.1)
-  )
-
   it("tests using detailed numbers", {
     expect_that(
       identical(x.numeric, signif(x.numeric, n2khelper:::sha1_digits())),
@@ -85,6 +66,17 @@ describe("get_sha1", {
     )
   })
 
+  lm.model.0 <- lm(weight ~ Time, data = ChickWeight)
+  lm.model.1 <- lm(weight ~ 1, data = ChickWeight)
+  glm.model.0 <- glm(weight ~ Time, data = ChickWeight, family = poisson)
+  glm.model.1 <- glm(weight ~ 1, data = ChickWeight, family = poisson)
+
+  anova.list <- list(
+    lm = anova(lm.model.0, lm.model.1),
+    glm = anova(glm.model.0, glm.model.1),
+    glm.test = anova(glm.model.0, glm.model.1, test = "Chisq")
+  )
+
   it("works with lm anova", {
     expect_identical(
       get_sha1(anova.list[["lm"]]),
@@ -95,6 +87,10 @@ describe("get_sha1", {
     expect_identical(
       get_sha1(anova.list[["glm"]]),
       get_sha1(signif(unlist(anova.list[["glm"]]), 4))
+    )
+    expect_identical(
+      get_sha1(anova.list[["glm.test"]]),
+      get_sha1(signif(unlist(anova.list[["glm.test"]]), 4))
     )
   })
 
@@ -201,8 +197,9 @@ describe("get_sha1", {
     "ef60fa66262167e7a31398b16fa762151c6d1b28",
     "a235e3cc7109def777a99e660b9829cea48ce9a4",
     "d19d82f849bad81a39da932d3087a60c78de82c1",
-    "5924db546cad58d2da6b667bbbef1f30afc268a3",
-    "f894b10c26b93166e644aa4586d659ca0c23c00e"
+    "5b2e32a066dec3b7d59bee4aeca7b3ed7b6078a9",
+    "9b614455aabdc4692c85f3c5cc3ef82209177db9",
+    "eb393465d5638af49e6ae91dbbaa3952d32970ad"
   )
   it("return the same SHA1 on both 32-bit and 64-bit OS", {
     expect_identical(
