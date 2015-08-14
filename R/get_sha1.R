@@ -28,6 +28,18 @@ setMethod(
   }
 )
 
+#' @rdname get_sha1
+#' @importFrom methods setMethod
+#' @importFrom digest digest
+setMethod(
+  f = "get_sha1",
+  signature = "anova",
+  definition = function(x){
+    get_sha1(
+      signif(unlist(x), digits = 4)
+    )
+  }
+)
 
 #' @rdname get_sha1
 #' @importFrom methods setMethod
