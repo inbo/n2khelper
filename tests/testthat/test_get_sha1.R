@@ -177,7 +177,8 @@ describe("get_sha1", {
   })
 
   it(
-"calculates the SHA1 of a list as the SHA1 of a vector of SHA1 of each element", {
+"calculates the SHA1 of a list as the SHA1 of a vector of SHA1 of each element"
+, {
     this.list <- list("a", "b")
     expect_identical(
       get_sha1(this.list),
