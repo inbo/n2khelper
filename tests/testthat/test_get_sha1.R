@@ -78,19 +78,25 @@ describe("get_sha1", {
   )
 
   it("works with lm anova", {
+    y <- unname(unlist(anova.list[["lm"]]))
+    z <- signif(y, digits = 4)
     expect_identical(
       get_sha1(anova.list[["lm"]]),
-      get_sha1(signif(unlist(anova.list[["lm"]]), 4))
+      get_sha1(z)
     )
   })
   it("works with glm anova", {
+    y <- unname(unlist(anova.list[["glm"]]))
+    z <- signif(y, digits = 4)
     expect_identical(
       get_sha1(anova.list[["glm"]]),
-      get_sha1(signif(unlist(anova.list[["glm"]]), 4))
+      get_sha1(z)
     )
+    y <- unname(unlist(anova.list[["glm.test"]]))
+    z <- signif(y, digits = 4)
     expect_identical(
       get_sha1(anova.list[["glm.test"]]),
-      get_sha1(signif(unlist(anova.list[["glm.test"]]), 4))
+      get_sha1(z)
     )
   })
 
@@ -197,9 +203,9 @@ describe("get_sha1", {
     "ef60fa66262167e7a31398b16fa762151c6d1b28",
     "a235e3cc7109def777a99e660b9829cea48ce9a4",
     "d19d82f849bad81a39da932d3087a60c78de82c1",
-    "5b2e32a066dec3b7d59bee4aeca7b3ed7b6078a9",
-    "9b614455aabdc4692c85f3c5cc3ef82209177db9",
-    "eb393465d5638af49e6ae91dbbaa3952d32970ad"
+    "793252e1f4910db6b55bee70d1fb5de95a72179f",
+    "898c71ca18ace7adb5a8ac1050022c719d8a6c84",
+    "fbdb04afdffc9927df036b11f3b8a46f4a159032"
   )
   it("return the same SHA1 on both 32-bit and 64-bit OS", {
     expect_identical(

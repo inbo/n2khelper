@@ -35,9 +35,11 @@ setMethod(
   f = "get_sha1",
   signature = "anova",
   definition = function(x){
-    get_sha1(
-      signif(unlist(x), digits = 4)
-    )
+    # convert to an unnamed vector
+    y <- unname(unlist(x))
+    # restrict the number of digits
+    z <- signif(y, digits = 4)
+    get_sha1(z)
   }
 )
 
