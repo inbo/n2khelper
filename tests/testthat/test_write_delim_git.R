@@ -24,6 +24,7 @@ describe("write_delim_git()", {
 
   dir.create(connection)
   repo <- git2r::init(connection)
+  git2r::config(repo, user.name = "me", user.email = "me@me.com")
   it("stops if the path doesn't exist", {
     expect_that(
       write_delim_git(

@@ -18,6 +18,7 @@ describe("auto_commit()", {
   dir.create(connection)
   repo_bare <- git2r::init(origin.path, bare = TRUE)
   repo <- git2r::clone(origin.path, connection)
+  git2r::config(repo, user.name = "me", user.email = "me@me.com")
   dummy_add(connection)
   git2r::commit(repo, "inital")
   git2r::push(repo, "origin", "refs/heads/master")
