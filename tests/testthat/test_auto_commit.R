@@ -12,8 +12,8 @@ describe("auto_commit()", {
   }
 
   # create test repository
-  origin.path <- tempfile(pattern="git2r-")
-  connection <- tempfile(pattern="git2rclone-")
+  origin.path <- tempfile(pattern = "git2r-")
+  connection <- tempfile(pattern = "git2rclone-")
   dir.create(origin.path)
   dir.create(connection)
   repo_bare <- git2r::init(origin.path, bare = TRUE)
