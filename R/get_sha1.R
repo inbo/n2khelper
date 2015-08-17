@@ -38,7 +38,7 @@ setMethod(
     # convert to an unnamed vector
     y <- unname(unlist(x))
     # restrict the number of digits
-    z <- signif(y, digits = 4)
+    z <- signif(na.omit(y), digits = 4)
     get_sha1(z)
   }
 )
