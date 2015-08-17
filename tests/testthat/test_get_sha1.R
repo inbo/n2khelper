@@ -28,7 +28,10 @@ describe("get_sha1", {
     expect_identical(
       get_sha1(x.numeric),
       digest::digest(
-        signif(x.numeric, n2khelper:::sha1_digits()),
+        signif(
+          zapsmall(x.numeric, sha1_digits("zapsmall")),
+          sha1_digits()
+        ),
         algo = "sha1"
       )
     )
@@ -47,14 +50,11 @@ describe("get_sha1", {
     )
     expect_identical(
       get_sha1(x.dataframe),
-      digest::digest(x.dataframe.round, algo = "sha1")
+      digest::digest(sapply(x.dataframe, get_sha1), algo = "sha1")
     )
     expect_identical(
       get_sha1(x.matrix.num),
-      digest::digest(
-        signif(x.matrix.num, n2khelper:::sha1_digits()),
-        algo = "sha1"
-      )
+      get_sha1(as.vector(x.matrix.num))
     )
     expect_that(
       get_sha1(x.matrix.letter),
@@ -147,19 +147,19 @@ describe("get_sha1", {
     "c799247ef7cc5eb0a3544aa1aef1039e270579a4",
     "692ff1b9390cfc01625d8dbb850d04426e193889",
     "6fdccc872a60a9170f5cb5eee74312f4cbc384af",
-    "8e67ddb0502dfe87c6d4341ab7592d98a154c676",
+    "87236462dfc086b2fad60bac063da4cc74343ad4",
     "3bc1c85261b958307340b7a8a9fcff3e2586516b",
     "3c23872b9b4e17b16c1d640fe3c29f251202b012",
     "0fc188b4fd874e5ea411a241feb0e247faada054",
     "188710fe63fedb3f4637db5eeb2ecdbc824aa179",
     "d0ea20695ef505b589e92aacb7ce89ebbaae13a0",
-    "6106eaf5ef08d1c7b6272ef26fd6612438bb6164",
+    "be992a19a07fb70f6bfa26a3073a07d5e0cd16f4",
     "25228aa01875f7c88b51c299a332c6bd82257d06",
     "51fe9849f2b30d02c73cd7870d5d9b3a19e83654",
     "c165458381d503502e811a153f262fe6a1dfa55e",
     "692ff1b9390cfc01625d8dbb850d04426e193889",
     "6fdccc872a60a9170f5cb5eee74312f4cbc384af",
-    "8e67ddb0502dfe87c6d4341ab7592d98a154c676",
+    "87236462dfc086b2fad60bac063da4cc74343ad4",
     "3bc1c85261b958307340b7a8a9fcff3e2586516b",
     "3c23872b9b4e17b16c1d640fe3c29f251202b012",
     "0fc188b4fd874e5ea411a241feb0e247faada054",
@@ -174,8 +174,8 @@ describe("get_sha1", {
     "507ef986ec269e4854ee486ba72e00d8becc5aa3",
     "50e27f6ab08034b9562926f6f13f8dbd233cfdc3",
     "25dd8f33676144d5e42427eff1c8546724d63d15",
-    "c12b5c6e847d20a91a26f6f92e980094521c5d24",
-    "92eae8531a5572ab2d155ca4d9c3b6d94a1e6615",
+    "68a57f8c7a48b516d2ea4650877b1d2a9a9b4247",
+    "3db0fc8e183a0a045fa7e81a386d7a59c037610d",
     "50e27f6ab08034b9562926f6f13f8dbd233cfdc3",
     "1f9928593251410322823fefea8c3ef79b4d0254",
     "ee6e7fdb03a0d35b3a6f499d0f8f610686551d51",
@@ -203,7 +203,7 @@ describe("get_sha1", {
     "ef60fa66262167e7a31398b16fa762151c6d1b28",
     "a235e3cc7109def777a99e660b9829cea48ce9a4",
     "d19d82f849bad81a39da932d3087a60c78de82c1",
-    "95cfc4699889b095727981544e6d52cedf76f679",
+    "5fd5dd14dbff8765025ee2f3ecca3c4253da22d6",
     "febf29e7bf54853723400c119e5ca6e67b067045",
     "bbe21efd024a60716fd1628e1d5f06997768a7dd"
   )

@@ -1,6 +1,13 @@
 #' Define the number of digits to use when rounding numeric values
-sha1_digits <- function(){
-  14
+#' @param which The number of digits for each usage
+#' @export
+sha1_digits <- function(which = c("base", "zapsmall", "coef")){
+  which <- match.arg(which)
+  switch(which,
+    base = 14L,
+    zapsmall = 7L,
+    coef = 4L
+  )
 }
 
 #' Calculate a SHA1 hash of an object
@@ -38,7 +45,7 @@ setMethod(
     # convert to an unnamed vector
     y <- unname(unlist(x))
     # restrict the number of digits
-    z <- signif(na.omit(y), digits = 4)
+    z <- signif(na.omit(y), digits = sha1_digits("coef"))
     get_sha1(z)
   }
 )
@@ -77,7 +84,10 @@ setMethod(
   definition = function(x){
     digest(
       # needed to make results comparable between 32-bit and 64-bit
-      signif(x, digits = sha1_digits()),
+      signif(
+        zapsmall(x, digits = sha1_digits("zapsmall")),
+        digits = sha1_digits("base")
+      ),
       algo = "sha1"
     )
   }
@@ -92,9 +102,10 @@ setMethod(
   definition = function(x){
     # needed to make results comparable between 32-bit and 64-bit
     if (class(x[1, 1]) == "numeric") {
-      x <- signif(x, digits = sha1_digits())
+      get_sha1(as.vector(x))
+    } else {
+      digest(x, algo = "sha1")
     }
-    digest(x, algo = "sha1")
   }
 )
 
@@ -106,8 +117,6 @@ setMethod(
   signature = "data.frame",
   definition = function(x){
     # needed to make results comparable between 32-bit and 64-bit
-    numeric.field <- which(sapply(x, class) == "numeric")
-    x[, numeric.field] <- signif(x[, numeric.field], digits = sha1_digits())
-    digest(x, algo = "sha1")
+    digest(sapply(x, get_sha1), algo = "sha1")
   }
 )
