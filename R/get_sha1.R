@@ -6,7 +6,7 @@ sha1_digits <- function(which = c("base", "zapsmall", "coef")){
   switch(which,
     base = 14L,
     zapsmall = 7L,
-    coef = 4L
+    coef = 6L
   )
 }
 
@@ -42,10 +42,12 @@ setMethod(
   f = "get_sha1",
   signature = "anova",
   definition = function(x){
-    # convert to an unnamed vector
-    y <- unname(unlist(x))
-    # restrict the number of digits
-    z <- signif(na.omit(y), digits = sha1_digits("coef"))
+    z <- apply(x, 1, function(y){
+      sprintf(
+        paste0("%.", sha1_digits("coef"), "e"),
+        zapsmall(y, digits = sha1_digits("zapsmall"))
+      )
+    })
     get_sha1(z)
   }
 )
@@ -84,9 +86,10 @@ setMethod(
   definition = function(x){
     digest(
       # needed to make results comparable between 32-bit and 64-bit
-      signif(
-        zapsmall(x, digits = sha1_digits("zapsmall")),
-        digits = sha1_digits("base")
+      # signif() doesn't work in all situations
+      sprintf(
+        paste0("%.", sha1_digits("base"), "e"),
+        zapsmall(x, digits = sha1_digits("zapsmall"))
       ),
       algo = "sha1"
     )
