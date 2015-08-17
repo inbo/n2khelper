@@ -6,8 +6,21 @@ sha1_digits <- function(which = c("base", "zapsmall", "coef")){
   switch(which,
     base = 14L,
     zapsmall = 7L,
-    coef = 4L # coef = 5L yields differences for some lmer models
+    coef = 6L # coef = 5L yields differences for some lmer models
   )
+}
+
+#' Replace tiny numbers with zero
+#' @param x the numeric vector to check
+#' @param digits The minimal magnitude $10^-{digits}$
+#' @export
+#' @importFrom assertthat assert_that is.count
+zap_small <- function(x, digits = sha1_digits("zapsmall")){
+  assert_that(is.numeric(x))
+  assert_that(is.count(digits))
+
+  x[abs(x) < 10 ^ -digits] <- 0
+  return(x)
 }
 
 #' Calculate a SHA1 hash of an object
@@ -45,7 +58,7 @@ setMethod(
     z <- apply(x, 1, function(y){
       sprintf(
         paste0("%.", sha1_digits("coef"), "e"),
-        zapsmall(y, digits = sha1_digits("zapsmall"))
+        zap_small(y, digits = sha1_digits("zapsmall"))
       )
     })
     get_sha1(z)
@@ -89,7 +102,7 @@ setMethod(
       # signif() doesn't work in all situations
       sprintf(
         paste0("%.", sha1_digits("base"), "e"),
-        zapsmall(x, digits = sha1_digits("zapsmall"))
+        zap_small(x, digits = sha1_digits("zapsmall"))
       ),
       algo = "sha1"
     )

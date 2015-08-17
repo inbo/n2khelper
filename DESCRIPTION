@@ -13,6 +13,7 @@ Imports:
     plyr,
     lubridate,
     methods,
+    assertthat,
     RODBC
 License: GPL-3
 LazyData: true

@@ -30,7 +30,7 @@ describe("get_sha1", {
       digest::digest(
         sprintf(
           paste0("%.", sha1_digits("base"), "e"),
-          zapsmall(x.numeric, digits = sha1_digits("zapsmall"))
+          zap_small(x.numeric, digits = sha1_digits("zapsmall"))
         ),
         algo = "sha1"
       )
@@ -81,7 +81,7 @@ describe("get_sha1", {
     z <- apply(anova.list[["lm"]], 1, function(y){
       sprintf(
         paste0("%.", sha1_digits("coef"), "e"),
-        zapsmall(y, digits = sha1_digits("zapsmall"))
+        zap_small(y, digits = sha1_digits("zapsmall"))
       )
     })
     expect_identical(
@@ -93,7 +93,7 @@ describe("get_sha1", {
     z <- apply(anova.list[["glm"]], 1, function(y){
       sprintf(
         paste0("%.", sha1_digits("coef"), "e"),
-        zapsmall(y, digits = sha1_digits("zapsmall"))
+        zap_small(y, digits = sha1_digits("zapsmall"))
       )
     })
     expect_identical(
@@ -103,7 +103,7 @@ describe("get_sha1", {
     z <- apply(anova.list[["glm.test"]], 1, function(y){
       sprintf(
         paste0("%.", sha1_digits("coef"), "e"),
-        zapsmall(y, digits = sha1_digits("zapsmall"))
+        zap_small(y, digits = sha1_digits("zapsmall"))
       )
     })
     expect_identical(
@@ -159,19 +159,19 @@ describe("get_sha1", {
     "c799247ef7cc5eb0a3544aa1aef1039e270579a4",
     "692ff1b9390cfc01625d8dbb850d04426e193889",
     "4169b5d388e894b4098f28fa0b4fee47b37de2f2",
-    "e2855241305df1870c68277a211261e5c7ed3425",
+    "f4623294f5eb0f986ff4eba641ff0a8310065c58",
     "3bc1c85261b958307340b7a8a9fcff3e2586516b",
     "3c23872b9b4e17b16c1d640fe3c29f251202b012",
     "0fc188b4fd874e5ea411a241feb0e247faada054",
     "188710fe63fedb3f4637db5eeb2ecdbc824aa179",
     "5a060548dfd4768ad815793f06bcde05ff6a3675",
-    "5a6c79d7f2427ea997531da05940fc46daa9d21d",
+    "dc7c6c739ca5f9b574beaf636fbbda58f10908cc",
     "25228aa01875f7c88b51c299a332c6bd82257d06",
     "51fe9849f2b30d02c73cd7870d5d9b3a19e83654",
     "c165458381d503502e811a153f262fe6a1dfa55e",
     "692ff1b9390cfc01625d8dbb850d04426e193889",
     "4169b5d388e894b4098f28fa0b4fee47b37de2f2",
-    "e2855241305df1870c68277a211261e5c7ed3425",
+    "f4623294f5eb0f986ff4eba641ff0a8310065c58",
     "3bc1c85261b958307340b7a8a9fcff3e2586516b",
     "3c23872b9b4e17b16c1d640fe3c29f251202b012",
     "0fc188b4fd874e5ea411a241feb0e247faada054",
@@ -186,8 +186,8 @@ describe("get_sha1", {
     "cee887a8ca753e55af23d30324eff1ae22a2e8c2",
     "f4fa233a6047562a12d23c2ca79b0b5ff769c738",
     "6e9a4aae63eb62ec7e653bd8d0602d096383dfd7",
-    "cc3179470d71545bf5a393a2105d738c121f787b",
-    "83f09bbda5d85de611c0bdd6113e731e9ea99ec2",
+    "1f9d1e30e24da9c9e800c1e91b6dcd9653f5d267",
+    "c3b73f873bf07bc61b50e303aa02215dc19ec8e4",
     "f4fa233a6047562a12d23c2ca79b0b5ff769c738",
     "1f9928593251410322823fefea8c3ef79b4d0254",
     "ee6e7fdb03a0d35b3a6f499d0f8f610686551d51",
@@ -215,9 +215,9 @@ describe("get_sha1", {
     "ef60fa66262167e7a31398b16fa762151c6d1b28",
     "a235e3cc7109def777a99e660b9829cea48ce9a4",
     "d19d82f849bad81a39da932d3087a60c78de82c1",
-    "9fe97bacc996ee095ccf4c86591b78cdcf3a62f1",
-    "4f12516cb64820d679e688fceddae8b3a1dcfdab",
-    "c758ce6551dba2c4d83720d128be35b4435de629"
+    "dc997f32ef831d8d54c810592cc395d7af7fc004",
+    "5073c5522d885d71c69478cb308e2eb6059d8c7d",
+    "ea6588dff497249ea2a955c80bc8134da07ffaae"
   )
   it("return the same SHA1 on both 32-bit and 64-bit OS", {
     for (i in seq_along(test.element)) {
