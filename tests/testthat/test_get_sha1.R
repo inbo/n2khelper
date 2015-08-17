@@ -215,9 +215,9 @@ describe("get_sha1", {
     "ef60fa66262167e7a31398b16fa762151c6d1b28",
     "a235e3cc7109def777a99e660b9829cea48ce9a4",
     "d19d82f849bad81a39da932d3087a60c78de82c1",
-    "c90ae81722542e983a2702ad67337acf8903ee27",
-    "5073c5522d885d71c69478cb308e2eb6059d8c7d",
-    "ea6588dff497249ea2a955c80bc8134da07ffaae"
+    "d6ce93d5305e5240e502200a13d67d914a1b7de5",
+    "6d1d2f87e740527aecc284a471b41edc0b014b1f",
+    "65d53912c958b2c06bb845a269fda3cb137cdfdc"
   )
   it("return the same SHA1 on both 32-bit and 64-bit OS", {
     for (i in seq_along(test.element)) {
