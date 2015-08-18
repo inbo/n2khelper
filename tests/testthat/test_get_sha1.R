@@ -1,5 +1,6 @@
 context("calculate sha1 fingerprints")
 describe("get_sha1", {
+  expect_true(require(magrittr))
   x.numeric <- 1.2345678901234567890123456789
   x.list <- list(letters, x.numeric)
   x.dataframe <- data.frame(
@@ -222,9 +223,9 @@ describe("get_sha1", {
     "ef60fa66262167e7a31398b16fa762151c6d1b28",
     "a235e3cc7109def777a99e660b9829cea48ce9a4",
     "d19d82f849bad81a39da932d3087a60c78de82c1",
-    "74cd85c820d0a1ad710d09fbba8a3c254ec6a7d2",
-    "fe6df2aa0589388172907f992f038db30902275d",
-    "589e59f00c576d2ad457f984ea9e7203d3a4d69b"
+    "d7ce66852e854bbc6f030156217a93b0e72e83fb",
+    "c7174dc1ad72405e92c04bf35f3c4c602630ae8a",
+    "d26ac1f5fedad77ca54e4692a7ddc0d387bd3130"
   )
   it("return the same SHA1 on both 32-bit and 64-bit OS", {
     for (i in seq_along(test.element)) {

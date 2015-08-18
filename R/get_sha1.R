@@ -6,7 +6,7 @@ sha1_digits <- function(which = c("base", "zapsmall", "coef")){
   switch(which,
     base = 14L,
     zapsmall = 7L,
-    coef = 6L # coef = 5L yields differences for some lmer models
+    coef = 4L # coef = 5L yields differences for some lmer models
   )
 }
 
