@@ -25,15 +25,18 @@ describe("get_sha1", {
     )
   })
   it("returns the correct SHA1", {
+    x.hex <- sprintf("%a", x.numeric)
+    exponent <- gsub("^.*p", "", x.hex) %>% as.integer()
+    zapsmall.hex <- floor(log2(10 ^ -sha1_digits("zapsmall")))
+    digits.hex <- ceiling(log(10 ^ sha1_digits("base"), base = 16))
+    mantissa <- x.hex %>% # select "large" numbers
+      gsub(".*x1\\.{0,1}", "", .) %>% gsub("p.*$", "", .) %>% # select mantissa
+      substring(1, digits.hex) %>% # select required precision
+      gsub("0$", "", .) # remove potential trailing zero's
+    negative <- x.hex %>% grepl("^-", .) %>% ifelse("-", "")
     expect_identical(
       get_sha1(x.numeric),
-      digest::digest(
-        sprintf(
-          paste0("%.", sha1_digits("base"), "e"),
-          zap_small(x.numeric, digits = sha1_digits("zapsmall"))
-        ),
-        algo = "sha1"
-      )
+      get_sha1(paste0(negative, mantissa, " ", exponent))
     )
     expect_that(
       get_sha1(letters),
@@ -78,34 +81,37 @@ describe("get_sha1", {
   )
 
   it("works with lm anova", {
-    z <- apply(anova.list[["lm"]], 1, function(y){
-      sprintf(
-        paste0("%.", sha1_digits("coef"), "e"),
-        zap_small(y, digits = sha1_digits("zapsmall"))
-      )
-    })
+    z <- apply(
+      anova.list[["lm"]],
+      1,
+      num_32_64,
+      digits = sha1_digits("coef"),
+      zapsmall = sha1_digits("zapsmall")
+    )
     expect_identical(
       get_sha1(anova.list[["lm"]]),
       get_sha1(z)
     )
   })
   it("works with glm anova", {
-    z <- apply(anova.list[["glm"]], 1, function(y){
-      sprintf(
-        paste0("%.", sha1_digits("coef"), "e"),
-        zap_small(y, digits = sha1_digits("zapsmall"))
-      )
-    })
+    z <- apply(
+      anova.list[["glm"]],
+      1,
+      num_32_64,
+      digits = sha1_digits("coef"),
+      zapsmall = sha1_digits("zapsmall")
+    )
     expect_identical(
       get_sha1(anova.list[["glm"]]),
       get_sha1(z)
     )
-    z <- apply(anova.list[["glm.test"]], 1, function(y){
-      sprintf(
-        paste0("%.", sha1_digits("coef"), "e"),
-        zap_small(y, digits = sha1_digits("zapsmall"))
-      )
-    })
+    z <- apply(
+      anova.list[["glm.test"]],
+      1,
+      num_32_64,
+      digits = sha1_digits("coef"),
+      zapsmall = sha1_digits("zapsmall")
+    )
     expect_identical(
       get_sha1(anova.list[["glm.test"]]),
       get_sha1(z)
@@ -139,6 +145,7 @@ describe("get_sha1", {
     matrix(letters),
     anova.list
   )
+
   cat("\ncorrect <- c(\n")
   cat(
     sprintf("  \"%s\"", sapply(test.element, get_sha1)),
@@ -148,47 +155,47 @@ describe("get_sha1", {
   correct <- c(
     "8d9c05ec7ae28b219c4c56edbce6a721bd68af82",
     "0df9019fab513592066cc292d412b9054575d844",
-    "37dadeab8d8ce7611f230f9524c1e8ab751c4a6a",
+    "f374b4a83af21bb028483fd33dfa811aca7abb96",
     "37dadeab8d8ce7611f230f9524c1e8ab751c4a6a",
     "37dadeab8d8ce7611f230f9524c1e8ab751c4a6a",
     "ad8d56a358f1c91717e506012ea43a9b700a8d51",
     "0f0714f1142eed0701166aa2d6dcdd798c8420e6",
-    "1ff7ec513ca937d95071b47e30f851941a92bb1a",
-    "1ff7ec513ca937d95071b47e30f851941a92bb1a",
+    "49731da30df853ee8959035e3e309df129ad5348",
+    "5db33863310fda479e9367aa8b69e339565fb312",
     "1f9928593251410322823fefea8c3ef79b4d0254",
     "c799247ef7cc5eb0a3544aa1aef1039e270579a4",
     "692ff1b9390cfc01625d8dbb850d04426e193889",
-    "4169b5d388e894b4098f28fa0b4fee47b37de2f2",
-    "f4623294f5eb0f986ff4eba641ff0a8310065c58",
+    "f4403adc0f5e5e270450150646a7ad0652783047",
+    "051deeb6fb87e61a7a5a35c80e3b8351f1531ec3",
     "3bc1c85261b958307340b7a8a9fcff3e2586516b",
     "3c23872b9b4e17b16c1d640fe3c29f251202b012",
     "0fc188b4fd874e5ea411a241feb0e247faada054",
     "188710fe63fedb3f4637db5eeb2ecdbc824aa179",
-    "5a060548dfd4768ad815793f06bcde05ff6a3675",
-    "dc7c6c739ca5f9b574beaf636fbbda58f10908cc",
+    "f3863e2ce42f3507b0d65b013b70c84804e246ef",
+    "78d23c7b572a943f697584705cc9514d32269bfd",
     "25228aa01875f7c88b51c299a332c6bd82257d06",
     "51fe9849f2b30d02c73cd7870d5d9b3a19e83654",
     "c165458381d503502e811a153f262fe6a1dfa55e",
     "692ff1b9390cfc01625d8dbb850d04426e193889",
-    "4169b5d388e894b4098f28fa0b4fee47b37de2f2",
-    "f4623294f5eb0f986ff4eba641ff0a8310065c58",
+    "f4403adc0f5e5e270450150646a7ad0652783047",
+    "051deeb6fb87e61a7a5a35c80e3b8351f1531ec3",
     "3bc1c85261b958307340b7a8a9fcff3e2586516b",
     "3c23872b9b4e17b16c1d640fe3c29f251202b012",
     "0fc188b4fd874e5ea411a241feb0e247faada054",
-    "1ff7ec513ca937d95071b47e30f851941a92bb1a",
-    "4d1e599d09ad910c1d489011fcd0a323504d891e",
-    "b68b33f773c469ad4545f178bb008eaae1f3f364",
-    "d219c0181a373e300b3105f725c38f2c671ad8e4",
-    "3abb744a28366898175dcbe82ca119aa9613d49c",
-    "11c63e11fb8461ff0812e46f2f0786b4a001c1db",
-    "896d064f1c18c01700cef7d69dcb70287a786994",
-    "32183afb55a90cd1b4cc539371a9c72fef2218a1",
-    "cee887a8ca753e55af23d30324eff1ae22a2e8c2",
-    "f4fa233a6047562a12d23c2ca79b0b5ff769c738",
-    "6e9a4aae63eb62ec7e653bd8d0602d096383dfd7",
-    "1f9d1e30e24da9c9e800c1e91b6dcd9653f5d267",
-    "c3b73f873bf07bc61b50e303aa02215dc19ec8e4",
-    "f4fa233a6047562a12d23c2ca79b0b5ff769c738",
+    "49731da30df853ee8959035e3e309df129ad5348",
+    "d1fafdecb299e9f16ba224ecb4a0601fd31859f5",
+    "cac51e723748aae54d21b79b40b48f9000f5e90e",
+    "91619e26fbae8cd58c353ee18689728c0c87d002",
+    "53371b092b9b535e58350b4a8078417c9a2419a1",
+    "19a58a3f233de56000e1a1f66ef538904cf3bebe",
+    "20864973f3a271ea8b27e2c75face8663d1a900c",
+    "980927373c7acbe1cf33fa98f653927da59f70b6",
+    "f5c3d80ad7d3253be3309ec910508a6e56c2f178",
+    "8c420b12a14e1ed1f348fee29e864544147c8796",
+    "00145b50b536d59ade3c6302593fc8f75db50782",
+    "64347b1b92bb235b29dcc7dc781fc483179c808f",
+    "c0b3c2ed33d9e88da6a73fa6956915c70ef38a20",
+    "710ded514e2bf24f2703c031577d5b5e10c1963a",
     "1f9928593251410322823fefea8c3ef79b4d0254",
     "ee6e7fdb03a0d35b3a6f499d0f8f610686551d51",
     "8e7f9fe32c49050c5ca146150fc58b93fbeea245",
@@ -215,9 +222,9 @@ describe("get_sha1", {
     "ef60fa66262167e7a31398b16fa762151c6d1b28",
     "a235e3cc7109def777a99e660b9829cea48ce9a4",
     "d19d82f849bad81a39da932d3087a60c78de82c1",
-    "dc997f32ef831d8d54c810592cc395d7af7fc004",
-    "5073c5522d885d71c69478cb308e2eb6059d8c7d",
-    "ea6588dff497249ea2a955c80bc8134da07ffaae"
+    "74cd85c820d0a1ad710d09fbba8a3c254ec6a7d2",
+    "fe6df2aa0589388172907f992f038db30902275d",
+    "589e59f00c576d2ad457f984ea9e7203d3a4d69b"
   )
   it("return the same SHA1 on both 32-bit and 64-bit OS", {
     for (i in seq_along(test.element)) {

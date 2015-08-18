@@ -10,19 +10,6 @@ sha1_digits <- function(which = c("base", "zapsmall", "coef")){
   )
 }
 
-#' Replace tiny numbers with zero
-#' @param x the numeric vector to check
-#' @param digits The minimal magnitude $10^-{digits}$
-#' @export
-#' @importFrom assertthat assert_that is.count
-zap_small <- function(x, digits = sha1_digits("zapsmall")){
-  assert_that(is.numeric(x))
-  assert_that(is.count(digits))
-
-  x[abs(x) < 10 ^ -digits] <- 0
-  return(x)
-}
-
 #' Calculate a SHA1 hash of an object
 #' @param x the object to calculate the SHA1
 #' @name get_sha1
@@ -53,15 +40,28 @@ setMethod(
 #' @importFrom digest digest
 setMethod(
   f = "get_sha1",
+  signature = "integer",
+  definition = function(x){
+    digest(x, algo = "sha1")
+  }
+)
+
+#' @rdname get_sha1
+#' @importFrom methods setMethod
+#' @importFrom digest digest
+#' @importFrom magrittr %>%
+setMethod(
+  f = "get_sha1",
   signature = "anova",
   definition = function(x){
-    z <- apply(x, 1, function(y){
-      sprintf(
-        paste0("%.", sha1_digits("coef"), "e"),
-        zap_small(y, digits = sha1_digits("zapsmall"))
-      )
-    })
-    get_sha1(z)
+    x %>%
+      apply(
+        1,
+        num_32_64,
+        digits = sha1_digits("coef"),
+        zapsmall = sha1_digits("zapsmall")
+      ) %>%
+      get_sha1
   }
 )
 
@@ -97,15 +97,12 @@ setMethod(
   f = "get_sha1",
   signature = "numeric",
   definition = function(x){
-    digest(
-      # needed to make results comparable between 32-bit and 64-bit
-      # signif() doesn't work in all situations
-      sprintf(
-        paste0("%.", sha1_digits("base"), "e"),
-        zap_small(x, digits = sha1_digits("zapsmall"))
-      ),
-      algo = "sha1"
-    )
+    x %>%
+      num_32_64(
+        digits = sha1_digits("base"),
+        zapsmall = sha1_digits("zapsmall")
+      ) %>%
+      get_sha1()
   }
 )
 

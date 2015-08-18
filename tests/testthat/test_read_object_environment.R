@@ -33,7 +33,7 @@ describe("read_object_environment()", {
     )
     expect_that(
       read_object_environment(object = missing.object, env = env, warn = FALSE),
-      not(gives_warning())
+      testthat::not(gives_warning())
     )
   })
 })
