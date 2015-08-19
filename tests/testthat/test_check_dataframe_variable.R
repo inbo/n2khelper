@@ -10,52 +10,43 @@ describe("check_dataframe_variable()", {
   df.matrix <- as.matrix(df)
 
   it("checks if df is a data.frame", {
-    expect_that(
+    expect_error(
       check_dataframe_variable(
         df = "",
         variable = variable,
         name = name,
         error = error
       ),
-      throws_error(paste(name, "must be a data.frame"))
+      "inherits\\(df, \"data\\.frame\\)\" | inherits\\(df, \"matrix\"\\)"
     )
   })
   it("checks if variable is a non-empty character without missing values", {
-    expect_that(
+    expect_error(
       check_dataframe_variable(
         df = df,
         variable = 10,
         name = name,
         error = error
       ),
-      throws_error("variable must be character")
+      "Error : is\\.list\\(variable\\) | is\\.character\\(variable\\) is not TRUE"
     )
-    expect_that(
+    expect_error(
       check_dataframe_variable(
         df = df,
         variable = c(variable, NA),
         name = name,
         error = error
       ),
-      throws_error(
-        "Error in na.fail.default\\(x\\) : missing values in object.*"
-      )
+      "variable contains 1 missing values"
     )
-    expect_that(
+    expect_error(
       check_dataframe_variable(
         df = df,
         variable = character(0),
         name = name,
         error = error
       ),
-      throws_error("'variable' must contain at least one value")
-    )
-  })
-
-  it("uses 'df' as default name", {
-    expect_that(
-      check_dataframe_variable(df = "", variable = variable, error = error),
-      throws_error("df must be a data.frame")
+      "length\\(variable\\) not greater than 0"
     )
   })
 

@@ -20,28 +20,23 @@
 #'  df = data.frame(a = integer(0)),
 #'  variable = list(a = c("integer", "numeric"))
 #' )
+#' @importFrom assertthat assert_that is.string is.flag noNA
 check_dataframe_variable <- function(df, variable, name = "df", error = TRUE){
-  name <- check_single_character(x = name, name = "name")
-  if (!class(df) %in% c("data.frame", "matrix")) {
-    stop(name, " must be a data.frame")
-  }
-  error <- check_single_logical(x = error, name = "error")
+  assert_that(is.string(name))
+  assert_that(inherits(df, "data.frame") | inherits(df, "matrix"))
+  assert_that(is.flag(error))
+  assert_that(noNA(error))
+  assert_that(is.list(variable) | is.character(variable))
 
-  if (class(variable) == "list") {
+  if (inherits(variable, "list")) {
     required.class <- variable
     variable <- names(required.class)
   } else {
     required.class <- NULL
   }
 
-  variable <- check_character(
-    x = variable,
-    name = "variable",
-    na.action = na.fail
-  )
-  if (length(variable) == 0) {
-    stop("'variable' must contain at least one value")
-  }
+  assert_that(length(variable) > 0)
+  assert_that(noNA(variable))
 
   available <- variable %in% colnames(df)
   if (!all(available)) {
