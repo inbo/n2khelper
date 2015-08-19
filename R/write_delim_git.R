@@ -42,7 +42,7 @@ setMethod(
   f = "write_delim_git",
   signature = signature(connection = "gitConnection"),
   definition = function(x, file, connection, ...){
-    if (class(x) != "data.frame") {
+    if (!inherits(x, "data.frame")) {
       stop("x is not a data.frame")
     }
     file <- check_single_character(x = file, name = "file")

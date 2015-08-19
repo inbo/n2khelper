@@ -15,7 +15,7 @@ odbc_insert <- function(
   append = TRUE,
   rows.at.time = 1000
 ){
-  if (!is.data.frame(data)) {
+  if (!inherits(data, "data.frame")) {
     stop("data must be a data.frame")
   }
   if (nrow(data) == 0) {
