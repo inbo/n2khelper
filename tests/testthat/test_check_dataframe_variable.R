@@ -162,4 +162,15 @@ describe("check_dataframe_variable()", {
       is_false()
     )
   })
+
+  it("handles tbl_df from dplyr", {
+    expect_true(
+      check_dataframe_variable(
+        df = dplyr::as.tbl(df),
+        variable = variable.subset,
+        name = name,
+        error = error
+      )
+    )
+  })
 })

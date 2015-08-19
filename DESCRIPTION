@@ -19,6 +19,7 @@ Imports:
 License: GPL-3
 LazyData: true
 Suggests:
+    dplyr,
     testthat
 Collate:
     'gitConnection_class.R'
