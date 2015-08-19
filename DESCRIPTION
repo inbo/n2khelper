@@ -14,12 +14,11 @@ Imports:
     lubridate,
     methods,
     assertthat,
-    magrittr,
+    dplyr,
     RODBC
 License: GPL-3
 LazyData: true
 Suggests:
-    dplyr,
     testthat
 Collate:
     'gitConnection_class.R'

@@ -10,7 +10,7 @@
 #' @return a character vector
 #' @export
 #' @importFrom assertthat assert_that is.count
-#' @importFrom magrittr %>%
+#' @importFrom dplyr %>%
 num_32_64 <- function(x, digits = 6, zapsmall = 7){
   assert_that(is.numeric(x))
   assert_that(is.count(digits))
