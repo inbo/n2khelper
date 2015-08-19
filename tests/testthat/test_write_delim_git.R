@@ -70,6 +70,17 @@ describe("write_delim_git()", {
       is_identical_to(git2r::hashfile(full.file.path))
     )
   })
+  it("can handle tbl_df", {
+    expect_that(
+      write_delim_git(
+        x = dplyr::as.tbl(x),
+        file = file,
+        local.path = local.path,
+        connection = connection
+      ),
+      is_identical_to(git2r::hashfile(full.file.path))
+    )
+  })
 
   it("stages the file", {
     expect_that(
