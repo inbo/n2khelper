@@ -28,7 +28,7 @@ describe("check_dataframe_variable()", {
         name = name,
         error = error
       ),
-      "Error : is\\.list\\(variable\\) | is\\.character\\(variable\\) is not TRUE"
+"Error : is\\.list\\(variable\\) | is\\.character\\(variable\\) is not TRUE"
     )
     expect_error(
       check_dataframe_variable(
