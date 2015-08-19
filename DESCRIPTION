@@ -13,6 +13,8 @@ Imports:
     plyr,
     lubridate,
     methods,
+    assertthat,
+    magrittr,
     RODBC
 License: GPL-3
 LazyData: true
@@ -48,6 +50,7 @@ Collate:
     'is_git_repo.R'
     'list_files_git.R'
     'match_nbn_key.R'
+    'num_32_64.R'
     'odbc_connect.R'
     'odbc_get_id.R'
     'odbc_get_multi_id.R'

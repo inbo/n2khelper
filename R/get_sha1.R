@@ -1,6 +1,13 @@
 #' Define the number of digits to use when rounding numeric values
-sha1_digits <- function(){
-  15
+#' @param which The number of digits for each usage
+#' @export
+sha1_digits <- function(which = c("base", "zapsmall", "coef")){
+  which <- match.arg(which)
+  switch(which,
+    base = 14L,
+    zapsmall = 7L,
+    coef = 4L # coef = 5L yields differences for some lmer models
+  )
 }
 
 #' Calculate a SHA1 hash of an object
@@ -28,6 +35,35 @@ setMethod(
   }
 )
 
+#' @rdname get_sha1
+#' @importFrom methods setMethod
+#' @importFrom digest digest
+setMethod(
+  f = "get_sha1",
+  signature = "integer",
+  definition = function(x){
+    digest(x, algo = "sha1")
+  }
+)
+
+#' @rdname get_sha1
+#' @importFrom methods setMethod
+#' @importFrom digest digest
+#' @importFrom magrittr %>%
+setMethod(
+  f = "get_sha1",
+  signature = "anova",
+  definition = function(x){
+    x %>%
+      apply(
+        1,
+        num_32_64,
+        digits = sha1_digits("coef"),
+        zapsmall = sha1_digits("zapsmall")
+      ) %>%
+      get_sha1
+  }
+)
 
 #' @rdname get_sha1
 #' @importFrom methods setMethod
@@ -61,11 +97,12 @@ setMethod(
   f = "get_sha1",
   signature = "numeric",
   definition = function(x){
-    digest(
-      # needed to make results comparable between 32-bit and 64-bit
-      signif(x, digits = sha1_digits()),
-      algo = "sha1"
-    )
+    x %>%
+      num_32_64(
+        digits = sha1_digits("base"),
+        zapsmall = sha1_digits("zapsmall")
+      ) %>%
+      get_sha1()
   }
 )
 
@@ -78,9 +115,10 @@ setMethod(
   definition = function(x){
     # needed to make results comparable between 32-bit and 64-bit
     if (class(x[1, 1]) == "numeric") {
-      x <- signif(x, digits = sha1_digits())
+      get_sha1(as.vector(x))
+    } else {
+      digest(x, algo = "sha1")
     }
-    digest(x, algo = "sha1")
   }
 )
 
@@ -92,8 +130,6 @@ setMethod(
   signature = "data.frame",
   definition = function(x){
     # needed to make results comparable between 32-bit and 64-bit
-    numeric.field <- which(sapply(x, class) == "numeric")
-    x[, numeric.field] <- signif(x[, numeric.field], digits = sha1_digits())
-    digest(x, algo = "sha1")
+    digest(sapply(x, get_sha1), algo = "sha1")
   }
 )
