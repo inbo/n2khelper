@@ -3,9 +3,13 @@
 #' @rdname gitConnection-class
 #' @param repo.path The path of the root of the repository
 #' @param local.path A path within the repository
-#' @param key Optional: the path to a private ssh key. The public key is assumed to have the same path with a '.pub' extension. Using in case of ssh authentication.
-#' @param username The optional username used in case of  https authentication. Ignored when \code{key} is provided.
-#' @param password The password required for the ssh key or the username. Should be missing when the ssh-key doesn't require a password.
+#' @param key Optional: the path to a private ssh key. The public key is assumed
+#'    to have the same path with a '.pub' extension. Using in case of ssh
+#'    authentication.
+#' @param username The optional username used in case of  https authentication.
+#'    Ignored when \code{key} is provided.
+#' @param password The password required for the ssh key or the username. Should
+#'    be missing when the ssh-key doesn't require a password.
 #' @export
 #' @importFrom methods new
 #' @importFrom git2r repository config cred_ssh_key cred_user_pass
@@ -31,7 +35,9 @@ git_connection <- function(
       )
     )
   }
+
   if (missing(username)) {
+
     if (missing(password)) {
       return(
         new(
@@ -45,6 +51,7 @@ git_connection <- function(
         )
       )
     }
+
     return(
       new(
         "gitConnection",
@@ -58,6 +65,7 @@ git_connection <- function(
       )
     )
   }
+
   return(
     new(
       "gitConnection",
