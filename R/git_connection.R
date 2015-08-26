@@ -12,6 +12,7 @@
 #'    be missing when the ssh-key doesn't require a password.
 #' @export
 #' @importFrom methods new
+#' @importFrom assertthat assert_that is.string
 #' @importFrom git2r repository config cred_ssh_key cred_user_pass
 #' @include gitConnection_class.R
 git_connection <- function(
@@ -21,6 +22,7 @@ git_connection <- function(
   username,
   password
 ){
+  assert_that(is.string(local.path))
   repo.path <- check_git_repo(path = repo.path)
   repo <- repository(repo.path)
   config(repo, user.name = "n2khelper", user.email = "bmk@inbo.be")
@@ -37,6 +39,7 @@ git_connection <- function(
   }
 
   if (missing(username)) {
+    assert_that(is.string(key))
 
     if (missing(password)) {
       return(
@@ -46,12 +49,13 @@ git_connection <- function(
           LocalPath = local.path,
           Credentials = cred_ssh_key(
             publickey = paste0(key, ".pub"),
-            privatekey = check_single_character(key, name = "key")
+            privatekey = key
           )
         )
       )
     }
 
+    assert_that(is.string(password))
     return(
       new(
         "gitConnection",
@@ -59,21 +63,23 @@ git_connection <- function(
         LocalPath = local.path,
         Credentials = cred_ssh_key(
           publickey = paste0(key, ".pub"),
-          privatekey = check_single_character(key, name = "key"),
-          passphrase = check_single_character(password, name = "password")
+          privatekey = key,
+          passphrase = password
         )
       )
     )
   }
 
+  assert_that(is.string(username))
+  assert_that(is.string(password))
   return(
     new(
       "gitConnection",
       Repository = repo,
       LocalPath = local.path,
       Credentials = cred_user_pass(
-        username = check_single_character(username, name = "username"),
-        password = check_single_character(password, name = "password")
+        username = username,
+        password = password
       )
     )
   )
