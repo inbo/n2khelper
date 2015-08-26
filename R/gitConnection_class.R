@@ -27,6 +27,8 @@ setClass(
 )
 
 #' @importFrom methods setValidity
+#' @importFrom git2r repository config
+#' @importFrom assertthat assert_that has_name
 setValidity(
   "gitConnection",
   function(object){
@@ -42,6 +44,10 @@ setValidity(
         )
       )
     }
+    repo <- repository(root)
+    repo.config <- config(repo)
+    assert_that(has_name(repo.config$local, "user.name"))
+    assert_that(has_name(repo.config$local, "user.email"))
     return(TRUE)
   }
 )

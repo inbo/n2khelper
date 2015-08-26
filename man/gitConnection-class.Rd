@@ -13,11 +13,15 @@ git_connection(repo.path, local.path = ".", key, username, password)
 
 \item{local.path}{A path within the repository}
 
-\item{key}{Optional: the path to a private ssh key. The public key is assumed to have the same path with a '.pub' extension. Using in case of ssh authentication.}
+\item{key}{Optional: the path to a private ssh key. The public key is assumed
+to have the same path with a '.pub' extension. Using in case of ssh
+authentication.}
 
-\item{username}{The optional username used in case of  https authentication. Ignored when \code{key} is provided.}
+\item{username}{The optional username used in case of  https authentication.
+Ignored when \code{key} is provided.}
 
-\item{password}{The password required for the ssh key or the username. Should be missing when the ssh-key doesn't require a password.}
+\item{password}{The password required for the ssh key or the username. Should
+be missing when the ssh-key doesn't require a password.}
 }
 \description{
 The gitConnection class
