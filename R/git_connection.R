@@ -8,7 +8,7 @@
 #' @param password The password required for the ssh key or the username. Should be missing when the ssh-key doesn't require a password.
 #' @export
 #' @importFrom methods new
-#' @importFrom git2r repository cred_ssh_key cred_user_pass
+#' @importFrom git2r repository config cred_ssh_key cred_user_pass
 #' @include gitConnection_class.R
 git_connection <- function(
   repo.path,
@@ -18,11 +18,14 @@ git_connection <- function(
   password
 ){
   repo.path <- check_git_repo(path = repo.path)
+  repo <- repository(repo.path)
+  config(repo, user.name = "n2khelper", user.email = "bmk@inbo.be")
+
   if (missing(key) & missing(username)) {
     return(
       new(
         "gitConnection",
-        Repository = repository(repo.path),
+        Repository = repo,
         LocalPath = local.path,
         Credentials = NULL
       )
@@ -33,7 +36,7 @@ git_connection <- function(
       return(
         new(
           "gitConnection",
-          Repository = repository(repo.path),
+          Repository = repo,
           LocalPath = local.path,
           Credentials = cred_ssh_key(
             publickey = paste0(key, ".pub"),
@@ -45,7 +48,7 @@ git_connection <- function(
     return(
       new(
         "gitConnection",
-        Repository = repository(repo.path),
+        Repository = repo,
         LocalPath = local.path,
         Credentials = cred_ssh_key(
           publickey = paste0(key, ".pub"),
@@ -58,7 +61,7 @@ git_connection <- function(
   return(
     new(
       "gitConnection",
-      Repository = repository(repo.path),
+      Repository = repo,
       LocalPath = local.path,
       Credentials = cred_user_pass(
         username = check_single_character(username, name = "username"),
