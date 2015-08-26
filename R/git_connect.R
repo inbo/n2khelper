@@ -56,7 +56,11 @@ git_connect <- function(
       Datasource.Description = '", data.source.name, "' AND
       DatasourceType.Description = 'git, tab delimited ", type, "'"
   )
-  connection <- sqlQuery(channel = channel, query = sql)
+  connection <- sqlQuery(
+    channel = channel,
+    query = sql,
+    stringsAsFactors = FALSE
+  )
 
   if (nrow(connection) == 0) {
     stop("No connection information found for '", data.source.name, "'.")
