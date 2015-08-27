@@ -10,6 +10,8 @@
 #'    Ignored when \code{key} is provided.
 #' @param password The password required for the ssh key or the username. Should
 #'    be missing when the ssh-key doesn't require a password.
+#' @param commit.user the name of the user how will commit
+#' @param commit.email the email of the user how will commit
 #' @export
 #' @importFrom methods new
 #' @importFrom assertthat assert_that is.string
@@ -20,12 +22,16 @@ git_connection <- function(
   local.path = ".",
   key,
   username,
-  password
+  password,
+  commit.user,
+  commit.email
 ){
   assert_that(is.string(local.path))
+  assert_that(is.string(commit.user))
+  assert_that(is.string(commit.email))
   repo.path <- check_git_repo(path = repo.path)
   repo <- repository(repo.path)
-  config(repo, user.name = "n2khelper", user.email = "bmk@inbo.be")
+  config(repo, user.name = commit.user, user.email = commit.email)
 
   if (missing(key) & missing(username)) {
     return(
@@ -33,7 +39,9 @@ git_connection <- function(
         "gitConnection",
         Repository = repo,
         LocalPath = local.path,
-        Credentials = NULL
+        Credentials = NULL,
+        CommitUser = commit.user,
+        CommitEmail = commit.email
       )
     )
   }
@@ -50,7 +58,9 @@ git_connection <- function(
           Credentials = cred_ssh_key(
             publickey = paste0(key, ".pub"),
             privatekey = key
-          )
+          ),
+          CommitUser = commit.user,
+          CommitEmail = commit.email
         )
       )
     }
@@ -65,13 +75,17 @@ git_connection <- function(
           publickey = paste0(key, ".pub"),
           privatekey = key,
           passphrase = password
-        )
+        ),
+        CommitUser = commit.user,
+        CommitEmail = commit.email
       )
     )
   }
 
   assert_that(is.string(username))
+  assert_that(username != "")
   assert_that(is.string(password))
+  assert_that(password != "")
   return(
     new(
       "gitConnection",
@@ -80,7 +94,9 @@ git_connection <- function(
       Credentials = cred_user_pass(
         username = username,
         password = password
-      )
+      ),
+      CommitUser = commit.user,
+      CommitEmail = commit.email
     )
   )
 }

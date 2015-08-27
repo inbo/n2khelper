@@ -2,13 +2,20 @@ context("list files for a git repository")
 describe("list_files_git()", {
   files <- sort(c("test.txt", "0123456.txt", "test", "0123456"))
   local.path <- "test"
-  connection <- tempfile(pattern="git2r-")
+  connection <- tempfile(pattern = "git2r-")
   connection <- normalizePath(connection, winslash = "/", mustWork = FALSE)
+  commit.user <- "me"
+  commit.email <- "me@me.com"
 
 
   it("stops is connection is not a git repository", {
     expect_that(
-      list_files_git(local.path = local.path, connection = connection),
+      list_files_git(
+        local.path = local.path,
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
+      ),
       throws_error(paste0("'", connection, "' is not a directory"))
     )
   })
@@ -20,7 +27,12 @@ describe("list_files_git()", {
   full.path <- normalizePath(full.path, winslash = "/", mustWork = FALSE)
   it("stops is the local.path doesn't exist", {
     expect_that(
-      list_files_git(local.path = local.path, connection = connection),
+      list_files_git(
+        local.path = local.path,
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
+      ),
       throws_error(
         paste0("'", connection, "/", local.path, "' is not a directory")
       )
@@ -34,7 +46,9 @@ describe("list_files_git()", {
       list_files_git(
         local.path = local.path,
         pattern = "^[0123456789].*\\.txt$",
-        connection = connection
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
       ),
       is_identical_to(files[grep("^[0123456789].*\\.txt$", files)])
     )
@@ -42,19 +56,28 @@ describe("list_files_git()", {
       list_files_git(
         local.path = local.path,
         pattern = "\\.txt$",
-        connection = connection
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
       ),
       is_identical_to(files[grep("\\.txt$", files)])
     )
     expect_that(
-      list_files_git(local.path = local.path, connection = connection),
+      list_files_git(
+        local.path = local.path,
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
+      ),
       is_identical_to(files)
     )
     expect_that(
       list_files_git(
         local.path = local.path,
         pattern = ".exe",
-        connection = connection
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
       ),
       is_identical_to(character(0))
     )

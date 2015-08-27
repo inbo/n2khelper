@@ -6,7 +6,8 @@
 \alias{git_connection}
 \title{The gitConnection class}
 \usage{
-git_connection(repo.path, local.path = ".", key, username, password)
+git_connection(repo.path, local.path = ".", key, username, password,
+  commit.user, commit.email)
 }
 \arguments{
 \item{repo.path}{The path of the root of the repository}
@@ -22,6 +23,10 @@ Ignored when \code{key} is provided.}
 
 \item{password}{The password required for the ssh key or the username. Should
 be missing when the ssh-key doesn't require a password.}
+
+\item{commit.user}{the name of the user how will commit}
+
+\item{commit.email}{the email of the user how will commit}
 }
 \description{
 The gitConnection class
@@ -34,6 +39,8 @@ Open a git connection
    \item{\code{Repository}}{a git repository}
    \item{\code{LocalPath}}{a subdirectory wihtin the repository}
    \item{\code{Credentials}}{the credentials for the repository}
+   \item{\code{CommitUser}}{the name of the user how will commit}
+   \item{\code{CommitEmail}}{the email of the user how will commit}
   }
 }
 

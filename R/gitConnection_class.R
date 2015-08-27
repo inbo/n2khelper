@@ -9,6 +9,8 @@ setClassUnion("gitCredentials", c("NULL", "cred_user_pass", "cred_ssh_key"))
 #'    \item{\code{Repository}}{a git repository}
 #'    \item{\code{LocalPath}}{a subdirectory wihtin the repository}
 #'    \item{\code{Credentials}}{the credentials for the repository}
+#'    \item{\code{CommitUser}}{the name of the user how will commit}
+#'    \item{\code{CommitEmail}}{the email of the user how will commit}
 #'   }
 #' @name gitConnection-class
 #' @rdname gitConnection-class
@@ -22,16 +24,20 @@ setClass(
   representation = representation(
     Repository = "git_repository",
     LocalPath = "character",
-    Credentials = "gitCredentials"
+    Credentials = "gitCredentials",
+    CommitUser = "character",
+    CommitEmail = "character"
   )
 )
 
 #' @importFrom methods setValidity
 #' @importFrom git2r repository config
-#' @importFrom assertthat assert_that has_name
+#' @importFrom assertthat assert_that is.string has_name
 setValidity(
   "gitConnection",
   function(object){
+    assert_that(is.string(object@CommitUser))
+    assert_that(is.string(object@CommitEmail))
     root <- paste(object@Repository@path, ".", sep = "/")
     root <- check_path(path = root, type = "directory")
     full.path <- paste(root, object@LocalPath, sep = "/")
@@ -48,6 +54,8 @@ setValidity(
     repo.config <- config(repo)
     assert_that(has_name(repo.config$local, "user.name"))
     assert_that(has_name(repo.config$local, "user.email"))
+    assert_that(repo.config$local$user.name == object@CommitUser)
+    assert_that(repo.config$local$user.email == object@CommitEmail)
     return(TRUE)
   }
 )
