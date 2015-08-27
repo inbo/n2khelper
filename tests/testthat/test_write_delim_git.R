@@ -1,5 +1,7 @@
 context("write data.frame to git")
 describe("write_delim_git()", {
+  commit.user <- "me"
+  commit.email <- "me@me.com"
   x <- data.frame(0)
   x1 <- data.frame(1)
   file <- "test.txt"
@@ -16,7 +18,9 @@ describe("write_delim_git()", {
         x = x,
         file = file,
         local.path = local.path,
-        connection = connection
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
       ),
       throws_error(paste0("'", connection, "' is not a directory"))
     )
@@ -31,7 +35,9 @@ describe("write_delim_git()", {
         x = x,
         file = file,
         local.path = local.path,
-        connection = connection
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
       ),
       throws_error(paste0(
         "'",
@@ -52,7 +58,9 @@ describe("write_delim_git()", {
         x = matrix(0),
         file = file,
         local.path = local.path,
-        connection = connection
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
       ),
       throws_error("x is not a data.frame")
     )
@@ -65,7 +73,9 @@ describe("write_delim_git()", {
         x = x,
         file = file,
         local.path = local.path,
-        connection = connection
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
       ),
       is_identical_to(git2r::hashfile(full.file.path))
     )
@@ -76,7 +86,9 @@ describe("write_delim_git()", {
         x = dplyr::as.tbl(x),
         file = file,
         local.path = local.path,
-        connection = connection
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
       ),
       is_identical_to(git2r::hashfile(full.file.path))
     )
@@ -92,7 +104,9 @@ describe("write_delim_git()", {
       x = x1,
       file = file,
       local.path = local.path,
-      connection = connection
+      connection = connection,
+      commit.user = commit.user,
+      commit.email = commit.email
     )
     expect_that(
       git2r::status(repo)$staged$modified,
