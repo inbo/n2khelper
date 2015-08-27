@@ -2,10 +2,11 @@ box: rocker/hadleyverse
 build:
   steps:
     - script:
-        name: install RODBC
+        name: install dependencies not handled by jimhester/r-dependencies
         code: |
           apt-get update -y
           apt-get install -y r-cran-RODBC
+          Rscript -e 'devtools::install_github("ropensci/git2r")'
     - jimhester/r-dependencies
     - jimhester/r-check
     - jimhester/r-coverage
