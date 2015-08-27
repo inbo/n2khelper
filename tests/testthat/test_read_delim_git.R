@@ -15,7 +15,9 @@ describe("read_delim_git()", {
       read_delim_git(
         file = file,
         local.path = local.path,
-        connection = connection
+        connection = connection,
+        commit.user = "me",
+        commit.email = "me@me.com"
       ),
       throws_error(paste0("'", connection, "' is not a directory"))
     )
@@ -29,7 +31,9 @@ describe("read_delim_git()", {
       read_delim_git(
         file = file,
         local.path = local.path,
-        connection = connection
+        connection = connection,
+        commit.user = "me",
+        commit.email = "me@me.com"
       ),
       throws_error(
         paste0("'", repo@path, "/", local.path, "/", file, "' is not a file")
@@ -40,14 +44,18 @@ describe("read_delim_git()", {
     x = df,
     file = file,
     local.path = local.path,
-    connection = connection
+    connection = connection,
+    commit.user = "me",
+    commit.email = "me@me.com"
   )
   it("read the tab-delimited file", {
     expect_that(
       read_delim_git(
         file = file,
         local.path = local.path,
-        connection = connection
+        connection = connection,
+        commit.user = "me",
+        commit.email = "me@me.com"
       ),
       is_equivalent_to(df)
     )

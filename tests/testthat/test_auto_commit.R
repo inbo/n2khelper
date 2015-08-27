@@ -3,6 +3,8 @@ describe("auto_commit()", {
   package <- "test"
   user <- "test"
   pwd <- "test"
+  commit.user <- "me"
+  commit.email <- "me@me.com"
 
   # function to create and stage a file
   dummy_add <- function(connection){
@@ -18,7 +20,7 @@ describe("auto_commit()", {
   dir.create(connection)
   repo_bare <- git2r::init(origin.path, bare = TRUE)
   repo <- git2r::clone(origin.path, connection)
-  git2r::config(repo, user.name = "me", user.email = "me@me.com")
+  git2r::config(repo, user.name = commit.user, user.email = commit.email)
   dummy_add(connection)
   git2r::commit(repo, "inital")
   git2r::push(repo, "origin", "refs/heads/master")
@@ -27,18 +29,33 @@ describe("auto_commit()", {
      TRUE", {
     dummy_add(connection = connection)
     expect_that(
-      auto_commit(package = package, connection = connection),
+      auto_commit(
+        package = package,
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
+      ),
       gives_warning("changes committed but not pushed")
     )
     dummy_add(connection = connection)
     expect_that(
-      auto_commit(package = package, connection = connection),
+      auto_commit(
+        package = package,
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
+      ),
       is_true()
     )
   })
   it("returns TRUE when nothing to commit", {
     expect_that(
-      auto_commit(package = package, connection = connection),
+      auto_commit(
+        package = package,
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
+      ),
       is_true()
     )
   })
@@ -49,7 +66,9 @@ describe("auto_commit()", {
         package = package,
         connection = connection,
         username = user,
-        password = pwd
+        password = pwd,
+        commit.user = commit.user,
+        commit.email = commit.email
       ),
       is_true()
     )
@@ -60,7 +79,9 @@ describe("auto_commit()", {
       package = package,
       connection = connection,
       username = user,
-      password = pwd
+      password = pwd,
+      commit.user = commit.user,
+      commit.email = commit.email
     )
     expect_that(
       git2r::reflog(repo)[[1]]@message,
