@@ -7,7 +7,10 @@ build:
           apt-get update -y
           apt-get install -y r-cran-RODBC
           apt-get install -y libssh2-1-dev
-          Rscript -e 'devtools::install_github("ropensci/git2r")'
     - jimhester/r-dependencies
+    - script:
+        name: install git2r
+        code: |
+          Rscript -e 'devtools::install_github("ropensci/git2r")'
     - jimhester/r-check
     - jimhester/r-coverage
