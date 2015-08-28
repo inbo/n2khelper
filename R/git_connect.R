@@ -2,7 +2,9 @@
 #'
 #' The details are stored in the results database.
 #' @inheritParams odbc_connect
+#' @inheritParams git_connection
 #' @param type Use 'ssh' or 'https' for authentication
+#' @importFrom assertthat assert_that is.string
 #' @importFrom RODBC sqlQuery odbcClose odbcDriverConnect
 #' @importFrom git2r repository cred_user_pass
 #' @export
@@ -11,10 +13,12 @@ git_connect <- function(
   channel,
   type = c("ssh", "https"),
   username = character(0),
-  password = character(0)
+  password = character(0),
+  commit.user,
+  commit.email
 ){
   type <- match.arg(type)
-  data.source.name <- check_single_character(data.source.name)
+  assert_that(is.string(data.source.name))
   check_dbtable_variable(
     table = "Datasource",
     variable = c(
@@ -109,7 +113,9 @@ git_connect <- function(
         repo.path = repo.path,
         local.path = path,
         key = username,
-        password = password
+        password = password,
+        commit.user = commit.user,
+        commit.email = commit.email
       )
     )
   }
@@ -118,7 +124,9 @@ git_connect <- function(
       repo.path = repo.path,
       local.path = path,
       username = username,
-      password = password
+      password = password,
+      commit.user = commit.user,
+      commit.email = commit.email
     )
   ) #nocov end
 }
