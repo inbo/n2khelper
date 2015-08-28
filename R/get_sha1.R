@@ -49,7 +49,7 @@ setMethod(
 #' @rdname get_sha1
 #' @importFrom methods setMethod
 #' @importFrom digest digest
-#' @importFrom magrittr %>%
+#' @importFrom dplyr %>%
 setMethod(
   f = "get_sha1",
   signature = "anova",

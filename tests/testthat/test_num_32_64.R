@@ -1,5 +1,4 @@
 context("num_32_64")
-expect_true(require(magrittr))
 # zap small numbers to zero
 zapsmall <- 1:10
 border <- 2 ^ floor(log2(10 ^ -zapsmall))

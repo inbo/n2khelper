@@ -7,6 +7,7 @@
 #' @param rows.at.time Number of rows to insert in one SQL statement
 #' @export
 #' @importFrom RODBC sqlClear sqlQuery
+#' @importFrom dplyr mutate_each_ funs
 odbc_insert <- function(
   data,
   table,
@@ -48,17 +49,19 @@ odbc_insert <- function(
 
   relevant <- which(type == "factor")
   if (length(relevant) > 0) {
-    data[, relevant] <- sapply(relevant, function(i){
-      levels(data[, i])[data[, i]]
-    })
+    unfactor <- function(x){
+      levels(x)[x]
+    }
+    data <- mutate_each_(data, funs(unfactor), vars= names(relevant))
     type[relevant] <- "character"
   }
 
   relevant <- which(type == "character")
   if (length(relevant) > 0) {
-    data[, relevant] <- sapply(relevant, function(i){
-      gsub("\\'", "\\'\\'", data[, i])
-    })
+    replace_quote <- function(x){
+      gsub("\\'", "\\'\\'", x)
+    }
+    data <- mutate_each_(data, funs(replace_quote), vars= names(relevant))
     old.fancy.quotes <- getOption("useFancyQuotes")
     options(useFancyQuotes = FALSE)
     data[, relevant] <- apply(
