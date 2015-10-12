@@ -9,6 +9,7 @@
 #' @inheritParams odbc_insert
 #' @export
 #' @return a data.frame with data and the id's
+#' @importFrom assertthat assert_that is.flag noNA
 #' @importFrom digest digest
 #' @importFrom RODBC sqlQuery odbcClose
 odbc_get_multi_id <- function(
@@ -21,11 +22,14 @@ odbc_get_multi_id <- function(
   select = TRUE,
   rows.at.time = 1000
 ){
-  create <- check_single_logical(create, name = "create")
-  select <- check_single_logical(select, name = "select")
+  assert_that(is.flag(create))
+  assert_that(is.flag(select))
+  assert_that(noNA(create))
+  assert_that(noNA(select))
   if (! create && ! select) {
     stop("The combination of select = FALSE and create = FALSE is meaningless")
   }
+
   check_dataframe_variable(df = data, variable = merge.field, name = "data")
   check_dbtable_variable(
     table = table,

@@ -6,6 +6,7 @@
 #' @param append Append the data or overwrite existing rows?
 #' @param rows.at.time Number of rows to insert in one SQL statement
 #' @export
+#' @importFrom assertthat assert_that is.count
 #' @importFrom RODBC sqlClear sqlQuery
 odbc_insert <- function(
   data,
@@ -21,10 +22,7 @@ odbc_insert <- function(
   if (nrow(data) == 0) {
     return(invisible(-2))
   }
-  rows.at.time <- check_single_strictly_positive_integer(
-    rows.at.time,
-    name = "rows.at.time"
-  )
+  assert_that(is.count(rows.at.time))
   if (rows.at.time > 1000) {
     rows.at.time <- 1000
     warning("'rows.at.time' is limited to 1000")
