@@ -56,16 +56,10 @@ odbc_insert <- function(
 
   relevant <- which(type == "character")
   if (length(relevant) > 0) {
-    data[, relevant] <- sapply(relevant, function(i){
-      gsub("\\'", "\\'\\'", data[, i])
-    })
+    data[, relevant] <- gsub("\\'", "\\'\\'", as.matrix(data[, relevant]))
     old.fancy.quotes <- getOption("useFancyQuotes")
     options(useFancyQuotes = FALSE)
-    data[, relevant] <- apply(
-      data[, relevant, drop = FALSE],
-      2,
-      sQuote
-    )
+    data[, relevant] <- sQuote(as.matrix(data[, relevant, drop = FALSE]))
     options(useFancyQuotes = old.fancy.quotes)
     type[relevant] <- "done"
   }
