@@ -10,6 +10,7 @@ Depends:
 Imports:
     git2r,
     digest,
+    dplyr,
     plyr,
     lubridate,
     methods,
@@ -19,7 +20,6 @@ Imports:
 License: GPL-3
 LazyData: true
 Suggests:
-    dplyr,
     testthat
 Collate:
     'gitConnection_class.R'
