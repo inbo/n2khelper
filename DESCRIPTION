@@ -15,7 +15,6 @@ Imports:
     lubridate,
     methods,
     assertthat,
-    magrittr,
     RODBC
 License: GPL-3
 LazyData: true
