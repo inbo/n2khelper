@@ -7,7 +7,7 @@
 #' @param rows.at.time Number of rows to insert in one SQL statement
 #' @export
 #' @importFrom assertthat assert_that is.count
-#' @importFrom RODBC sqlClear sqlQuery
+#' @importFrom RODBC sqlClear sqlColumns sqlQuery
 #' @importFrom dplyr %>% mutate_each_ funs data_frame group_by_ summarise_ mutate_ select_
 odbc_insert <- function(
   data,
@@ -40,6 +40,49 @@ odbc_insert <- function(
     sqlClear(channel = channel, sqtable = paste0(schema, ".", table))
   }
   # nocov end
+
+  # try bulkcopy to insert data
+  connection <- attr(channel, "connection.string") %>%
+    strsplit(split = ";") %>%
+    unlist() %>%
+    strsplit(split = "=")
+  names(connection) <- sapply(
+    connection,
+    function(x){
+      x[1]
+    }
+  )
+  connection <- sapply(
+    connection,
+    function(x){
+      x[2]
+    }
+  )
+
+  dbtable <- sqlColumns(channel = channel, sqtable = table, schema = schema) %>%
+    select_(~COLUMN_NAME)
+  data[, dbtable$COLUMN_NAME[!dbtable$COLUMN_NAME %in% colnames(data)]] <- NA
+  file <- tempfile(fileext = ".txt")
+  write.table(
+    x = data[, dbtable$COLUMN_NAME],
+    file = file,
+    quote = FALSE,
+    sep = "\t",
+    row.names = FALSE,
+    col.names = FALSE,
+    fileEncoding = "UTF-8",
+    na = ""
+  )
+  bcp <- sprintf(
+    "bcp %s.%s.%s in %s -c -S %s -T",
+    connection["DATABASE"], schema, table, file, connection["SERVER"]
+  )
+  bcp.result <- try(system(bcp, intern = TRUE))
+  if (!inherits(bcp.result, "try-error")) {
+    return(invisible(0))
+  }
+  warning("bulkcopy failed, falling back to INSERT. Failing command:\n", bcp)
+
 
   # quote values when needed
   type <- sapply(data, class)
