@@ -10,11 +10,11 @@ Depends:
 Imports:
     git2r,
     digest,
+    dplyr,
     plyr,
     lubridate,
     methods,
     assertthat,
-    dplyr,
     RODBC
 License: GPL-3
 LazyData: true

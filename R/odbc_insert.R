@@ -6,8 +6,9 @@
 #' @param append Append the data or overwrite existing rows?
 #' @param rows.at.time Number of rows to insert in one SQL statement
 #' @export
+#' @importFrom assertthat assert_that is.count
 #' @importFrom RODBC sqlClear sqlQuery
-#' @importFrom dplyr mutate_each_ funs
+#' @importFrom dplyr %>% mutate_each_ funs data_frame group_by_ summarise_ mutate_ select_
 odbc_insert <- function(
   data,
   table,
@@ -22,10 +23,7 @@ odbc_insert <- function(
   if (nrow(data) == 0) {
     return(invisible(-2))
   }
-  rows.at.time <- check_single_strictly_positive_integer(
-    rows.at.time,
-    name = "rows.at.time"
-  )
+  assert_that(is.count(rows.at.time))
   if (rows.at.time > 1000) {
     rows.at.time <- 1000
     warning("'rows.at.time' is limited to 1000")
@@ -52,23 +50,19 @@ odbc_insert <- function(
     unfactor <- function(x){
       levels(x)[x]
     }
-    data <- mutate_each_(data, funs(unfactor), vars= names(relevant))
+    data <- mutate_each_(data, funs(unfactor), vars = names(relevant))
     type[relevant] <- "character"
   }
 
+
   relevant <- which(type == "character")
   if (length(relevant) > 0) {
-    replace_quote <- function(x){
-      gsub("\\'", "\\'\\'", x)
+    add_quote <- function(x){
+      sQuote(gsub("\\'", "\\'\\'", x))
     }
-    data <- mutate_each_(data, funs(replace_quote), vars= names(relevant))
     old.fancy.quotes <- getOption("useFancyQuotes")
     options(useFancyQuotes = FALSE)
-    data[, relevant] <- apply(
-      data[, relevant, drop = FALSE],
-      2,
-      sQuote
-    )
+    data <- mutate_each_(data, funs(add_quote), vars = names(relevant))
     options(useFancyQuotes = old.fancy.quotes)
     type[relevant] <- "done"
   }
@@ -76,19 +70,17 @@ odbc_insert <- function(
   # Format POSIX fields to datetime
   relevant <- which(sapply(type,  identical, c("POSIXct", "POSIXt")))
   if (length(relevant) > 0) {
-    data[, relevant] <- apply(
-      data[, relevant, drop = FALSE],
-      2,
-      strftime,
-      format = "'%Y%m%d %H:%M:%S'"
-    )
+    fmt_posix <- function(x){
+      strftime(x, format = "'%Y%m%d %H:%M:%S'")
+    }
+    data <- mutate_each_(data, funs(fmt_posix), vars = names(relevant))
     type[relevant] <- "done"
   }
 
   # Convert TRUE / FALSE to 1 / 0
   relevant <- which(sapply(type, identical, "logical"))
   if (length(relevant) > 0) {
-    data[, relevant] <- 1L * data[, relevant]
+    data <- mutate_each_(data, funs(as.integer), vars = names(relevant))
     type[relevant] <- "done"
   }
 
@@ -104,24 +96,27 @@ odbc_insert <- function(
   data[is.na(data)] <- "NULL"
 
   # prepare values
-  values <- apply(data, 1, paste, collapse = ", ")
-  if (rows.at.time > 1) {
-    set <- seq_along(values) %/% rows.at.time
-    tmp <- aggregate(values, list(set), FUN = paste, collapse = "),\n(")
-    values <- tmp$x
-  }
+  values <- data_frame(
+    Value = apply(data, 1, paste, collapse = ", "),
+    Group = seq_len(nrow(data)) %/% rows.at.time
+  ) %>%
+    group_by_(~Group) %>%
+    summarise_(
+      Value = ~paste(Value, collapse = "),\n(")
+    ) %>%
+    mutate_(
+      SQL = ~paste0(
+        "INSERT INTO
+          ", schema, ".", table, " (", paste(colnames(data), collapse = ", "),
+        ")
+        VALUES
+        (", Value, ")"
+      )
+    ) %>%
+    select_(~SQL)
 
-  # prepare columnnames
-  columns <- paste(colnames(data), collapse = ", ")
-
-  sql <- paste0(
-    "INSERT INTO
-      ", schema, ".", table, " (", columns, ")
-    VALUES
-    (", values, ")"
-  )
   sql.status <- sapply( # nocov start
-    sql,
+    values$SQL,
     sqlQuery,
     channel = channel,
     errors = FALSE

@@ -5,7 +5,8 @@
 \title{Returns the path of the datasource within the git repository}
 \usage{
 git_connect(data.source.name, channel, type = c("ssh", "https"),
-  username = character(0), password = character(0))
+  username = character(0), password = character(0), commit.user,
+  commit.email)
 }
 \arguments{
 \item{data.source.name}{The name of the data source}
@@ -17,6 +18,10 @@ git_connect(data.source.name, channel, type = c("ssh", "https"),
 \item{username}{the username in case the ConnectMethod is "Credentials supplied by the user running the report". Ignored in all other cases.}
 
 \item{password}{the password to be used in combination with the username.}
+
+\item{commit.user}{the name of the user how will commit}
+
+\item{commit.email}{the email of the user how will commit}
 }
 \description{
 The details are stored in the results database.
