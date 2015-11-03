@@ -119,6 +119,11 @@ odbc_get_multi_id <- function(
     ON
       ", join.on
   )
-  id <- sqlQuery(channel = channel, query = sql, stringsAsFactors = FALSE)
+  id <- sqlQuery(
+    channel = channel,
+    query = sql,
+    stringsAsFactors = FALSE,
+    as.is = TRUE
+  )
   return(id)
 }
