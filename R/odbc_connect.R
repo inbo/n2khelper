@@ -50,7 +50,12 @@ odbc_connect <- function(data.source.name, username, password, channel){
     WHERE
       Datasource.Description = '", data.source.name, "'"
   )
-  connection <- sqlQuery(channel = channel, query = sql)
+  connection <- sqlQuery(
+    channel = channel,
+    query = sql,
+    stringsAsFactors = FALSE,
+    as.is = TRUE
+  )
 
   if (nrow(connection) == 0) {
     stop("No connection information found for '", data.source.name, "'.")

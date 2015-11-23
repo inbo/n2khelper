@@ -9,7 +9,12 @@ check_id <- function(value, variable, table, channel){
 
   # nocov start
   sql <- paste("SELECT", variable, "FROM", table, "WHERE", variable, "=", value)
-  selection <- sqlQuery(channel = channel, query = sql)
+  selection <- sqlQuery(
+    channel = channel,
+    query = sql,
+    stringsAsFactors = FALSE,
+    as.is = TRUE
+  )
   if (!inherits(selection, "data.frame")) {
     if (length(grep("Invalid column name", selection)) > 0) {
       stop(

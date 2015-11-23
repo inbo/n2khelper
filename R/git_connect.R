@@ -63,7 +63,8 @@ git_connect <- function(
   connection <- sqlQuery(
     channel = channel,
     query = sql,
-    stringsAsFactors = FALSE
+    stringsAsFactors = FALSE,
+    as.is = TRUE
   )
 
   if (nrow(connection) == 0) {
