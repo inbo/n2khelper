@@ -23,6 +23,16 @@ odbc_insert <- function(
   if (nrow(data) == 0) {
     return(invisible(-2))
   }
+  infinite <- sapply(
+    data,
+    function(x){
+      any(is.infinite(x))
+    }
+  )
+  if (any(infinite)) {
+    stop("data contains infinite values")
+  }
+
   assert_that(is.count(rows.at.time))
   if (rows.at.time > 1000) {
     rows.at.time <- 1000
