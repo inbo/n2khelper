@@ -45,7 +45,13 @@ get_nbn_name <- function(nbn.key){
       ns.TAXON_TYPE,
       ns.TAXON_VERSION_STATUS
   ")
-  output <- sqlQuery(channel = channel, query = sql) # nocov start
+  # nocov start
+  output <- sqlQuery(
+    channel = channel,
+    query = sql,
+    stringsAsFactors = FALSE,
+    as.is = TRUE
+  )
   odbcClose(channel)
 
   if (nrow(output) <= 1) {

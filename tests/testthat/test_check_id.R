@@ -9,7 +9,12 @@ describe("check_id()", {
     "SELECT", variable, "FROM", table, "WHERE", variable.text, "=", value.text
   )
   if (class(channel) == "RODBC") {
-    value <- RODBC::sqlQuery(channel = channel, query = sql)[, 1]
+    value <- RODBC::sqlQuery(
+      channel = channel,
+      query = sql,
+      stringsAsFactors = FALSE,
+      as.is = TRUE
+    )[, 1]
   } else {
     value <- 1
   }

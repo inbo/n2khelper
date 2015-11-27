@@ -87,7 +87,12 @@ odbc_get_multi_id <- function(
         VALUES (", paste0("SOURCE.", colnames(data), collapse = ", "), ")
       ;
     ")
-    output <- sqlQuery(channel = channel, query = sql)
+    output <- sqlQuery(
+      channel = channel,
+      query = sql,
+      stringsAsFactors = FALSE,
+      as.is = TRUE
+    )
     if (length(output) > 0) {
       true.error <- grep(
         paste0("^[RODBC] ERROR: Could not SQLExecDirect '", sql),
@@ -119,6 +124,11 @@ odbc_get_multi_id <- function(
     ON
       ", join.on
   )
-  id <- sqlQuery(channel = channel, query = sql, stringsAsFactors = FALSE)
+  id <- sqlQuery(
+    channel = channel,
+    query = sql,
+    stringsAsFactors = FALSE,
+    as.is = TRUE
+  )
   return(id)
 }

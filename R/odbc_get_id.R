@@ -26,6 +26,11 @@ odbc_get_id <- function(table, variable, value, schema = "dbo", channel){
     WHERE
       ", where
   )
-  id <- sqlQuery(channel = channel, query = sql)$ID
+  id <- sqlQuery(
+    channel = channel,
+    query = sql,
+    stringsAsFactors = FALSE,
+    as.is = TRUE
+  )$ID
   return(id) # nocov end
 }

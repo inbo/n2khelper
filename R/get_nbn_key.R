@@ -17,7 +17,14 @@ get_nbn_key <- function(name, language = "la"){
     WHERE
       LANGUAGE = '", language, "'
   ")
-  if (sqlQuery(channel = channel, query = sql)$N == 0) {
+  if (
+    sqlQuery(
+      channel = channel,
+      query = sql,
+      stringsAsFactors = FALSE,
+      as.is = TRUE
+    )$N == 0
+  ) {
     sql <- "
       SELECT
         LANGUAGE AS Language
@@ -92,7 +99,12 @@ get_nbn_key <- function(name, language = "la"){
       t.ITEM_NAME IN (", paste0("'", name, "'", collapse = ", "), ")
   ")
   output <- unique(
-    sqlQuery(channel = channel, query = sql, stringsAsFactors = FALSE)
+    sqlQuery(
+      channel = channel,
+      query = sql,
+      stringsAsFactors = FALSE,
+      as.is = TRUE
+    )
   )
   odbcClose(channel)
   if (nrow(output) <= 1) {
