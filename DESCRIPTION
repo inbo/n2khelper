@@ -58,3 +58,4 @@ Collate:
     'read_object_environment.R'
     'remove_files_git.R'
     'write_delim_git.R'
+RoxygenNote: 5.0.1
