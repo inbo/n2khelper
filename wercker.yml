@@ -1,5 +1,5 @@
 box: inbobmk/r-3.2.3:develop
 build:
   steps:
-    - inbo-bmk/r-check
+    - inbobmk/r-check
     - jimhester/r-coverage
