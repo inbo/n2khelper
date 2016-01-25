@@ -36,7 +36,6 @@ Collate:
     'check_single_numeric.R'
     'check_single_posix.R'
     'check_single_probability.R'
-    'check_single_strictly_positive_integer.R'
     'connect_result.R'
     'cut_date.R'
     'get_nbn_key.R'

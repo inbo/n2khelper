@@ -1,9 +1,10 @@
 #' Test if an id exists in a given field of the table
 #' @inheritParams odbc_get_id
 #' @export
+#' @importFrom assertthat assert_that is.count
 #' @importFrom RODBC sqlQuery
 check_id <- function(value, variable, table, channel){
-  value <- check_single_strictly_positive_integer(value, name = "value")
+  assert_that(is.count(value))
   variable <- check_single_character(variable, name = "variable")
   check_dbtable_variable(table = table, variable = variable, channel = channel)
 
