@@ -10,7 +10,7 @@ deploy:
         name: install package
         code: |
           Rscript -e 'devtools::install(pkg = ".", build_vignettes = TRUE, upgrade_dependencies = FALSE)'
-          grep 'Version: .*' DESCRIPTION | awk '{print "export CURRENT_VERSION = "$2}' | exec
+          export CURRENT_VERSION=$(grep 'Version: .*' DESCRIPTION | awk '{print $2}')
 
     - internal/docker-push:
         username: $DOCKER_USERNAME
