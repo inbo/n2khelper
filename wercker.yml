@@ -8,8 +8,9 @@ deploy:
   develop:
     - script:
         name: install package
-        code: | -
+        code: |
           Rscript -e 'devtools::install(pkg = ".", build_vignettes = TRUE)'
+
     - internal/docker-push:
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
