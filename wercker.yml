@@ -9,7 +9,7 @@ deploy:
     - script:
         name: install package
         code: |
-          Rscript -e 'devtools::install(pkg = ".", build_vignettes = TRUE)'
+          Rscript -e 'devtools::install(pkg = ".", build_vignettes = TRUE, upgrade_dependecies = FALSE)'
 
     - internal/docker-push:
         username: $DOCKER_USERNAME
