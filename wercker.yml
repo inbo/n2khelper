@@ -9,8 +9,8 @@ deploy:
     - script:
         name: install package
         code: |
-          export PACKAGE_VERSION = Rscript -e 'cat(sessionInfo("n2khelper")$otherPkgs[[1]]$Version)'
           Rscript -e 'devtools::install(pkg = ".", build_vignettes = TRUE, upgrade_dependencies = FALSE)'
+          Rscript -e 'cat("export PACKAGE_VERSION =", sessionInfo("n2khelper")$otherPkgs[[1]]$Version)'
 
     - internal/docker-push:
         username: $DOCKER_USERNAME
