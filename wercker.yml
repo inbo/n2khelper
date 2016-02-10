@@ -11,4 +11,3 @@ deploy:
         password: $PASSWORD
         tag: develop
         repository: inbonatura2000/n2khelper
-        registry: https://registry.hub.docker.com
