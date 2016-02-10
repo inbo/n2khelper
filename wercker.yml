@@ -4,3 +4,11 @@ build:
     - inbobmk/r-check
     - inbobmk/r-coverage
     - inbobmk/r-lint
+deploy:
+  steps:
+    - internal/docker-push:
+        username: $USERNAME
+        password: $PASSWORD
+        tag: develop
+        repository: inbonatura2000/n2khelper
+        registry: https://registry.hub.docker.com
