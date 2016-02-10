@@ -16,4 +16,4 @@ deploy:
         password: $DOCKER_PASSWORD
         tag: develop
         repository: inbonatura2000/n2khelper
-        cmd: ["R", "--no-save", "--no-restore"]
+        cmd: R --no-save --no-restore
