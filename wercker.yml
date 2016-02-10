@@ -6,8 +6,13 @@ build:
     - inbobmk/r-lint
 deploy:
   steps:
+    - script:
+        name: deploy
+        code: echo default deploy
+
+  develop:
     - internal/docker-push:
-        username: $USERNAME
-        password: $PASSWORD
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
         tag: develop
         repository: inbonatura2000/n2khelper
