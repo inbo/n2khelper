@@ -11,7 +11,7 @@ connect_result <- function(develop = TRUE, username, password){
   if (develop) {
     server <- "INBODEV02\\development"
   } else {
-    stop("Production databank not yet defined")
+    stop("Production database not yet defined")
   }
   driver <- ifelse(.Platform$OS.type == "windows", "SQL Server", "FreeTDS")
   if (missing(username)) {
