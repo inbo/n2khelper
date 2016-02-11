@@ -10,7 +10,7 @@ Depends:
     R (>= 3.2.0)
 Imports:
     git2r,
-    digest,
+    digest (>= 0.6.9),
     dplyr,
     plyr,
     lubridate,
