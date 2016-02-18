@@ -8,7 +8,7 @@ describe("check_id()", {
   })
   it ("uses trusted authentication when username is missing or ''", {
     skip_on_cran()
-    skip_on_os("unix")
+    skip_on_os("linux")
     expect_is(
       connect_result(),
       "RODBC"
