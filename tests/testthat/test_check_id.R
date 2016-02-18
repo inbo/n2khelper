@@ -1,6 +1,9 @@
 context("check if an id exists")
 describe("check_id()", {
-  channel <- connect_result()
+  channel <- connect_result(
+    username = Sys.getenv("N2KRESULT_USERNAME"),
+    password = Sys.getenv("N2KRESULT_PASSWORD")
+  )
   table <- "DatasourceType"
   variable <- "ID"
   variable.text <- "Description"

@@ -4,10 +4,14 @@
 \alias{connect_result}
 \title{Opens an ODBC connection to the 'results' database}
 \usage{
-connect_result(develop = TRUE)
+connect_result(develop = TRUE, username, password)
 }
 \arguments{
 \item{develop}{Logical value. Indicates the location ton the results database}
+
+\item{username}{the username to connect to the database. Use a trusted connection when missing}
+
+\item{password}{the password for the username. Ignored when using a trusted connection.}
 }
 \description{
 Opens an ODBC connection to the 'results' database
