@@ -1,6 +1,0 @@
-context("sha1_digits")
-expect_is(sha1_digits(), "integer")
-expect_true(sha1_digits() >= 0)
-expect_error(sha1_digits(1))
-expect_error(sha1_digits("abc"))
-expect_error(sha1_digits(c("base", "coef")))

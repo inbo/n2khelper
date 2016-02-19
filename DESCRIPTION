@@ -10,7 +10,6 @@ Depends:
     R (>= 3.2.0)
 Imports:
     git2r,
-    digest (>= 0.6.9),
     dplyr,
     plyr,
     lubridate,
@@ -42,7 +41,6 @@ Collate:
     'get_nbn_key.R'
     'get_nbn_key_multi.R'
     'get_nbn_name.R'
-    'get_sha1.R'
     'git_connect.R'
     'git_connection.R'
     'git_recent.R'
@@ -50,7 +48,6 @@ Collate:
     'is_git_repo.R'
     'list_files_git.R'
     'match_nbn_key.R'
-    'num_32_64.R'
     'odbc_connect.R'
     'odbc_get_id.R'
     'odbc_get_multi_id.R'
