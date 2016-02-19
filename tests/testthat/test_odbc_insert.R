@@ -1,10 +1,8 @@
 context("odbc_insert")
 describe(
-  "odbc_insert",
-  {
+  "odbc_insert", {
     it(
-      "tests for infinite values",
-      {
+      "tests for infinite values", {
         dataset <- data.frame(
           A = letters,
           B = c(rnorm(25), Inf),

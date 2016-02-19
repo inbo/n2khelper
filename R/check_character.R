@@ -1,5 +1,5 @@
 #' Check if the object is a character
-#' 
+#'
 #' Factors are converted to character.
 #' @param x the object to check
 #' @param name the name of the object to use in the error message
@@ -9,11 +9,11 @@
 #' @examples
 #' check_character(c("20", "b"))
 check_character <- function(x, name = "x", na.action = na.fail){
-  if(!class(x) %in% c("character", "factor")){
+  if (!class(x) %in% c("character", "factor")) {
     stop(name, " must be character")
   }
   x <- na.action(x)
-  if(is.factor(x)){
+  if (is.factor(x)) {
     return(levels(x)[x])
   } else {
     return(x)
