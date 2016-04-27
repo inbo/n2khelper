@@ -75,6 +75,9 @@ odbc_connect <- function(data.source.name, username, password, channel){
 
   if (connection$Type == "Microsoft SQL Server") {
     connection.string <- connection$ConnectionString
+    if (.Platform$OS.type != "windows") {
+      connection.string <- gsub("SQL Server", "FreeTDS", connection.string)
+    }
     if (connection$ConnectMethod == "Windows integrated security") {
       connection.string <- paste0(connection.string, "Trusted_Connection=True;")
     }
