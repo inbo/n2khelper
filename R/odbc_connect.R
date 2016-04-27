@@ -6,6 +6,7 @@
 #' @param password the password to be used in combination with the username.
 #' @param channel the ODBC channel to the database with the connection strings
 #' @importFrom RODBC sqlQuery odbcClose odbcDriverConnect
+#' @importFrom assertthat assert_that is.string
 #' @export
 odbc_connect <- function(data.source.name, username, password, channel){
   data.source.name <- check_single_character(data.source.name)
@@ -98,8 +99,8 @@ odbc_connect <- function(data.source.name, username, password, channel){
     if (connection$ConnectMethod ==
         "Credentials supplied by the user running the report"
     ) {
-      username <- check_single_character(username, name = "username")
-      password <- check_single_character(password, name = "password")
+      assert_that(is.string(username))
+      assert_that(is.string(password))
       connection.string <- paste0(connection.string, "uid=", username, ";")
       connection.string <- paste0(connection.string, "pwd=", password, ";")
     }
