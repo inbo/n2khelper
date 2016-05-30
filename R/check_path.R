@@ -3,6 +3,7 @@
 #' @param path the path of the directory or file name
 #' @param type either "file" or "directory"
 #' @inheritParams check_dataframe_variable
+#' @importFrom utils file_test
 check_path <- function(path, type = c("file", "directory"), error = TRUE){
   type <- match.arg(type)
   path <- check_single_character(path, name = "path")

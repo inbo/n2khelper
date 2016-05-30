@@ -28,6 +28,7 @@ setMethod(
 #' @rdname read_delim_git
 #' @aliases read_delim_git,git_connection-methods
 #' @importFrom methods setMethod
+#' @importFrom utils read.delim
 setMethod(
   f = "read_delim_git",
   signature = signature(connection = "gitConnection"),

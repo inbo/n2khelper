@@ -2,6 +2,7 @@
 #' @inheritParams check_dataframe_variable
 #' @param covariate The right hand side of the model as a character
 #' @param response The left hand side of the model as a character
+#' @importFrom stats as.formula
 #' @export
 check_dataframe_covariate <- function(
   df,

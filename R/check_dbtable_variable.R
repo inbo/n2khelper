@@ -3,6 +3,7 @@
 #' @inheritParams odbc_get_id
 #' @export
 #' @importFrom RODBC sqlColumns
+#' @importFrom stats na.fail
 #' @return TRUE when all variables are present in the table.
 check_dbtable_variable <- function(
   table,

@@ -13,6 +13,7 @@
 #' @exportMethod write_delim_git
 #' @docType methods
 #' @importFrom methods setGeneric
+#' @importFrom utils write.table
 #' @include git_connection.R
 setGeneric(
   name = "write_delim_git",

@@ -43,6 +43,7 @@ setMethod(
 #' @aliases auto_commit,git_connection-methods
 #' @importFrom methods setMethod
 #' @importFrom git2r commit cred_user_pass head push
+#' @importFrom utils sessionInfo
 setMethod(
   f = "auto_commit",
   signature = signature(connection = "gitConnection"),
