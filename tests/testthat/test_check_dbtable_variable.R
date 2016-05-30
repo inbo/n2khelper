@@ -91,7 +91,7 @@ describe("check_dbtable_variable()", {
         error = error
       ),
       throws_error(
-        "Error in na.fail.default\\(x\\) : missing values in object.*"
+        "missing values in object"
       )
     )
     expect_that(
