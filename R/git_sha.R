@@ -28,6 +28,7 @@ setMethod(
 #' @rdname git_sha
 #' @aliases git_sha,git_connection-methods
 #' @importFrom methods setMethod
+#' @importFrom utils read.table
 setMethod(
   f = "git_sha",
   signature = signature(connection = "gitConnection"),

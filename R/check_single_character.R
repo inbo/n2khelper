@@ -5,6 +5,7 @@
 #' @param name the name of the object to use in the error message
 #' @return The function gives the single character back. it throws an error when the input is not a single character.
 #' @export
+#' @importFrom stats na.fail
 #' @examples
 #' check_single_character("20")
 check_single_character <- function(x, name = "x"){
