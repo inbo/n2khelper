@@ -10,32 +10,41 @@ buildolder:
   steps:
     - inbobmk/r-check
 
-deploymaster:
-  - script:
-      name: install package
-      code: |
-        Rscript -e 'devtools::install(pkg = ".", build_vignettes = TRUE, upgrade_dependencies = FALSE)'
-        export CURRENT_VERSION=$(grep 'Version: .*' DESCRIPTION | awk '{print $2}')
-        rm -r /pipeline
+buildn2k:
+  box: inbobmk/rn2k
+  steps:
+    - inbobmk/r-check
 
-  - internal/docker-push:
-      username: $DOCKER_USERNAME
-      password: $DOCKER_PASSWORD
-      tag: $CURRENT_VERSION
-      repository: inbonatura2000/n2khelper
-      cmd: R --no-save --no-restore
+deploymaster:
+  box: inbobmk/rn2k
+  steps:
+    - script:
+        name: install package
+        code: |
+          Rscript -e 'devtools::install(pkg = ".", build_vignettes = FALSE, upgrade_dependencies = FALSE)'
+          export CURRENT_VERSION=$(grep 'Version: .*' DESCRIPTION | awk '{print $2}')
+          rm -r /pipeline
+
+    - internal/docker-push:
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        tag: $CURRENT_VERSION
+        repository: inbonatura2000/n2khelper
+        cmd: R --no-save --no-restore
 
 deploydevelop:
-  - script:
-      name: install package
-      code: |
-        Rscript -e 'devtools::install(pkg = ".", build_vignettes = TRUE, upgrade_dependencies = FALSE)'
-        export CURRENT_VERSION=$(grep 'Version: .*' DESCRIPTION | awk '{print $2}')
-        rm -r /pipeline
+  box: inbobmk/rn2k
+  steps:
+    - script:
+        name: install package
+        code: |
+          Rscript -e 'devtools::install(pkg = ".", build_vignettes = FALSE, upgrade_dependencies = FALSE)'
+          export CURRENT_VERSION=$(grep 'Version: .*' DESCRIPTION | awk '{print $2}')
+          rm -r /pipeline
 
-  - internal/docker-push:
-      username: $DOCKER_USERNAME
-      password: $DOCKER_PASSWORD
-      tag: dev-$CURRENT_VERSION
-      repository: inbonatura2000/n2khelper
-      cmd: R --no-save --no-restore
+    - internal/docker-push:
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        tag: dev-$CURRENT_VERSION
+        repository: inbonatura2000/n2khelper
+        cmd: R --no-save --no-restore
