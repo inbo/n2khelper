@@ -1,7 +1,7 @@
 **Branch** | **Build status** | **Test coverage**
 ---------- | ---------------- | -----------------
-master | [![wercker status](https://app.wercker.com/status/a0db92c2c346d3ce044568c17879fb51/m/master "wercker status")](https://app.wercker.com/project/bykey/a0db92c2c346d3ce044568c17879fb51) | [![codecov.io](https://codecov.io/github/INBO-Natura2000/n2khelper/coverage.svg?branch=master)](https://codecov.io/github/INBO-Natura2000/n2khelper?branch=master)
-develop | [![wercker status](https://app.wercker.com/status/a0db92c2c346d3ce044568c17879fb51/m/develop "wercker status")](https://app.wercker.com/project/bykey/a0db92c2c346d3ce044568c17879fb51) | [![codecov.io](https://codecov.io/github/INBO-Natura2000/n2khelper/coverage.svg?branch=master)](https://codecov.io/github/INBO-Natura2000/n2khelper?branch=develop)
+master | [![wercker status](https://app.wercker.com/status/a0db92c2c346d3ce044568c17879fb51/m/master "wercker status")](https://app.wercker.com/project/bykey/a0db92c2c346d3ce044568c17879fb51) | [![codecov](https://codecov.io/gh/inbo/n2khelper/branch/master/graph/badge.svg)](https://codecov.io/gh/inbo/n2khelper)
+develop | [![wercker status](https://app.wercker.com/status/a0db92c2c346d3ce044568c17879fb51/m/develop "wercker status")](https://app.wercker.com/project/bykey/a0db92c2c346d3ce044568c17879fb51) | [![codecov](https://codecov.io/gh/inbo/n2khelper/branch/develop/graph/badge.svg)](https://codecov.io/gh/inbo/n2khelper)
 
 # The n2khelper package
 
