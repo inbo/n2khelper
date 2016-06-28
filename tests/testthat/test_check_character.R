@@ -23,13 +23,13 @@ describe("check_character()", {
     expect_that(
       check_character(x = x.na, name = name),
       throws_error(
-        "Error in na.fail.default\\(x\\) : missing values in object\\n"
+        "missing values in object"
       )
     )
     expect_that(
       check_character(x = x.na, name = name, na.action = na.fail),
       throws_error(
-        "Error in na.fail.default\\(x\\) : missing values in object\\n"
+        "missing values in object"
       )
     )
     expect_that(

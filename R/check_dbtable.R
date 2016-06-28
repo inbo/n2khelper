@@ -5,6 +5,7 @@
 #' @inheritParams odbc_get_id
 #' @export
 #' @importFrom RODBC sqlTables
+#' @importFrom stats na.fail
 #' @return TRUE when all tables are present in the ODBC connection.
 check_dbtable <- function(table, schema = "dbo", channel, error = TRUE){
   table <- check_character(x = table, name = "table", na.action = na.fail)

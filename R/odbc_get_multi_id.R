@@ -10,7 +10,6 @@
 #' @export
 #' @return a data.frame with data and the id's
 #' @importFrom assertthat assert_that is.flag noNA
-#' @importFrom digest digest
 #' @importFrom RODBC sqlQuery odbcClose
 odbc_get_multi_id <- function(
   data,

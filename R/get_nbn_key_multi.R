@@ -1,6 +1,7 @@
 #' Try multiple languages to get a matching NBN key
 #' @param species A data.frame with the name of species in one or more languages
 #' @param orders the order in which the languages are tried to get a matching NBN key
+#' @importFrom stats aggregate
 #' @export
 get_nbn_key_multi <- function(species, orders = c("la", "nl", "en")){
   orders <- match.arg(orders, several.ok = TRUE)

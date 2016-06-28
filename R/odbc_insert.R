@@ -9,6 +9,7 @@
 #' @importFrom assertthat assert_that is.count
 #' @importFrom RODBC sqlClear sqlColumns sqlQuery
 #' @importFrom dplyr %>% mutate_each_ funs data_frame group_by_ summarise_ mutate_ select_
+#' @importFrom utils write.table
 odbc_insert <- function(
   data,
   table,
