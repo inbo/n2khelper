@@ -14,6 +14,8 @@ Imports:
     lubridate,
     methods,
     assertthat,
+    DBI,
+    RPostgreSQL,
     RODBC
 License: GPL-3
 LazyData: true
