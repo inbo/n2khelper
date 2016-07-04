@@ -5,8 +5,7 @@
 #' @inheritParams git_connection
 #' @param type Use 'ssh' or 'https' for authentication
 #' @importFrom assertthat assert_that is.string has_name
-#' @importFrom dplyr %>%
-#' @importFrom DBI dbQuoteString dbGetQuery
+#' @importFrom dplyr %>% tbl inner_join select_ filter_ collect
 #' @importFrom tidyr spread_
 #' @importFrom git2r repository cred_user_pass
 #' @export
@@ -47,44 +46,41 @@ git_connect <- function(
     channel = channel
   )
 
-  connection <- sprintf(
-    "SELECT
-      datasource_type.description AS datasource_type,
-      connect_method.description AS connect_method,
-      datasource_parameter.description as parameter,
-      datasource_value.value
-    FROM
-      (
-          (
-            datasource
-          INNER JOIN
-            datasource_type
-          ON
-            datasource.datasource_type = datasource_type.ID
-          )
-        INNER JOIN
-          connect_method
-        ON
-          datasource.connect_method = connect_method.id
-      )
-    INNER JOIN
-      (
-        datasource_value
-      INNER JOIN
-        datasource_parameter
-      ON
-        datasource_value.parameter = datasource_parameter.id
-      )
-    ON
-      datasource_value.datasource = datasource.id
-    WHERE
-      datasource.description = %s AND
-      datasource_type.description = %s",
-    dbQuoteString(channel, data.source.name),
-    sprintf("git, tab delimited %s", type) %>%
-      dbQuoteString(conn = channel)
-  ) %>%
-    dbGetQuery(conn = channel) %>%
+
+  type.long <- sprintf("git, tab delimited %s", type)
+  connection <- tbl(channel, "datasource") %>%
+    inner_join(
+      tbl(channel, "datasource_type"),
+      by = c("datasource_type" = "id")
+    ) %>%
+    filter_(
+      ~ description.x == data.source.name,
+      ~ description.y == type.long
+    ) %>%
+    select_(
+      datasource = ~ id.x,
+      datasource_type = ~description.y,
+      ~connect_method
+    ) %>%
+    inner_join(
+      tbl(channel, "connect_method"),
+      by = c("connect_method" = "id")
+    ) %>%
+    select_(~-id, ~-connect_method, connect_method = ~description) %>%
+    inner_join(
+      tbl(channel, "datasource_value") %>%
+        inner_join(
+          tbl(channel, "datasource_parameter"),
+          by = c("parameter" = "id")
+        ) %>%
+        select_(
+          ~ datasource,
+          parameter = ~description,
+          ~value
+        ),
+      by = "datasource"
+    ) %>%
+    collect() %>%
     spread_(key_col = "parameter", value_col = "value")
 
   if (nrow(connection) == 0) {

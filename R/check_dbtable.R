@@ -15,7 +15,7 @@ check_dbtable <- function(table, schema = "public", channel, error = TRUE){
     stop("'table' must contain at least one value")
   }
   assert_that(is.string(schema))
-  assert_that(inherits(channel, "DBIConnection"))
+  assert_that(inherits(channel$con, "DBIConnection"))
   # nocov start
 
   test <- sapply(

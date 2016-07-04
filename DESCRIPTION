@@ -15,7 +15,7 @@ Imports:
     methods,
     assertthat,
     DBI,
-    RPostgreSQL,
+    tidyr,
     RODBC
 License: GPL-3
 LazyData: true

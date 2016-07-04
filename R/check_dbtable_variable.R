@@ -24,7 +24,7 @@ check_dbtable_variable <- function(
   check_dbtable(table = table, schema = schema, channel = channel, error = TRUE)
   # nocov start
 
-  check <- variable %in% dbListFields(conn = channel, name = c(schema, table))
+  check <- variable %in% dbListFields(conn = channel$con, name = c(schema, table))
   if (all(check)) {
     return(TRUE)
   }
