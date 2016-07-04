@@ -8,7 +8,7 @@
 check_dbtable_variable <- function(
   table,
   variable,
-  schema = "dbo",
+  schema = "public",
   channel,
   error = TRUE
 ){
