@@ -11,7 +11,7 @@ check_dbtable(table, schema = "public", channel, error = TRUE)
 
 \item{schema}{The schema. Defaults to 'public'}
 
-\item{channel}{the open ODBC channel}
+\item{channel}{the open dplyr connection to the database.}
 
 \item{error}{Indicates the behaviour when a table is missing. Gives an error
 when error = TRUE (default). Return FALSE otherwise.}

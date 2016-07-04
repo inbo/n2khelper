@@ -12,9 +12,9 @@ check_dbtable_variable(table, variable, schema = "public", channel,
 
 \item{variable}{A vector with the names of the columns}
 
-\item{schema}{The schema of the table. Defaults to dbo}
+\item{schema}{The schema of the table. Defaults to public}
 
-\item{channel}{the open ODBC channel}
+\item{channel}{the open dplyr connection to the database.}
 
 \item{error}{Indicates the behaviour when a variable is missing. Gives an error when error = TRUE (default). Return FALSE otherwise.}
 }

@@ -3,10 +3,11 @@
 #' @param table The name of the table
 #' @param variable A vector with the names of the columns
 #' @param value the content of the variable
-#' @param schema The schema of the table. Defaults to dbo
-#' @param channel the open ODBC channel
-#' @importFrom RODBC sqlQuery
-odbc_get_id <- function(table, variable, value, schema = "dbo", channel){
+#' @param schema The schema of the table. Defaults to public
+#' @param channel the open dplyr connection to the database.
+#' @importFrom lazyeval interp
+#' @importFrom dplyr %>% filter_ select_ collect
+odbc_get_id <- function(table, variable, value, schema = "public", channel){
   value <- check_character(value, name = "value")
   if (length(value) == 0) {
     stop("at least one value is needed")
@@ -17,20 +18,15 @@ odbc_get_id <- function(table, variable, value, schema = "dbo", channel){
     stop("the number of values doesn't match the number of variables")
   }
 
-  where <- paste0(variable, " = '", value, "'", collapse = " AND \n")
-  sql <- paste0("
-    SELECT
-      ID
-    FROM
-      ", table, "
-    WHERE
-      ", where
+  dots <- sapply(
+    seq_along(variable),
+    function(i){
+      interp(~x == y, x = as.name(variable[i]), y = value[i])
+    }
   )
-  id <- sqlQuery(
-    channel = channel,
-    query = sql,
-    stringsAsFactors = FALSE,
-    as.is = TRUE
-  )$ID
-  return(id) # nocov end
+  tbl(channel, table) %>%
+    filter_(.dots = dots) %>%
+    select_(~id) %>%
+    collect() %>%
+    unlist() # nocov end
 }
