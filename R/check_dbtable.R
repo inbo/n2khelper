@@ -22,7 +22,7 @@ check_dbtable <- function(table, schema = "public", channel, error = TRUE){
     table,
     function(x){
       c(schema, x) %>%
-        dbExistsTable(conn = channel)
+        dbExistsTable(conn = channel$con)
     }
   )
   if (all(test)) {
@@ -34,7 +34,7 @@ check_dbtable <- function(table, schema = "public", channel, error = TRUE){
       sprintf(
         fmt = "Table(s) %s not found in schema %s on database %s",
         schema,
-        dbGetInfo(channel)$dbname
+        dbGetInfo(channel$con)$dbname
       ) %>%
       stop(call. = FALSE)
   } else {
