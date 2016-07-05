@@ -5,58 +5,65 @@
 #' @param username the username in case the ConnectMethod is "Credentials supplied by the user running the report". Ignored in all other cases.
 #' @param password the password to be used in combination with the username.
 #' @param channel the ODBC channel to the database with the connection strings
-#' @importFrom RODBC sqlQuery odbcClose odbcDriverConnect
-#' @importFrom assertthat assert_that is.string
+#' @importFrom assertthat assert_that is.string has_name
+#' @importFrom dplyr tbl %>% inner_join filter_ select_ collect
+#' @importFrom tidyr spread_
+#' @importFrom RODBC odbcDriverConnect
 #' @export
 odbc_connect <- function(data.source.name, username, password, channel){
-  data.source.name <- check_single_character(data.source.name)
+  assert_that(is.string(data.source.name))
   check_dbtable_variable(
-    table = "Datasource",
+    table = "datasource",
     variable = c(
-      "ConnectionString", "Username", "Password", "TypeID", "ConnectMethodID"
+      "id", "datasource_type", "connect_method", "description"
     ),
     channel = channel
   )
   # nocov start
   check_dbtable_variable(
-    table = "DatasourceType",
-    variable = c("ID", "Description"),
+    table = "datasource_type",
+    variable = c("id", "description"),
     channel = channel
   )
   check_dbtable_variable(
-    table = "ConnectMethod",
-    variable = c("ID", "Description"),
+    table = "connect_method",
+    variable = c("id", "description"),
     channel = channel
   )
 
-  sql <- paste0("
-    SELECT
-      ConnectionString,
-      Username,
-      Password,
-      DatasourceType.Description AS Type,
-      ConnectMethod.Description AS ConnectMethod
-    FROM
-        (
-          Datasource
-        INNER JOIN
-          DatasourceType
-        ON
-          Datasource.TypeID = DatasourceType.ID
-        )
-      INNER JOIN
-        ConnectMethod
-      ON
-        Datasource.ConnectMethodID = ConnectMethod.ID
-    WHERE
-      Datasource.Description = '", data.source.name, "'"
-  )
-  connection <- sqlQuery(
-    channel = channel,
-    query = sql,
-    stringsAsFactors = FALSE,
-    as.is = TRUE
-  )
+  connection <- tbl(channel, "datasource") %>%
+    inner_join(
+      tbl(channel, "datasource_type"),
+      by = c("datasource_type" = "id")
+    ) %>%
+    filter_(
+      ~ description.x == data.source.name
+    ) %>%
+    select_(
+      datasource = ~ id.x,
+      datasource_type = ~description.y,
+      ~connect_method
+    ) %>%
+    inner_join(
+      tbl(channel, "connect_method"),
+      by = c("connect_method" = "id")
+    ) %>%
+    select_(~-id, ~-connect_method, connect_method = ~description) %>%
+    inner_join(
+      tbl(channel, "datasource_value") %>%
+        inner_join(
+          tbl(channel, "datasource_parameter"),
+          by = c("parameter" = "id")
+        ) %>%
+        select_(
+          ~ datasource,
+          parameter = ~description,
+          ~value
+        ),
+      by = "datasource"
+    ) %>%
+    collect() %>%
+    spread_(key_col = "parameter", value_col = "value")
 
   if (nrow(connection) == 0) {
     stop("No connection information found for '", data.source.name, "'.")
@@ -67,46 +74,34 @@ odbc_connect <- function(data.source.name, username, password, channel){
       data.source.name, "'."
     )
   }
-  if (connection$Type %in% "git, tab delimited") {
-    stop(
-      "ODBC connection not available for '", data.source.name,
-      "'. Use a connection for '", connection$Type, "'"
-    )
-  }
 
-  if (connection$Type == "Microsoft SQL Server") {
-    connection.string <- connection$ConnectionString
-    if (.Platform$OS.type != "windows") {
-      connection.string <- gsub("SQL Server", "FreeTDS", connection.string)
+  if (connection$datasource_type == "Microsoft SQL Server") {
+    assert_that(has_name(connection, "server"))
+    assert_that(has_name(connection, "dbname"))
+    if (connection$connect_method ==
+        "Credentials stored securely in the report server") {
+      assert_that(has_name(connection, "username"))
+      assert_that(has_name(connection, "password"))
+      driver <- ifelse(
+        .Platform$OS.type == "windows",
+        "SQL Server",
+        "FreeTDS"
+      )
+      connection.string <- sprintf(
+        "Driver=%s;Server=%s;Database=%s;uid=%s;pwd=%s;",
+        driver,
+        connection$server,
+        connection$dbname,
+        connection$username,
+        connection$password
+      )
+    } else {
+      stop("'", connection$connect_method, "' is to do")
     }
-    if (connection$ConnectMethod == "Windows integrated security") {
-      connection.string <- paste0(connection.string, "Trusted_Connection=True;")
-    }
-    if (connection$ConnectMethod ==
-        "Credentials stored securely in the report server"
-    ) {
-      if (!is.na(connection$Username)) {
-        connection.string <- paste0(
-          connection.string, "uid=", connection$Username, ";"
-        )
-      }
-      if (!is.na(connection$Password)) {
-        connection.string <- paste0(
-          connection.string, "pwd=", connection$Password, ";"
-        )
-      }
-    }
-    if (connection$ConnectMethod ==
-        "Credentials supplied by the user running the report"
-    ) {
-      assert_that(is.string(username))
-      assert_that(is.string(password))
-      connection.string <- paste0(connection.string, "uid=", username, ";")
-      connection.string <- paste0(connection.string, "pwd=", password, ";")
-    }
-    data.channel <- odbcDriverConnect(connection.string)
-    return(data.channel)
+    return(odbcDriverConnect(connection.string))
+  } else {
+    stop("'", connection$datasource_type, "' is to do")
   }
-  stop("odbc_connect() doesn't know how to handle '", connection$Type, "'.")
+  return(channel)
   # nocov end
 }
