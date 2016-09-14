@@ -22,16 +22,11 @@ git_connect <- function(
   assert_that(is.string(data.source.name))
   check_dbtable_variable( #nocov start
     table = "datasource",
-    variable = c("id", "datasource_type", "connect_method"),
+    variable = c("id", "datasource_type"),
     channel = channel
   )
   check_dbtable_variable(
     table = "datasource_type",
-    variable = c("id", "description"),
-    channel = channel
-  )
-  check_dbtable_variable(
-    table = "connect_method",
     variable = c("id", "description"),
     channel = channel
   )
@@ -49,24 +44,16 @@ git_connect <- function(
 
   type.long <- sprintf("git, tab delimited %s", type)
   connection <- tbl(channel, "datasource") %>%
+    filter_(~description == data.source.name) %>%
     inner_join(
       tbl(channel, "datasource_type"),
       by = c("datasource_type" = "id")
     ) %>%
-    filter_(
-      ~ description.x == data.source.name,
-      ~ description.y == type.long
-    ) %>%
+    filter_(~description.y == type.long) %>%
     select_(
       datasource = ~ id.x,
-      datasource_type = ~description.y,
-      ~connect_method
+      datasource_type = ~description.y
     ) %>%
-    inner_join(
-      tbl(channel, "connect_method"),
-      by = c("connect_method" = "id")
-    ) %>%
-    select_(~-id, ~-connect_method, connect_method = ~description) %>%
     inner_join(
       tbl(channel, "datasource_value") %>%
         inner_join(
@@ -82,7 +69,6 @@ git_connect <- function(
     ) %>%
     collect() %>%
     spread_(key_col = "parameter", value_col = "value")
-
   if (nrow(connection) == 0) {
     stop("No connection information found for '", data.source.name, "'.")
   }
@@ -92,8 +78,9 @@ git_connect <- function(
       data.source.name, "'."
     )
   }
+  assert_that(has_name(connection, "connect_method"))
   assert_that(has_name(connection, "path"))
-  assert_that(has_name(connection, "repository"))
+  assert_that(has_name(connection, "repo"))
 
   if (
     connection$connect_method ==
@@ -108,12 +95,14 @@ git_connect <- function(
     }
     assert_that(has_name(connection, "password"))
     password <- connection$password
+  } else {
+    stop(connection$connect_method, "not yet defined.")
   }
 
   if (type == "ssh") {
     return(
       git_connection(
-        repo.path = connection$repository,
+        repo.path = connection$repo,
         local.path = connection$path,
         key = username,
         password = password,
@@ -124,7 +113,7 @@ git_connect <- function(
   }
   return(
     git_connection(
-      repo.path = connection$repository,
+      repo.path = connection$repo,
       local.path = connection$path,
       username = username,
       password = password,
