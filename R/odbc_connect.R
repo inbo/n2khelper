@@ -15,7 +15,7 @@ odbc_connect <- function(data.source.name, username, password, channel){
   check_dbtable_variable(
     table = "datasource",
     variable = c(
-      "id", "datasource_type", "connect_method", "description"
+      "id", "datasource_type", "description"
     ),
     channel = channel
   )
@@ -26,42 +26,37 @@ odbc_connect <- function(data.source.name, username, password, channel){
     channel = channel
   )
   check_dbtable_variable(
-    table = "connect_method",
+    table = "datasource_parameter",
     variable = c("id", "description"),
+    channel = channel
+  )
+  check_dbtable_variable(
+    table = "datasource_value",
+    variable = c("datasource", "parameter", "value", "destroy"),
     channel = channel
   )
 
   connection <- tbl(channel, "datasource") %>%
+    filter_(~description == data.source.name) %>%
+    select_(datasource_id = ~id, datasource_type_id = ~datasource_type) %>%
     inner_join(
-      tbl(channel, "datasource_type"),
-      by = c("datasource_type" = "id")
+      tbl(channel, "datasource_type") %>%
+        select_(datasource_type_id = ~id, datasource_type = ~description),
+      by = "datasource_type_id"
     ) %>%
-    filter_(
-      ~ description.x == data.source.name
-    ) %>%
-    select_(
-      datasource = ~ id.x,
-      datasource_type = ~description.y,
-      ~connect_method
-    ) %>%
-    inner_join(
-      tbl(channel, "connect_method"),
-      by = c("connect_method" = "id")
-    ) %>%
-    select_(~-id, ~-connect_method, connect_method = ~description) %>%
+    select_(~-datasource_type_id) %>%
     inner_join(
       tbl(channel, "datasource_value") %>%
-        inner_join(
-          tbl(channel, "datasource_parameter"),
-          by = c("parameter" = "id")
-        ) %>%
-        select_(
-          ~ datasource,
-          parameter = ~description,
-          ~value
-        ),
-      by = "datasource"
+        filter_(~is.na(destroy)) %>%
+        select_(~datasource, ~parameter, ~value),
+      by = c("datasource_id" = "datasource")
     ) %>%
+    inner_join(
+      tbl(channel, "datasource_parameter") %>%
+        select_(~id, ~description),
+      by = c("parameter" = "id")
+    ) %>%
+    select_(~datasource_type, parameter = ~description, ~value) %>%
     collect() %>%
     spread_(key_col = "parameter", value_col = "value")
 
