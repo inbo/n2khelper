@@ -24,3 +24,9 @@ connect_result <- function(username, password, develop = TRUE){
     password = password
   )
 }
+
+#' Open a trusted connection to the NBN database
+#' @export
+connect_nbn <- function(){
+  odbcDriverConnect(connection = nbn.dsn)
+}

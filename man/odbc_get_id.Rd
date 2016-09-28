@@ -4,7 +4,8 @@
 \alias{odbc_get_id}
 \title{Get the id of the matching records}
 \usage{
-odbc_get_id(table, variable, value, schema = "public", channel)
+odbc_get_id(table, variable, value, schema = "public", channel,
+  id_variable = "id")
 }
 \arguments{
 \item{table}{The name of the table}
@@ -16,6 +17,8 @@ odbc_get_id(table, variable, value, schema = "public", channel)
 \item{schema}{The schema of the table. Defaults to public}
 
 \item{channel}{the open dplyr connection to the database.}
+
+\item{id_variable}{name of the id variable}
 }
 \description{
 Get the id of the matching records

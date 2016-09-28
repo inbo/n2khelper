@@ -1,16 +1,20 @@
 #' Get the name associated with an NBN key
 #' @param nbn.key A vector with NBN keys
+#' @inheritParams get_nbn_key
 #' @export
 #' @importFrom RODBC odbcDriverConnect sqlQuery odbcClose
-get_nbn_name <- function(nbn.key){
+#' @importFrom assertthat assert_that
+#' @importFrom dplyr %>% ungroup group_by_ select_ mutate_ semi_join filter_ summarise_ count_
+#' @importFrom tidyr spread_
+get_nbn_name <- function(nbn.key, channel){
   nbn.key <- check_character(nbn.key, name = "nbn.key")
+  assert_that(inherits(channel, "RODBC"))
 
-  channel <- odbcDriverConnect(connection = nbn.dsn)
-  sql <- paste0("
+  output <- sprintf("
     SELECT
       CASE
-        WHEN tli.TAXON_LIST_VERSION_KEY like 'INB%'
-        THEN 1 ELSE 0 END AS Preference,
+        WHEN tli.TAXON_LIST_VERSION_KEY like 'INB%%'
+        THEN 'Yes' ELSE 'No' END AS Preference,
       ns.RECOMMENDED_TAXON_VERSION_KEY AS NBNKey,
       t.LANGUAGE AS Language,
       t.ITEM_NAME AS Name,
@@ -35,64 +39,47 @@ get_nbn_name <- function(nbn.key){
       ON
         t.TAXON_KEY = tv.TAXON_KEY
     WHERE
-      ns.RECOMMENDED_TAXON_VERSION_KEY IN (",
-      paste0("'", unique(nbn.key), "'", collapse = ", "), ")
+      ns.RECOMMENDED_TAXON_VERSION_KEY IN (%s)
     GROUP BY
-      CASE WHEN tli.TAXON_LIST_VERSION_KEY like 'INB%' THEN 1 ELSE 0 END,
+      CASE WHEN tli.TAXON_LIST_VERSION_KEY like 'INB%%' THEN 'Yes' ELSE 'No' END,
       ns.RECOMMENDED_TAXON_VERSION_KEY,
       t.LANGUAGE,
       t.ITEM_NAME,
       ns.TAXON_TYPE,
-      ns.TAXON_VERSION_STATUS
-  ")
-  # nocov start
-  output <- sqlQuery(
-    channel = channel,
-    query = sql,
-    stringsAsFactors = FALSE,
-    as.is = TRUE
-  )
-  odbcClose(channel)
+      ns.TAXON_VERSION_STATUS",
+    paste0("'", unique(nbn.key), "'", collapse = ", ")
+  ) %>%
+    sqlQuery(
+      channel = channel,
+      stringsAsFactors = FALSE,
+      as.is = TRUE
+    )
 
-  if (nrow(output) <= 1) {
-    return(output[, c("NBNKey", "Language", "Name")])
+  output <- output %>%
+    count_(c("NBNKey", "Language", "Preference")) %>%
+    spread_(key_col = "Preference", value_col = "n", fill = 0L) %>%
+    mutate_(Preference = ~ifelse(Yes > 0, "Yes", "No")) %>%
+    semi_join(x = output, by = c("NBNKey", "Language", "Preference"))
+  output <- output %>%
+    count_(c("NBNKey", "Language", "Status")) %>%
+    spread_(key_col = "Status", value_col = "n", fill = 0L) %>%
+    mutate_(Status = ~ifelse(R > 0, "R", "S")) %>%
+    semi_join(x = output, by = c("NBNKey", "Language", "Status")) %>%
+    group_by_(~NBNKey, ~Language) %>%
+    summarise_(
+      Name = ~paste(Name, collapse = "/"),
+      Multi = ~n() > 1
+    ) %>%
+    ungroup()
+
+  if (any(output$Multi)) {
+    text <- output %>%
+      filter_(~Multi) %>%
+      summarise_(
+        Name = ~paste(Name, collapse = "\n")
+      )
+    warning("Multiple matching values:\n", text$Name)
   }
-  output <- ddply(
-    .data = output,
-    .variables = c("NBNKey", "Language"),
-    function(this.key){
-      if (nrow(this.key) == 1) {
-        return(this.key[, "Name", drop = FALSE])
-      }
-      preference <- which(this.key$Preference == 1)
-      if (length(preference) == 1) {
-        return(this.key[preference, "Name", drop = FALSE])
-      }
-      if (length(preference) > 1) {
-        this.key <- this.key[preference, ]
-      }
-      status.R <- which(this.key$Status == "R")
-      if (length(status.R) == 1) {
-        return(this.key[status.R, "Name", drop = FALSE])
-      }
-      if (length(status.R) > 1) {
-        print(this.key)
-        stop("yet to be written")
-      }
-      if (length(unique(this.key$Type)) == 1) {
-        combined <- paste0(
-          "(",
-          paste(this.key$Name, collapse = "/"),
-          ")"
-        )
-        warning(
-          "Multiple matching values: ", paste(this.key$Name, collapse = "/")
-        )
-        return(data.frame(Name = combined))
-      }
-      print(this.key)
-      stop("yet to be written")
-    }
-  )
+
   return(output) # nocov end
 }

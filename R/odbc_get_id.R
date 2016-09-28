@@ -5,9 +5,10 @@
 #' @param value the content of the variable
 #' @param schema The schema of the table. Defaults to public
 #' @param channel the open dplyr connection to the database.
+#' @param id_variable name of the id variable
 #' @importFrom lazyeval interp
 #' @importFrom dplyr %>% filter_ select_ collect
-odbc_get_id <- function(table, variable, value, schema = "public", channel){
+odbc_get_id <- function(table, variable, value, schema = "public", channel, id_variable = "id"){
   value <- check_character(value, name = "value")
   if (length(value) == 0) {
     stop("at least one value is needed")
@@ -26,7 +27,7 @@ odbc_get_id <- function(table, variable, value, schema = "public", channel){
   )
   tbl(channel, table) %>%
     filter_(.dots = dots) %>%
-    select_(~id) %>%
+    select_(id_variable) %>%
     collect() %>%
     unlist() # nocov end
 }

@@ -4,10 +4,12 @@
 \alias{get_nbn_name}
 \title{Get the name associated with an NBN key}
 \usage{
-get_nbn_name(nbn.key)
+get_nbn_name(nbn.key, channel)
 }
 \arguments{
 \item{nbn.key}{A vector with NBN keys}
+
+\item{channel}{An open RODBC channel to the NBN database}
 }
 \description{
 Get the name associated with an NBN key

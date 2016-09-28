@@ -1,9 +1,11 @@
 #' Try multiple languages to get a matching NBN key
 #' @param species A data.frame with the name of species in one or more languages
 #' @param orders the order in which the languages are tried to get a matching NBN key
+#' @inheritParams get_nbn_key
 #' @importFrom stats aggregate
+#' @importFrom dplyr %>% slice_ mutate_
 #' @export
-get_nbn_key_multi <- function(species, orders = c("la", "nl", "en")){
+get_nbn_key_multi <- function(species, orders = c("la", "nl", "en"), channel){
   orders <- match.arg(orders, several.ok = TRUE)
   lang.name <- c(
     la = "ScientificName", nl = "DutchName", en = "EnglishName",
@@ -15,20 +17,26 @@ get_nbn_key_multi <- function(species, orders = c("la", "nl", "en")){
     name = "species"
   )
 
-  if ("NBNKey" %in% colnames(species)) {
+
+  if (has_name(species, "NBNKey")) {
     warning("Existing NBNKey will be overwritten.")
-    species$NBNKey <- NULL
+    species <- species %>%
+      select_(~-NBNKey)
   }
 
   to.do <- species
-  done <- species[integer(0), ]
-  done$NBNKey <- character(0)
+  done <- species %>%
+    slice_(~0) %>%
+    mutate_(
+      NBNKey = ~character(0)
+    )
 
   for (language in orders) {
     # nocov start
     nbn.key <- get_nbn_key(
       name = to.do[, lang.name[language]],
-      language = language
+      language = language,
+      channel = channel
     )
     if (max(table(nbn.key$InputName)) > 1) {
       nbn.key$INBO <- FALSE

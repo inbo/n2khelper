@@ -11,7 +11,7 @@ describe("check_id()", {
   sql <- paste(
     "SELECT", variable, "FROM", table, "WHERE", variable.text, "=", value.text
   )
-  if (class(channel) == "RODBC") {
+  if (inherits(channel, "RODBC")) {
     value <- RODBC::sqlQuery(
       channel = channel,
       query = sql,
@@ -82,7 +82,7 @@ describe("check_id()", {
       is_false()
     )
   })
-  if (class(channel) == "RODBC") {
+  if (inherits(channel, "RODBC")) {
     RODBC::odbcClose(channel)
   }
 })
