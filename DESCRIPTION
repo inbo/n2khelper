@@ -47,6 +47,7 @@ Collate:
     'git_connection.R'
     'git_recent.R'
     'git_sha.R'
+    'is_chartor.R'
     'is_git_repo.R'
     'list_files_git.R'
     'match_nbn_key.R'
