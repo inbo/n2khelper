@@ -1,16 +1,15 @@
 context("check if a database table contains a variable")
 describe("check_dbtable_variable()", {
-  skip_on_cran()
-  channel <- connect_result(
-    username = Sys.getenv("N2KRESULT_USERNAME"),
-    password = Sys.getenv("N2KRESULT_PASSWORD")
-  )
   junk <- "junk"
   table <- "location"
   variable <- c("external_code", "description")
   error <- TRUE
-
   it("checks if table is a single character", {
+    skip_on_cran()
+    channel <- connect_result(
+      username = Sys.getenv("N2KRESULT_USERNAME"),
+      password = Sys.getenv("N2KRESULT_PASSWORD")
+    )
     expect_that(
       check_dbtable_variable(
         table = integer(0),
@@ -51,6 +50,10 @@ describe("check_dbtable_variable()", {
 
   it("checks if table exists", {
     skip_on_cran()
+    channel <- connect_result(
+      username = Sys.getenv("N2KRESULT_USERNAME"),
+      password = Sys.getenv("N2KRESULT_PASSWORD")
+    )
     expect_that(
       check_dbtable_variable(
         table = junk,
@@ -68,6 +71,11 @@ describe("check_dbtable_variable()", {
   })
 
   it("checks if channel is on ODBC connection", {
+    skip_on_cran()
+    channel <- connect_result(
+      username = Sys.getenv("N2KRESULT_USERNAME"),
+      password = Sys.getenv("N2KRESULT_PASSWORD")
+    )
     expect_that(
       check_dbtable_variable(
         table = table,
@@ -80,6 +88,11 @@ describe("check_dbtable_variable()", {
   })
 
   it("checks if variable is a non-empty character without missing values", {
+    skip_on_cran()
+    channel <- connect_result(
+      username = Sys.getenv("N2KRESULT_USERNAME"),
+      password = Sys.getenv("N2KRESULT_PASSWORD")
+    )
     expect_that(
       check_dbtable_variable(
         table = table,
@@ -113,6 +126,10 @@ describe("check_dbtable_variable()", {
 
   it("gives correct output", {
     skip_on_cran()
+    channel <- connect_result(
+      username = Sys.getenv("N2KRESULT_USERNAME"),
+      password = Sys.getenv("N2KRESULT_PASSWORD")
+    )
     expect_that(
       check_dbtable_variable(
         table = table,
