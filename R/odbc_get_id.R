@@ -8,7 +8,14 @@
 #' @param id_variable name of the id variable
 #' @importFrom lazyeval interp
 #' @importFrom dplyr %>% filter_ select_ collect
-odbc_get_id <- function(table, variable, value, schema = "public", channel, id_variable = "id"){
+odbc_get_id <- function(
+  table,
+  variable,
+  value,
+  schema = "public",
+  channel,
+  id_variable = "id"
+){
   value <- check_character(value, name = "value")
   if (length(value) == 0) {
     stop("at least one value is needed")

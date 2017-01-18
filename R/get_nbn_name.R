@@ -41,7 +41,11 @@ get_nbn_name <- function(nbn.key, channel){
     WHERE
       ns.RECOMMENDED_TAXON_VERSION_KEY IN (%s)
     GROUP BY
-      CASE WHEN tli.TAXON_LIST_VERSION_KEY like 'INB%%' THEN 'Yes' ELSE 'No' END,
+      CASE
+        WHEN tli.TAXON_LIST_VERSION_KEY like 'INB%%'
+        THEN 'Yes'
+        ELSE 'No'
+      END,
       ns.RECOMMENDED_TAXON_VERSION_KEY,
       t.LANGUAGE,
       t.ITEM_NAME,

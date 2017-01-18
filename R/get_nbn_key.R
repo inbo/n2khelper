@@ -67,7 +67,7 @@ get_nbn_key <- function(name, language = "la", channel){
           (
             (
               dbo.TAXON AS t
-        		INNER JOIN
+            INNER JOIN
               dbo.TAXON_VERSION AS tv
             ON
               t.TAXON_KEY = tv.TAXON_KEY
@@ -81,12 +81,12 @@ get_nbn_key <- function(name, language = "la", channel){
           (
             (
               dbo.NAMESERVER AS ns
-        		INNER JOIN
+            INNER JOIN
               dbo.TAXON_VERSION AS tvr
             ON
               ns.RECOMMENDED_TAXON_VERSION_KEY = tvr.TAXON_VERSION_KEY
             )
-		      INNER JOIN
+          INNER JOIN
             dbo.TAXON AS tr
           ON
             tr.TAXON_KEY = tvr.TAXON_KEY
@@ -95,7 +95,7 @@ get_nbn_key <- function(name, language = "la", channel){
           tv.TAXON_VERSION_KEY = ns.INPUT_TAXON_VERSION_KEY
         )
       )
-		INNER JOIN
+    INNER JOIN
       dbo.TAXON_LIST_ITEM AS tlir
     ON
       tlir.TAXON_LIST_ITEM_KEY = ns.RECOMMENDED_TAXON_LIST_ITEM_KEY
