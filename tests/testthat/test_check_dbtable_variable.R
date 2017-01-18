@@ -5,8 +5,8 @@ describe("check_dbtable_variable()", {
     password = Sys.getenv("N2KRESULT_PASSWORD")
   )
   junk <- "junk"
-  table <- "Location"
-  variable <- c("ExternalCode", "Description")
+  table <- "location"
+  variable <- c("external_code", "description")
   error <- TRUE
 
   it("checks if table is a single character", {
@@ -57,7 +57,12 @@ describe("check_dbtable_variable()", {
         channel = channel,
         error = error
       ),
-      throws_error(paste("Table\\(s\\) missing:", junk))
+      throws_error(
+        sprintf(
+          "Table\\(s\\) junk not found in schema public on database n2kresult",
+          junk
+        )
+      )
     )
   })
 
@@ -69,7 +74,7 @@ describe("check_dbtable_variable()", {
         channel = junk,
         error = error
       ),
-      throws_error("channel is not an ODBC connection")
+      throws_error("channel does not inherit from class DBIConnection")
     )
   })
 
@@ -149,7 +154,5 @@ describe("check_dbtable_variable()", {
       )
     )
   })
-  if (class(channel) == "RODBC") {
-    RODBC::odbcClose(channel)
-  }
+
 })

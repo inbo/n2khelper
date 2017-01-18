@@ -15,14 +15,20 @@ check_dbtable <- function(table, schema = "public", channel, error = TRUE){
     stop("'table' must contain at least one value")
   }
   assert_that(is.string(schema))
-  assert_that(inherits(channel$con, "DBIConnection"))
+  if (has_name(channel, "con")) {
+    assert_that(inherits(channel$con, "DBIConnection"))
+    this_channel <- channel$con
+  } else {
+    assert_that(inherits(channel, "DBIConnection"))
+    this_channel <- channel
+  }
   # nocov start
 
   test <- sapply(
     table,
     function(x){
       c(schema, x) %>%
-        dbExistsTable(conn = channel$con)
+        dbExistsTable(conn = this_channel)
     }
   )
   if (all(test)) {
@@ -34,7 +40,7 @@ check_dbtable <- function(table, schema = "public", channel, error = TRUE){
       sprintf(
         fmt = "Table(s) %s not found in schema %s on database %s",
         schema,
-        dbGetInfo(channel$con)$dbname
+        dbGetInfo(this_channel)$dbname
       ) %>%
       stop(call. = FALSE)
   } else {

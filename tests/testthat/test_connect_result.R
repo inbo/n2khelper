@@ -2,7 +2,11 @@ context("connect result")
 describe("check_id()", {
   it("throws an error on the production version", {
     expect_error(
-      connect_result(develop = FALSE),
+      connect_result(
+        username = Sys.getenv("N2KRESULT_USERNAME"),
+        password = Sys.getenv("N2KRESULT_PASSWORD"),
+        develop = FALSE
+      ),
       "Production database not yet defined"
     )
   })
@@ -11,11 +15,11 @@ describe("check_id()", {
     skip_on_os("linux")
     expect_is(
       connect_result(),
-      "RODBC"
+      "src"
     )
     expect_is(
       connect_result(username = ""),
-      "RODBC"
+      "src"
     )
   })
   it("uses username and password when supplied", {
@@ -25,7 +29,7 @@ describe("check_id()", {
         username = Sys.getenv("N2KRESULT_USERNAME"),
         password = Sys.getenv("N2KRESULT_PASSWORD")
       ),
-      "RODBC"
+      "src"
     )
   })
 })
