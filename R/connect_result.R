@@ -13,16 +13,20 @@ connect_result <- function(username, password, develop = TRUE){
 
   dbname <- "n2kresult"
   if (develop) {
+  # nocov start
     host <- "localhost"
+  # nocov end
   } else {
     stop("Production database not yet defined")
   }
+  # nocov start
   src_postgres(
     host = host,
     dbname = dbname,
     user = username,
     password = password
   )
+  # nocov end
 }
 
 #' Open a trusted connection to the NBN database

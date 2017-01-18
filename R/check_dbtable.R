@@ -10,6 +10,7 @@
 #' @importFrom stats na.fail
 #' @return TRUE when all tables are present in the ODBC connection.
 check_dbtable <- function(table, schema = "public", channel, error = TRUE){
+  # nocov start
   table <- check_character(x = table, name = "table", na.action = na.fail)
   if (length(table) == 0) {
     stop("'table' must contain at least one value")
@@ -22,7 +23,6 @@ check_dbtable <- function(table, schema = "public", channel, error = TRUE){
     assert_that(inherits(channel, "DBIConnection"))
     this_channel <- channel
   }
-  # nocov start
 
   test <- sapply(
     table,

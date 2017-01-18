@@ -7,6 +7,7 @@
 #' @importFrom dplyr %>% ungroup group_by_ select_ mutate_ semi_join filter_ summarise_ count_
 #' @importFrom tidyr spread_
 get_nbn_name <- function(nbn.key, channel){
+  # nocov start
   nbn.key <- check_character(nbn.key, name = "nbn.key")
   assert_that(inherits(channel, "RODBC"))
 

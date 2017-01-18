@@ -11,6 +11,7 @@
 #' @importFrom RODBC odbcDriverConnect
 #' @export
 odbc_connect <- function(data.source.name, username, password, channel){
+  # nocov start
   assert_that(is.string(data.source.name))
   check_dbtable_variable(
     table = "datasource",
@@ -19,7 +20,6 @@ odbc_connect <- function(data.source.name, username, password, channel){
     ),
     channel = channel
   )
-  # nocov start
   check_dbtable_variable(
     table = "datasource_type",
     variable = c("id", "description"),

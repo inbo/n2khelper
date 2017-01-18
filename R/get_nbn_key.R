@@ -7,6 +7,7 @@
 #' @importFrom dplyr %>%
 #' @importFrom assertthat assert_that is.string
 get_nbn_key <- function(name, language = "la", channel){
+  # nocov start
   name <- check_character(name, name = "name")
   assert_that(is.string(language))
   assert_that(inherits(channel, "RODBC"))
@@ -124,5 +125,5 @@ get_nbn_key <- function(name, language = "la", channel){
   if (anyDuplicated(output$InputName) > 1) {
     warning("Duplicate matching keys")
   }
-  return(output)
+  return(output) #nocov end
 }
