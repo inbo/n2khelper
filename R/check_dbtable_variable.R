@@ -2,13 +2,13 @@
 #' @param error Indicates the behaviour when a variable is missing. Gives an error when error = TRUE (default). Return FALSE otherwise.
 #' @inheritParams odbc_get_id
 #' @export
-#' @importFrom RODBC sqlColumns
+#' @importFrom DBI dbListFields
 #' @importFrom stats na.fail
 #' @return TRUE when all variables are present in the table.
 check_dbtable_variable <- function(
   table,
   variable,
-  schema = "dbo",
+  schema = "public",
   channel,
   error = TRUE
 ){
@@ -24,12 +24,8 @@ check_dbtable_variable <- function(
   check_dbtable(table = table, schema = schema, channel = channel, error = TRUE)
   # nocov start
 
-  available <- sqlColumns(
-    channel = channel,
-    sqtable = table,
-    schema = schema
-  )$COLUMN_NAME
-  check <- variable %in% available
+  check <- variable %in%
+    dbListFields(conn = channel$con, name = c(schema, table))
   if (all(check)) {
     return(TRUE)
   }

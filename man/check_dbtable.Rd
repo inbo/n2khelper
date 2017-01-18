@@ -4,14 +4,14 @@
 \alias{check_dbtable}
 \title{Check if a table is available in a given ODBC connection}
 \usage{
-check_dbtable(table, schema = "dbo", channel, error = TRUE)
+check_dbtable(table, schema = "public", channel, error = TRUE)
 }
 \arguments{
 \item{table}{The name of the table}
 
-\item{schema}{The schema. Defaults to 'dbo'}
+\item{schema}{The schema. Defaults to 'public'}
 
-\item{channel}{the open ODBC channel}
+\item{channel}{the open dplyr connection to the database.}
 
 \item{error}{Indicates the behaviour when a table is missing. Gives an error
 when error = TRUE (default). Return FALSE otherwise.}

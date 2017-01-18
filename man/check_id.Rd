@@ -13,7 +13,7 @@ check_id(value, variable, table, channel)
 
 \item{table}{The name of the table}
 
-\item{channel}{the open ODBC channel}
+\item{channel}{the open dplyr connection to the database.}
 }
 \description{
 Test if an id exists in a given field of the table

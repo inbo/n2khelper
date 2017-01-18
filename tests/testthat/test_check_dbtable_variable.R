@@ -1,15 +1,15 @@
 context("check if a database table contains a variable")
 describe("check_dbtable_variable()", {
-  channel <- connect_result(
-    username = Sys.getenv("N2KRESULT_USERNAME"),
-    password = Sys.getenv("N2KRESULT_PASSWORD")
-  )
   junk <- "junk"
-  table <- "Location"
-  variable <- c("ExternalCode", "Description")
+  table <- "location"
+  variable <- c("external_code", "description")
   error <- TRUE
-
   it("checks if table is a single character", {
+    skip_on_cran()
+    channel <- connect_result(
+      username = Sys.getenv("N2KRESULT_USERNAME"),
+      password = Sys.getenv("N2KRESULT_PASSWORD")
+    )
     expect_that(
       check_dbtable_variable(
         table = integer(0),
@@ -50,6 +50,10 @@ describe("check_dbtable_variable()", {
 
   it("checks if table exists", {
     skip_on_cran()
+    channel <- connect_result(
+      username = Sys.getenv("N2KRESULT_USERNAME"),
+      password = Sys.getenv("N2KRESULT_PASSWORD")
+    )
     expect_that(
       check_dbtable_variable(
         table = junk,
@@ -57,11 +61,21 @@ describe("check_dbtable_variable()", {
         channel = channel,
         error = error
       ),
-      throws_error(paste("Table\\(s\\) missing:", junk))
+      throws_error(
+        sprintf(
+          "Table\\(s\\) junk not found in schema public on database n2kresult",
+          junk
+        )
+      )
     )
   })
 
   it("checks if channel is on ODBC connection", {
+    skip_on_cran()
+    channel <- connect_result(
+      username = Sys.getenv("N2KRESULT_USERNAME"),
+      password = Sys.getenv("N2KRESULT_PASSWORD")
+    )
     expect_that(
       check_dbtable_variable(
         table = table,
@@ -69,11 +83,16 @@ describe("check_dbtable_variable()", {
         channel = junk,
         error = error
       ),
-      throws_error("channel is not an ODBC connection")
+      throws_error("channel does not inherit from class DBIConnection")
     )
   })
 
   it("checks if variable is a non-empty character without missing values", {
+    skip_on_cran()
+    channel <- connect_result(
+      username = Sys.getenv("N2KRESULT_USERNAME"),
+      password = Sys.getenv("N2KRESULT_PASSWORD")
+    )
     expect_that(
       check_dbtable_variable(
         table = table,
@@ -107,6 +126,10 @@ describe("check_dbtable_variable()", {
 
   it("gives correct output", {
     skip_on_cran()
+    channel <- connect_result(
+      username = Sys.getenv("N2KRESULT_USERNAME"),
+      password = Sys.getenv("N2KRESULT_PASSWORD")
+    )
     expect_that(
       check_dbtable_variable(
         table = table,
@@ -149,7 +172,5 @@ describe("check_dbtable_variable()", {
       )
     )
   })
-  if (class(channel) == "RODBC") {
-    RODBC::odbcClose(channel)
-  }
+
 })
