@@ -1,5 +1,6 @@
 context("check if an id exists")
 describe("check_id()", {
+  skip_on_cran()
   channel <- connect_result(
     username = Sys.getenv("N2KRESULT_USERNAME"),
     password = Sys.getenv("N2KRESULT_PASSWORD")
