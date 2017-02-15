@@ -41,14 +41,14 @@ git_connect <- function(
     channel = channel
   )
 
-
+  type <- sprintf("git, tab delimited %s", type)
   connection <- tbl(channel, "datasource") %>%
     filter_(~description == data.source.name) %>%
     inner_join(
       tbl(channel, "datasource_type"),
       by = c("datasource_type" = "id")
     ) %>%
-    filter_(~description.y == sprintf("git, tab delimited %s", type)) %>%
+    filter_(~description.y == type) %>%
     select_(
       datasource = ~ id.x,
       datasource_type = ~description.y
