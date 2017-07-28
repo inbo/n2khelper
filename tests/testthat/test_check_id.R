@@ -1,29 +1,16 @@
 context("check if an id exists")
 describe("check_id()", {
-  channel <- connect_result(
-    username = Sys.getenv("N2KRESULT_USERNAME"),
-    password = Sys.getenv("N2KRESULT_PASSWORD")
-  )
-  table <- "DatasourceType"
-  variable <- "ID"
-  variable.text <- "Description"
+  table <- "datasource_type"
+  variable <- "id"
+  variable.text <- "description"
   value.text <- "'git, tab delimited ssh'"
   sql <- paste(
     "SELECT", variable, "FROM", table, "WHERE", variable.text, "=", value.text
   )
-  if (class(channel) == "RODBC") {
-    value <- RODBC::sqlQuery(
-      channel = channel,
-      query = sql,
-      stringsAsFactors = FALSE,
-      as.is = TRUE
-    )[, 1]
-  } else {
-    value <- 1
-  }
   junk <- "junk"
 
   it("tests if the channel in an ODBC connection", {
+    skip_on_cran()
     expect_that(
       check_id(
         value = value,
@@ -31,11 +18,15 @@ describe("check_id()", {
         table = table,
         channel = junk
       ),
-      throws_error("channel is not an ODBC connection")
+      throws_error("channel does not inherit from class DBIConnection")
     )
   })
   it("tests if the table exists in the ODBC connection", {
     skip_on_cran()
+    channel <- connect_result(
+      username = Sys.getenv("N2KRESULT_USERNAME"),
+      password = Sys.getenv("N2KRESULT_PASSWORD")
+    )
     expect_that(
       check_id(
         value = value,
@@ -43,23 +34,36 @@ describe("check_id()", {
         table = junk,
         channel = channel
       ),
-      throws_error(paste("Table\\(s\\) missing:", junk))
+      throws_error(
+        sprintf(
+          "Table\\(s\\) %s not found in schema public on database n2kresult",
+          junk
+        )
+      )
     )
   })
   it("tests if data type is correct", {
     skip_on_cran()
-    expect_that(
+    channel <- connect_result(
+      username = Sys.getenv("N2KRESULT_USERNAME"),
+      password = Sys.getenv("N2KRESULT_PASSWORD")
+    )
+    expect_error(
       check_id(
         value = 999999999,
         variable = variable.text,
         table = table,
         channel = channel
-      ),
-      throws_error(".*Conversion failed when converting.*")
+      )
     )
   })
   it("tests if the variable table exists in the table", {
     skip_on_cran()
+    channel <- connect_result(
+      username = Sys.getenv("N2KRESULT_USERNAME"),
+      password = Sys.getenv("N2KRESULT_PASSWORD")
+    )
+    value <- 1
     expect_that(
       check_id(
         value = value,
@@ -72,6 +76,10 @@ describe("check_id()", {
   })
   it("tests if the id exists in the table", {
     skip_on_cran()
+    channel <- connect_result(
+      username = Sys.getenv("N2KRESULT_USERNAME"),
+      password = Sys.getenv("N2KRESULT_PASSWORD")
+    )
     expect_that(
       check_id(
         value = 999999999,
@@ -82,7 +90,4 @@ describe("check_id()", {
       is_false()
     )
   })
-  if (class(channel) == "RODBC") {
-    RODBC::odbcClose(channel)
-  }
 })

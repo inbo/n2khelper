@@ -16,7 +16,7 @@ odbc_get_multi_id(data, id.field, merge.field, table, channel, create = FALSE,
 
 \item{table}{The name of the table}
 
-\item{channel}{the open ODBC channel}
+\item{channel}{the open dplyr connection to the database.}
 
 \item{create}{When TRUE, the function creates unmatching records AND updates attributes. Defaults to FALSE.}
 

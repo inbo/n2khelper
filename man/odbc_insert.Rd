@@ -12,9 +12,9 @@ odbc_insert(data, table, channel, schema = "dbo", append = TRUE,
 
 \item{table}{The name of the table}
 
-\item{channel}{the open ODBC channel}
+\item{channel}{the open dplyr connection to the database.}
 
-\item{schema}{The schema of the table. Defaults to dbo}
+\item{schema}{The schema of the table. Defaults to public}
 
 \item{append}{Append the data or overwrite existing rows?}
 

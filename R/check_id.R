@@ -2,7 +2,7 @@
 #' @inheritParams odbc_get_id
 #' @export
 #' @importFrom assertthat assert_that is.count
-#' @importFrom RODBC sqlQuery
+#' @importFrom DBI dbGetQuery
 check_id <- function(value, variable, table, channel){
   assert_that(is.count(value))
   variable <- check_single_character(variable, name = "variable")
@@ -10,23 +10,10 @@ check_id <- function(value, variable, table, channel){
 
   # nocov start
   sql <- paste("SELECT", variable, "FROM", table, "WHERE", variable, "=", value)
-  selection <- sqlQuery(
-    channel = channel,
-    query = sql,
-    stringsAsFactors = FALSE,
-    as.is = TRUE
+  selection <- dbGetQuery(
+    conn = channel$con,
+    statement = sql
   )
-  if (!inherits(selection, "data.frame")) {
-    if (length(grep("Invalid column name", selection)) > 0) {
-      stop(
-        "The variable '", variable, "' doesn't exists in table '", table, "'"
-      )
-    }
-    if (length(grep("Conversion failed", selection))) {
-      stop(paste(selection, collapse = "\n"))
-    }
-  }
-
   if (nrow(selection) == 0) {
     return(FALSE)
   } else {
