@@ -4,6 +4,7 @@ describe("check_id()", {
   variable <- "id"
   variable.text <- "description"
   value.text <- "'git, tab delimited ssh'"
+  value <- 1
   sql <- paste(
     "SELECT", variable, "FROM", table, "WHERE", variable.text, "=", value.text
   )
