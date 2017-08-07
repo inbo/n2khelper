@@ -11,6 +11,7 @@
 #' @return The function returns TRUE when all variables are present. If returns
 #'    FALSE when a variable is missing and \code{error = FALSE}.
 #' @export
+#' @importFrom dplyr %>%
 #' @examples
 #' check_dataframe_variable(
 #'  df = data.frame(a = integer(0)),
@@ -68,14 +69,15 @@ check_dataframe_variable <- function(df, variable, name = "df", error = TRUE){
     wrong.class <- sapply(wrong.class, paste, collapse = "', '")
     expected.class <- required.class[!all.NA][names(wrong.class)]
     expected.class <- sapply(expected.class, paste, collapse = "', '")
-    stop(
-      "Wrong class for following variable(s)\n",
-      paste0(
-        names(wrong.class), ": got '", wrong.class,
-        "', expected '", expected.class, "'\n",
-        collapse = ", "
-      )
-    )
+    sprintf(
+      "\n%s: got '%s', expected '%s'",
+      names(wrong.class),
+      wrong.class,
+      expected.class
+    ) %>%
+      paste(collapse = "") %>%
+      sprintf(fmt = "Wrong class for following variable(s)%s") %>%
+      stop()
   }
   return(TRUE)
 }
