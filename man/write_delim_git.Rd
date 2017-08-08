@@ -4,6 +4,7 @@
 \name{write_delim_git}
 \alias{write_delim_git}
 \alias{write_delim_git,ANY,ANY,ANY-method}
+\alias{write_delim_git,git_connection-methods}
 \alias{write_delim_git,ANY,ANY,gitConnection-method}
 \alias{write_delim_git,git_connection-methods}
 \title{Write a dataframe as a tab delimited file to a git repository and stage it}
@@ -31,4 +32,3 @@ the SHA1 of the file
 \description{
 The existing file will be overwritten.
 }
-

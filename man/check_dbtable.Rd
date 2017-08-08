@@ -22,4 +22,3 @@ TRUE when all tables are present in the ODBC connection.
 \description{
 Check if a table is available in a given ODBC connection
 }
-

@@ -12,4 +12,3 @@ is.chartor(x)
 \description{
 Test if the argument is either character or factor
 }
-

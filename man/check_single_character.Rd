@@ -20,4 +20,3 @@ Factors are converted to character.
 \examples{
 check_single_character("20")
 }
-

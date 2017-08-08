@@ -28,4 +28,3 @@ Read an object from an environment
   assign(x = object, value = value, envir = env)
   read_object_environment(object, env)
 }
-

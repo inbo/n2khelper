@@ -17,4 +17,3 @@ A logical vector wit the same length as path
 It the path a git repository
 Checks is a '.git' subdirectory exists in 'path'
 }
-

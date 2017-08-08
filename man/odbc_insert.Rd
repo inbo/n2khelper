@@ -26,4 +26,3 @@ The status of the SQL INSERT for each row in returned but invisible.
 \description{
 Append a data.frame to a table through an ODBC connection
 }
-

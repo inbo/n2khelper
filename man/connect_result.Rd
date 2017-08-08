@@ -16,4 +16,3 @@ connect_result(username, password, develop = TRUE)
 \description{
 Opens an ODBC connection to the 'results' database
 }
-

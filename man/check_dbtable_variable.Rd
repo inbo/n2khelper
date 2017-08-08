@@ -24,4 +24,3 @@ TRUE when all variables are present in the table.
 \description{
 Check if a variable is available in a given table
 }
-

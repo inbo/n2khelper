@@ -4,8 +4,8 @@
 \name{auto_commit}
 \alias{auto_commit}
 \alias{auto_commit,ANY,ANY-method}
-\alias{auto_commit,ANY,gitConnection-method}
 \alias{auto_commit,gitConnection-methods}
+\alias{auto_commit,ANY,gitConnection-method}
 \alias{auto_commit,git_connection-methods}
 \title{Commit staged changes in a git repository with automated message}
 \usage{
@@ -25,4 +25,3 @@ auto_commit(package, connection, ...)
 \description{
 The mesagge is based on the information returned by \code{\link[utils]{sessionInfo}}
 }
-

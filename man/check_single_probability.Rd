@@ -20,4 +20,3 @@ Check if the object is a single probability
 \examples{
 check_single_probability(0.5)
 }
-

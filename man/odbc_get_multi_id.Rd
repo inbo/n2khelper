@@ -30,4 +30,3 @@ a data.frame with data and the id's
 \description{
 Get the corresponding id's
 }
-

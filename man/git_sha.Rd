@@ -4,6 +4,7 @@
 \name{git_sha}
 \alias{git_sha}
 \alias{git_sha,ANY,ANY-method}
+\alias{git_sha,git_connection-methods}
 \alias{git_sha,ANY,gitConnection-method}
 \alias{git_sha,git_connection-methods}
 \title{Get the SHA of the files at the HEAD}
@@ -26,4 +27,3 @@ object}
 \description{
 Get the SHA of the files at the HEAD
 }
-

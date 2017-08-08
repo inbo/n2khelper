@@ -17,4 +17,3 @@ variable is missing. Otherwise it returns a warning.}
 \description{
 check if a path is an exisiting file or directory
 }
-

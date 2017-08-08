@@ -22,4 +22,3 @@ x <- as.POSIXct(
 )
 cut_date(x, dm = c("1-1", "1-2", "1-3"))
 }
-

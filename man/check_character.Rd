@@ -22,4 +22,3 @@ Factors are converted to character.
 \examples{
 check_character(c("20", "b"))
 }
-

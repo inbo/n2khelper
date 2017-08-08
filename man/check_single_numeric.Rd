@@ -20,4 +20,3 @@ Check if the object is a single numeric
 \examples{
 check_single_numeric(0.5)
 }
-

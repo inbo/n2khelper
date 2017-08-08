@@ -20,4 +20,3 @@ Check if the object is a single logical
 \examples{
 check_single_logical(TRUE)
 }
-

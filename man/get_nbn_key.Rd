@@ -16,4 +16,3 @@ get_nbn_key(name, language = "la", channel)
 \description{
 Get the NBN key of a species
 }
-
