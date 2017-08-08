@@ -5,6 +5,8 @@ Version: 0.4.1
 Date: 2017-08-03
 Authors@R: c(person("Thierry", "Onkelinx", email = "thierry.onkelinx@inbo.be", role = c("aut", "cre")))
 Description: Auxiliary functions for analysing Natura 2000 monitoring data.
+URL: https://zenodo.org/badge/latestdoi/50571210
+BugReports: https://github.com/inbo/n2khelper/issues
 Depends:
     R (>= 3.2.0)
 Imports:
