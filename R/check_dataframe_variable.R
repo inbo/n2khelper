@@ -6,11 +6,13 @@
 #'    required variables in the data.frame. The elements of the list contain the
 #'    accepted classes for each varaible.
 #' @param name the name of the \code{data.frame} to use in the error message
+#' @param force.NA check the class of variables with all NA
 #' @param error When TRUE (default), the function returns an error when a
 #'    variable is missing. Otherwise it returns a warning.
 #' @return The function returns TRUE when all variables are present. If returns
 #'    FALSE when a variable is missing and \code{error = FALSE}.
 #' @export
+#' @importFrom dplyr %>%
 #' @examples
 #' check_dataframe_variable(
 #'  df = data.frame(a = integer(0)),
@@ -21,9 +23,13 @@
 #'  variable = list(a = c("integer", "numeric"))
 #' )
 #' @importFrom assertthat assert_that is.string is.flag noNA
-check_dataframe_variable <- function(df, variable, name = "df", error = TRUE){
+check_dataframe_variable <- function(
+  df, variable, name = "df", force.NA = FALSE, error = TRUE
+){
   assert_that(is.string(name))
   assert_that(inherits(df, "data.frame") | inherits(df, "matrix"))
+  assert_that(is.flag(force.NA))
+  assert_that(noNA(force.NA))
   assert_that(is.flag(error))
   assert_that(noNA(error))
   assert_that(is.list(variable) | is.character(variable))
@@ -53,13 +59,17 @@ check_dataframe_variable <- function(df, variable, name = "df", error = TRUE){
     return(TRUE)
   }
 
-  all.NA <- sapply(
-    df[, variable],
-    function(x){
-      all(is.na(x))
-    }
-  )
-  current.class <- sapply(df[, variable[!all.NA]], class)
+  if (force.NA) {
+    all.NA <- rep(FALSE, length(variable))
+  } else {
+    all.NA <- sapply(
+      df[, variable],
+      function(x){
+        all(is.na(x))
+      }
+    )
+  }
+  current.class <- sapply(df[, variable[!all.NA], drop = FALSE], class)
   correct.class <- sapply(seq_along(current.class), function(i){
     any(current.class[[i]] %in% required.class[!all.NA][[i]])
   })
@@ -68,14 +78,15 @@ check_dataframe_variable <- function(df, variable, name = "df", error = TRUE){
     wrong.class <- sapply(wrong.class, paste, collapse = "', '")
     expected.class <- required.class[!all.NA][names(wrong.class)]
     expected.class <- sapply(expected.class, paste, collapse = "', '")
-    stop(
-      "Wrong class for following variable(s)\n",
-      paste0(
-        names(wrong.class), ": got '", wrong.class,
-        "', expected '", expected.class, "'\n",
-        collapse = ", "
-      )
-    )
+    sprintf(
+      "\n%s: got '%s', expected '%s'",
+      names(wrong.class),
+      wrong.class,
+      expected.class
+    ) %>%
+      paste(collapse = "") %>%
+      sprintf(fmt = "Wrong class for following variable(s)%s") %>%
+      stop()
   }
   return(TRUE)
 }

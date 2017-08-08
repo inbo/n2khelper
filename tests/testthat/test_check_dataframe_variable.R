@@ -164,4 +164,29 @@ describe("check_dataframe_variable()", {
       )
     )
   })
+
+  it("forces a check on all NA variables", {
+    expect_error(
+      check_dataframe_variable(
+        df = data.frame(A = NA),
+        variable = list(A = "character"),
+        name = name,
+        force.NA = TRUE
+      ),
+      "A: got 'logical', expected 'character'"
+    )
+    expect_equal(
+      check_dataframe_variable(
+        df = data.frame(A = NA),
+        variable = list(A = "character"),
+        name = name,
+        force.NA = FALSE
+      ),
+      check_dataframe_variable(
+        df = data.frame(A = NA),
+        variable = list(A = "character"),
+        name = name
+      )
+    )
+  })
 })
