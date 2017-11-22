@@ -50,7 +50,7 @@ git_connect <- function(
     ) %>%
     filter_(~description.y == type) %>%
     select_(
-      datasource = ~ id.x,
+      datasource = ~ id,
       datasource_type = ~description.y
     ) %>%
     inner_join(
