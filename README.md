@@ -21,9 +21,10 @@ The `n2khelper` package constains auxiliary functions for the analysis and repor
 - [Rn2k](https://github.com/inbo/Rn2k): Docker image with all the required dependencies to run the analyses
 
 `n2khelper` has several goals: 
-    1. Not to repeat oneself by creating a single package with generic function rather than create different functions that do something similar in the different packages.
-    1. Put functions together which might be relevant for other users and package authors.
-    1. Create a proof of concept for some functionality and convince authors of more estabiled packages to incoporate them in their package. Examples are [`digest::sha1()`](https://github.com/eddelbuettel/digest/pull/20) and [`aws.s3::get_bucket()`](https://github.com/cloudyr/aws.s3/pull/104)
+
+1. Not to repeat oneself by creating a single package with generic function rather than create different functions that do something similar in the different packages.
+1. Put functions together which might be relevant for other users and package authors.
+1. Create a proof of concept for some functionality and convince authors of more estabiled packages to incoporate them in their package. Examples are [`digest::sha1()`](https://github.com/eddelbuettel/digest/pull/20) and [`aws.s3::get_bucket()`](https://github.com/cloudyr/aws.s3/pull/104)
 
 ## Folder structure
 
