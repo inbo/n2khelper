@@ -10,16 +10,17 @@ BugReports: https://github.com/inbo/n2khelper/issues
 Depends:
     R (>= 3.2.0)
 Imports:
-    git2r,
-    dplyr,
-    plyr,
-    lubridate,
-    methods,
     assertthat,
     DBI,
-    tidyr,
+    dplyr,
+    git2r,
+    lubridate,
     lazyeval,
-    RODBC
+    methods,
+    plyr,
+    rlang,
+    RODBC,
+    tidyr
 License: GPL-3
 LazyData: true
 Suggests:
