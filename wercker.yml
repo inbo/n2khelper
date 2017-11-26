@@ -4,8 +4,3 @@ build:
     - inbobmk/r-check
     - inbobmk/r-coverage
     - inbobmk/r-lint
-
-buildolder:
-  box: inbobmk/rstable:oldrel
-  steps:
-    - inbobmk/r-check

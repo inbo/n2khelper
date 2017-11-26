@@ -4,6 +4,7 @@
 \name{read_delim_git}
 \alias{read_delim_git}
 \alias{read_delim_git,ANY,ANY-method}
+\alias{read_delim_git,git_connection-methods}
 \alias{read_delim_git,ANY,gitConnection-method}
 \alias{read_delim_git,git_connection-methods}
 \title{Read a tab delimited file from a git repository}
@@ -26,4 +27,3 @@ object}
 \description{
 Read a tab delimited file from a git repository
 }
-

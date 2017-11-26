@@ -18,4 +18,3 @@ check_id(value, variable, table, channel)
 \description{
 Test if an id exists in a given field of the table
 }
-

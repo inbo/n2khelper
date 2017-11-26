@@ -22,4 +22,3 @@ Check if the object is a single POSIX
 \examples{
 check_single_posix(Sys.time())
 }
-

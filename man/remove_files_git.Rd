@@ -4,6 +4,7 @@
 \name{remove_files_git}
 \alias{remove_files_git}
 \alias{remove_files_git,ANY-method}
+\alias{remove_files_git,git_connection-methods}
 \alias{remove_files_git,gitConnection-method}
 \alias{remove_files_git,git_connection-methods}
 \title{Remove all the files in a path of a git repository}
@@ -27,4 +28,3 @@ object}
 \description{
 Remove all the files in a path of a git repository
 }
-

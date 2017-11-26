@@ -17,4 +17,3 @@ error when \code{error = TRUE}. Return \code{FALSE} when \code{error = FALSE}}
 Check if the path a git repository
 Checks is a '.git' subdirectory exists in 'path'
 }
-

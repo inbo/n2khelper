@@ -26,4 +26,3 @@ git_connect(data.source.name, channel, type = c("ssh", "https"),
 \description{
 The details are stored in the results database.
 }
-

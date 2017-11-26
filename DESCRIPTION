@@ -1,23 +1,26 @@
 Package: n2khelper
 Title: Auxiliary Functions for the Analysis and Reporting of the Natura 2000
     Monitoring
-Version: 0.4.1
-Date: 2017-08-03
+Version: 0.4.1.1
+Date: 2017-11-25
 Authors@R: c(person("Thierry", "Onkelinx", email = "thierry.onkelinx@inbo.be", role = c("aut", "cre")))
 Description: Auxiliary functions for analysing Natura 2000 monitoring data.
+URL: https://doi.org/10.5281/zenodo.835732
+BugReports: https://github.com/inbo/n2khelper/issues
 Depends:
     R (>= 3.2.0)
 Imports:
-    git2r,
-    dplyr,
-    plyr,
-    lubridate,
-    methods,
     assertthat,
     DBI,
-    tidyr,
+    dplyr,
+    git2r,
+    lubridate,
     lazyeval,
-    RODBC
+    methods,
+    plyr,
+    rlang,
+    RODBC,
+    tidyr
 License: GPL-3
 LazyData: true
 Suggests:
@@ -59,4 +62,4 @@ Collate:
     'read_object_environment.R'
     'remove_files_git.R'
     'write_delim_git.R'
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

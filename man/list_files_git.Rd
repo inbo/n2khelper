@@ -4,6 +4,7 @@
 \name{list_files_git}
 \alias{list_files_git}
 \alias{list_files_git,ANY-method}
+\alias{list_files_git,git_connection-methods}
 \alias{list_files_git,gitConnection-method}
 \alias{list_files_git,git_connection-methods}
 \title{List the files in a path of a git repository}
@@ -33,4 +34,3 @@ object}
 \description{
 List the files in a path of a git repository
 }
-

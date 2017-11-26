@@ -19,4 +19,3 @@ variable is missing. Otherwise it returns a warning.}
 \description{
 Check if the covariates are available in a dataframe
 }
-

@@ -4,6 +4,7 @@
 \name{git_recent}
 \alias{git_recent}
 \alias{git_recent,ANY,ANY-method}
+\alias{git_recent,git_connection-methods}
 \alias{git_recent,ANY,gitConnection-method}
 \alias{git_recent,git_connection-methods}
 \title{Get the info from the latest commit of a file}
@@ -26,4 +27,3 @@ object}
 \description{
 Get the info from the latest commit of a file
 }
-

@@ -23,4 +23,3 @@ odbc_get_id(table, variable, value, schema = "public", channel,
 \description{
 Get the id of the matching records
 }
-

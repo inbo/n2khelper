@@ -18,4 +18,3 @@ odbc_connect(data.source.name, username, password, channel)
 \description{
 The connection string is stored in the results database.
 }
-

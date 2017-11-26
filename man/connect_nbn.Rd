@@ -9,4 +9,3 @@ connect_nbn()
 \description{
 Open a trusted connection to the NBN database
 }
-
