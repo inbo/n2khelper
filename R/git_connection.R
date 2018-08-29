@@ -2,7 +2,6 @@
 #' @name git_connection
 #' @rdname gitConnection-class
 #' @param repo.path The path of the root of the repository
-#' @param local.path A path within the repository
 #' @param key Optional: the path to a private ssh key. The public key is assumed
 #'    to have the same path with a '.pub' extension. Using in case of ssh
 #'    authentication.
@@ -15,21 +14,19 @@
 #' @export
 #' @importFrom methods new
 #' @importFrom assertthat assert_that is.string
-#' @importFrom git2r repository config cred_ssh_key cred_user_pass
+#' @importFrom git2r in_repository repository config cred_ssh_key cred_user_pass
 #' @include gitConnection_class.R
 git_connection <- function(
   repo.path,
-  local.path = ".",
   key,
   username,
   password,
   commit.user,
   commit.email
 ){
-  assert_that(is.string(local.path))
   assert_that(is.string(commit.user))
   assert_that(is.string(commit.email))
-  repo.path <- check_git_repo(path = repo.path)
+  repo.path <- in_repository(path = repo.path)
   repo <- repository(repo.path)
   config(repo, user.name = commit.user, user.email = commit.email)
 
@@ -38,7 +35,6 @@ git_connection <- function(
       new(
         "gitConnection",
         Repository = repo,
-        LocalPath = local.path,
         Credentials = NULL,
         CommitUser = commit.user,
         CommitEmail = commit.email
@@ -54,7 +50,6 @@ git_connection <- function(
         new(
           "gitConnection",
           Repository = repo,
-          LocalPath = local.path,
           Credentials = cred_ssh_key(
             publickey = paste0(key, ".pub"),
             privatekey = key
@@ -70,7 +65,6 @@ git_connection <- function(
       new(
         "gitConnection",
         Repository = repo,
-        LocalPath = local.path,
         Credentials = cred_ssh_key(
           publickey = paste0(key, ".pub"),
           privatekey = key,
@@ -90,7 +84,6 @@ git_connection <- function(
     new(
       "gitConnection",
       Repository = repo,
-      LocalPath = local.path,
       Credentials = cred_user_pass(
         username = username,
         password = password

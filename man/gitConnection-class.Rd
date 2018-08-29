@@ -6,13 +6,10 @@
 \alias{git_connection}
 \title{The gitConnection class}
 \usage{
-git_connection(repo.path, local.path = ".", key, username, password,
-  commit.user, commit.email)
+git_connection(repo.path, key, username, password, commit.user, commit.email)
 }
 \arguments{
 \item{repo.path}{The path of the root of the repository}
-
-\item{local.path}{A path within the repository}
 
 \item{key}{Optional: the path to a private ssh key. The public key is assumed
 to have the same path with a '.pub' extension. Using in case of ssh
@@ -37,7 +34,6 @@ Open a git connection
 
   \describe{
    \item{\code{Repository}}{a git repository}
-   \item{\code{LocalPath}}{a subdirectory wihtin the repository}
    \item{\code{Credentials}}{the credentials for the repository}
    \item{\code{CommitUser}}{the name of the user how will commit}
    \item{\code{CommitEmail}}{the email of the user how will commit}

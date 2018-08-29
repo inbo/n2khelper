@@ -78,7 +78,6 @@ git_connect <- function(
     )
   }
   assert_that(has_name(connection, "connect_method"))
-  assert_that(has_name(connection, "path"))
   assert_that(has_name(connection, "repo"))
 
   if (
@@ -102,7 +101,6 @@ git_connect <- function(
     return(
       git_connection(
         repo.path = connection$repo,
-        local.path = connection$path,
         key = username,
         password = password,
         commit.user = commit.user,
@@ -113,7 +111,6 @@ git_connect <- function(
   return(
     git_connection(
       repo.path = connection$repo,
-      local.path = connection$path,
       username = username,
       password = password,
       commit.user = commit.user,
