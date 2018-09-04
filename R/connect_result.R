@@ -34,3 +34,26 @@ connect_result <- function(username, password, develop = TRUE){
 connect_nbn <- function(){
   odbcDriverConnect(connection = nbn.dsn)
 }
+
+#' connect to the unit test database
+#' @inheritParams dplyr::src_postgres
+#' @export
+#' @importFrom dplyr src_postgres
+connect_ut_db <- function(
+  host = "localhost",
+  dbname = "n2kunittest",
+  user = "unittest_analysis",
+  password = "unittest",
+  port = 5432,
+  ...
+){
+  # nocov start
+  src_postgres(
+    host = host,
+    dbname = dbname,
+    user = user,
+    password = password,
+    ...
+  )
+  # nocov end
+}
