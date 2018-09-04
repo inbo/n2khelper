@@ -7,19 +7,20 @@ describe("read_object_environment()", {
   assign(x = object, value = value, envir = env)
 
   it("checks if env is an environment", {
-    expect_that(
+    expect_error(
       read_object_environment(object = object, env = object),
-      throws_error("env is not an environment")
+      "env is not an environment"
     )
   })
   it("returns the object or NULL if the object doesn't exists", {
-    expect_that(
+    expect_identical(
       read_object_environment(object = object, env = env),
-      is_identical_to(value)
+      value
     )
-    expect_that(
-      read_object_environment(object = missing.object, env = env),
-      is_null()
+    expect_null(
+      suppressWarnings(
+        read_object_environment(object = missing.object, env = env)
+      )
     )
   })
   it("returns a warning when the object is missing", {
@@ -31,9 +32,8 @@ describe("read_object_environment()", {
       read_object_environment(object = missing.object, env = env, warn = TRUE),
       gives_warning(paste(missing.object, "doesn't exists in env"))
     )
-    expect_that(
-      read_object_environment(object = missing.object, env = env, warn = FALSE),
-      testthat::not(gives_warning())
+    expect_silent(
+      read_object_environment(object = missing.object, env = env, warn = FALSE)
     )
   })
 })

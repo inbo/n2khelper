@@ -138,17 +138,24 @@ describe("check_dataframe_variable()", {
       )
     )
     expect_that(
-      check_dataframe_variable(
-        df = df, variable = c(variable, missing.var), name = name, error = FALSE
+      suppressWarnings(
+        check_dataframe_variable(
+          df = df,
+          variable = c(variable, missing.var),
+          name = name,
+          error = FALSE
+        )
       ),
       is_false()
     )
     expect_that(
-      check_dataframe_variable(
-        df = df.matrix,
-        variable = c(variable, missing.var),
-        name = name,
-        error = FALSE
+      suppressWarnings(
+        check_dataframe_variable(
+          df = df.matrix,
+          variable = c(variable, missing.var),
+          name = name,
+          error = FALSE
+        )
       ),
       is_false()
     )

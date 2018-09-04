@@ -7,6 +7,7 @@
 #' @return the object or \code{NULL} is the object doesn't exists in the
 #'    environment
 #' @export
+#' @importFrom utils hasName
 #' @examples
 #'   object <- "test"
 #'   value <- TRUE
@@ -21,7 +22,7 @@ read_object_environment <- function(object, env, warn = TRUE){
   }
   warn <- check_single_logical(warn, name = "warn")
 
-  if (!exists(object, envir = env)) {
+  if (!hasName(env, object)) {
     if (warn) {
       warning(object, " doesn't exists in env")
     }

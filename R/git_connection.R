@@ -27,7 +27,7 @@ git_connection <- function(
   assert_that(is.string(commit.user))
   assert_that(is.string(commit.email))
   assert_that(
-    in_repository(path = repo.path),
+    suppressWarnings(in_repository(path = repo.path)),
     msg = "repo.path is not a git repository"
   )
   repo <- repository(repo.path)
