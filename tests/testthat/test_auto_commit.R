@@ -1,0 +1,72 @@
+context("autocommit changes")
+describe("auto_commit()", {
+  package <- "test"
+  user <- "test"
+  pwd <- "test"
+  commit.user <- "me"
+  commit.email <- "me@me.com"
+
+  # function to create and stage a file
+  dummy_add <- function(connection){
+    content <- paste(sample(letters, 8, replace = TRUE), collapse = "")
+    writeLines(content, paste(connection, content, sep = "/"))
+    git2r::add(git2r::repository(connection), content)
+  }
+
+  # create test repository
+  origin.path <- tempfile(pattern = "git2r-")
+  connection <- tempfile(pattern = "git2rclone-")
+  dir.create(origin.path)
+  dir.create(connection)
+  repo_bare <- git2r::init(origin.path, bare = TRUE)
+  repo <- git2r::clone(origin.path, connection)
+  git2r::config(repo, user.name = commit.user, user.email = commit.email)
+  dummy_add(connection)
+  git2r::commit(repo, "inital")
+  git2r::push(repo, "origin", "refs/heads/master")
+
+  it("gives a warning when no username and password are provided and returns
+     TRUE", {
+    dummy_add(connection = connection)
+    expect_that(
+      output <- auto_commit(
+        package = package,
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
+      ),
+      gives_warning("changes committed but not pushed")
+    )
+    expect_true(output)
+  })
+  it("returns TRUE when nothing to commit", {
+    expect_true(
+      auto_commit(
+        package = package,
+        connection = connection,
+        commit.user = commit.user,
+        commit.email = commit.email
+      )
+    )
+  })
+  it("returns TRUE when changes are pushed", {
+    dummy_add(connection = connection)
+    expect_true(
+      auto_commit(
+        package = package,
+        connection = connection,
+        username = user,
+        password = pwd,
+        commit.user = commit.user,
+        commit.email = commit.email,
+        push = TRUE
+      )
+    )
+  })
+  it("writes a correct message title", {
+    expect_identical(
+      git2r::reflog(repo)[[1]]$message,
+      paste("commit: Automatic commit from", package)
+    )
+  })
+})
