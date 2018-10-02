@@ -1,9 +1,16 @@
 Package: n2khelper
 Title: Auxiliary Functions for the Analysis and Reporting of the Natura 2000
     Monitoring
-Version: 0.4.1.1
-Date: 2017-11-25
-Authors@R: c(person("Thierry", "Onkelinx", email = "thierry.onkelinx@inbo.be", role = c("aut", "cre")))
+Version: 0.4.2
+Date: 2018-10-02
+Authors@R: c(
+  person(
+    "Thierry", "Onkelinx", role = c("aut", "cre"), 
+    email = "thierry.onkelinx@inbo.be", 
+    comment = c(ORCID = "0000-0001-8804-4216")),
+  person(
+    family = "Research Institute for Nature and Forest",
+    role = c("cph", "fnd"), email = "info@inbo.be"))
 Description: Auxiliary functions for analysing Natura 2000 monitoring data.
 URL: https://doi.org/10.5281/zenodo.835732
 BugReports: https://github.com/inbo/n2khelper/issues
