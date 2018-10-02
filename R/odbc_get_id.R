@@ -36,5 +36,6 @@ odbc_get_id <- function(
     filter_(.dots = dots) %>%
     select_(id_variable) %>%
     collect() %>%
-    unlist() # nocov end
+    unlist() %>%
+    unname() # nocov end
 }

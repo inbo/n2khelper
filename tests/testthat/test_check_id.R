@@ -24,10 +24,7 @@ describe("check_id()", {
   })
   it("tests if the table exists in the ODBC connection", {
     skip_on_cran()
-    channel <- connect_result(
-      username = Sys.getenv("N2KRESULT_USERNAME"),
-      password = Sys.getenv("N2KRESULT_PASSWORD")
-    )
+    channel <- connect_ut_db()
     expect_that(
       check_id(
         value = value,
@@ -37,33 +34,16 @@ describe("check_id()", {
       ),
       throws_error(
         sprintf(
-          "Table\\(s\\) %s not found in schema public on database n2kresult",
+          "Table\\(s\\) %s not found in schema public on database",
           junk
         )
       )
     )
-  })
-  it("tests if data type is correct", {
-    skip_on_cran()
-    channel <- connect_result(
-      username = Sys.getenv("N2KRESULT_USERNAME"),
-      password = Sys.getenv("N2KRESULT_PASSWORD")
-    )
-    expect_error(
-      check_id(
-        value = 999999999,
-        variable = variable.text,
-        table = table,
-        channel = channel
-      )
-    )
+    DBI::dbDisconnect(channel$con)
   })
   it("tests if the variable table exists in the table", {
     skip_on_cran()
-    channel <- connect_result(
-      username = Sys.getenv("N2KRESULT_USERNAME"),
-      password = Sys.getenv("N2KRESULT_PASSWORD")
-    )
+    channel <- connect_ut_db()
     value <- 1
     expect_that(
       check_id(
@@ -74,21 +54,20 @@ describe("check_id()", {
       ),
       throws_error(paste0("Variable\\(s\\) missing from '", table, "': ", junk))
     )
+    DBI::dbDisconnect(channel$con)
   })
   it("tests if the id exists in the table", {
     skip_on_cran()
-    channel <- connect_result(
-      username = Sys.getenv("N2KRESULT_USERNAME"),
-      password = Sys.getenv("N2KRESULT_PASSWORD")
-    )
+    channel <- connect_ut_db()
     expect_that(
       check_id(
-        value = 999999999,
+        value = 99999999,
         variable = variable,
         table = table,
         channel = channel
       ),
       is_false()
     )
+    DBI::dbDisconnect(channel$con)
   })
 })

@@ -7,7 +7,7 @@
 #' @export
 #' @importFrom plyr ddply
 #' @importFrom lubridate year is.Date is.POSIXt
-#' @importFrom utils tail
+#' @importFrom utils tail head
 #' @examples
 #' x <- as.POSIXct(
 #'     c("2015-01-01", "2014-01-02", "2013-01-03", "2012-01-31", "2011-02-01", "2012-12-31")

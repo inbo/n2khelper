@@ -4,7 +4,7 @@
 \alias{get_nbn_key}
 \title{Get the NBN key of a species}
 \usage{
-get_nbn_key(name, language = "la", channel)
+get_nbn_key(name, language = "la", channel, authority = FALSE)
 }
 \arguments{
 \item{name}{a vector of species names to check}
@@ -12,6 +12,8 @@ get_nbn_key(name, language = "la", channel)
 \item{language}{The language to use. Defaults to "la" 'scientific name"}
 
 \item{channel}{An open RODBC channel to the NBN database}
+
+\item{authority}{Do the species names include authority?}
 }
 \description{
 Get the NBN key of a species

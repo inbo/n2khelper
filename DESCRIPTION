@@ -1,9 +1,16 @@
 Package: n2khelper
 Title: Auxiliary Functions for the Analysis and Reporting of the Natura 2000
     Monitoring
-Version: 0.4.1.1
-Date: 2017-11-25
-Authors@R: c(person("Thierry", "Onkelinx", email = "thierry.onkelinx@inbo.be", role = c("aut", "cre")))
+Version: 0.4.2
+Date: 2018-10-02
+Authors@R: c(
+  person(
+    "Thierry", "Onkelinx", role = c("aut", "cre"), 
+    email = "thierry.onkelinx@inbo.be", 
+    comment = c(ORCID = "0000-0001-8804-4216")),
+  person(
+    family = "Research Institute for Nature and Forest",
+    role = c("cph", "fnd"), email = "info@inbo.be"))
 Description: Auxiliary functions for analysing Natura 2000 monitoring data.
 URL: https://doi.org/10.5281/zenodo.835732
 BugReports: https://github.com/inbo/n2khelper/issues
@@ -26,14 +33,11 @@ LazyData: true
 Suggests:
     testthat
 Collate:
-    'gitConnection_class.R'
-    'auto_commit.R'
     'check_character.R'
     'check_dataframe_covariate.R'
     'check_dataframe_variable.R'
     'check_dbtable.R'
     'check_dbtable_variable.R'
-    'check_git_repo.R'
     'check_id.R'
     'check_path.R'
     'check_single_character.R'
@@ -46,20 +50,14 @@ Collate:
     'get_nbn_key.R'
     'get_nbn_key_multi.R'
     'get_nbn_name.R'
+    'gitConnection_class.R'
     'git_connect.R'
     'git_connection.R'
-    'git_recent.R'
-    'git_sha.R'
     'is_chartor.R'
-    'is_git_repo.R'
-    'list_files_git.R'
     'match_nbn_key.R'
     'odbc_connect.R'
     'odbc_get_id.R'
     'odbc_get_multi_id.R'
     'odbc_insert.R'
-    'read_delim_git.R'
     'read_object_environment.R'
-    'remove_files_git.R'
-    'write_delim_git.R'
 RoxygenNote: 6.0.1

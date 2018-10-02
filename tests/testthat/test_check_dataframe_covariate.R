@@ -42,11 +42,13 @@ describe("check_dataframe_covariate()", {
     dataframe", {
     for (covariate in covariates.one) {
       expect_that(
-        check_dataframe_covariate(
-          df = df[, c("Count", "B", "C")],
-          covariate = covariate,
-          response = response,
-          error = FALSE
+        suppressWarnings(
+          check_dataframe_covariate(
+            df = df[, c("Count", "B", "C")],
+            covariate = covariate,
+            response = response,
+            error = FALSE
+          )
         ),
         is_false()
       )
@@ -60,11 +62,13 @@ describe("check_dataframe_covariate()", {
         gives_warning("Variables missing in df: A")
       )
       expect_that(
-        check_dataframe_covariate(
-          df = df,
-          covariate = covariate,
-          response = missing.response,
-          error = FALSE
+        suppressWarnings(
+          check_dataframe_covariate(
+            df = df,
+            covariate = covariate,
+            response = missing.response,
+            error = FALSE
+          )
         ),
         is_false()
       )
@@ -80,11 +84,13 @@ describe("check_dataframe_covariate()", {
     }
     for (covariate in covariates.two) {
       expect_that(
-        check_dataframe_covariate(
-          df = df[, c("Count", "C")],
-          covariate = covariate,
-          response = response,
-          error = FALSE
+        suppressWarnings(
+          check_dataframe_covariate(
+            df = df[, c("Count", "C")],
+            covariate = covariate,
+            response = response,
+            error = FALSE
+          )
         ),
         is_false()
       )

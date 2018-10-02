@@ -11,7 +11,7 @@ expect_error(
     commit.user = commit.user,
     commit.email = commit.email
   ),
-  "is not a directory"
+  "is not a git repository"
 )
 dir.create(connection)
 expect_error(

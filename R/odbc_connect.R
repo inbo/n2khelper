@@ -6,8 +6,9 @@
 #' @param password the password to be used in combination with the username.
 #' @param channel the ODBC channel to the database with the connection strings
 #' @importFrom assertthat assert_that is.string has_name
-#' @importFrom dplyr tbl %>% inner_join filter_ select_ collect
-#' @importFrom tidyr spread_
+#' @importFrom dplyr tbl %>% inner_join filter select collect
+#' @importFrom rlang .data UQ
+#' @importFrom tidyr spread
 #' @importFrom RODBC odbcDriverConnect
 #' @export
 odbc_connect <- function(data.source.name, username, password, channel){
@@ -37,28 +38,38 @@ odbc_connect <- function(data.source.name, username, password, channel){
   )
 
   connection <- tbl(channel, "datasource") %>%
-    filter_(~description == data.source.name) %>%
-    select_(datasource_id = ~id, datasource_type_id = ~datasource_type) %>%
+    filter(UQ(as.name("description")) == data.source.name) %>%
+    select(
+      datasource_id = .data$id,
+      datasource_type_id = .data$datasource_type
+    ) %>%
     inner_join(
       tbl(channel, "datasource_type") %>%
-        select_(datasource_type_id = ~id, datasource_type = ~description),
+        select(
+          datasource_type_id = .data$id,
+          datasource_type = .data$description
+        ),
       by = "datasource_type_id"
     ) %>%
-    select_(~-datasource_type_id) %>%
+    select(-.data$datasource_type_id) %>%
     inner_join(
       tbl(channel, "datasource_value") %>%
-        filter_(~is.na(destroy)) %>%
-        select_(~datasource, ~parameter, ~value),
+        filter(is.na(UQ(as.name("destroy")))) %>%
+        select(.data$datasource, .data$parameter, .data$value),
       by = c("datasource_id" = "datasource")
     ) %>%
     inner_join(
       tbl(channel, "datasource_parameter") %>%
-        select_(~id, ~description),
+        select(.data$id, .data$description),
       by = c("parameter" = "id")
     ) %>%
-    select_(~datasource_type, parameter = ~description, ~value) %>%
+    select(
+      .data$datasource_type,
+      parameter = .data$description,
+      .data$value
+    ) %>%
     collect() %>%
-    spread_(key_col = "parameter", value_col = "value")
+    spread(key = "parameter", value = "value")
 
   if (nrow(connection) == 0) {
     stop("No connection information found for '", data.source.name, "'.")
