@@ -60,4 +60,4 @@ Collate:
     'odbc_get_multi_id.R'
     'odbc_insert.R'
     'read_object_environment.R'
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

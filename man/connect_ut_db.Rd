@@ -5,7 +5,8 @@
 \title{connect to the unit test database}
 \usage{
 connect_ut_db(host = "localhost", dbname = "n2kunittest",
-  user = "unittest_analysis", password = "unittest", port = 5432, ...)
+  user = "unittest_analysis", password = "unittest", port = 5432,
+  ...)
 }
 \arguments{
 \item{host}{Host name and port number of database}
