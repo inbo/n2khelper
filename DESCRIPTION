@@ -24,6 +24,7 @@ Imports:
     lubridate,
     lazyeval,
     methods,
+    odbc,
     plyr,
     rlang,
     RODBC,
@@ -61,3 +62,4 @@ Collate:
     'odbc_insert.R'
     'read_object_environment.R'
 RoxygenNote: 6.1.1
+Encoding: UTF-8

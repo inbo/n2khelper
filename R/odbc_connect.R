@@ -9,7 +9,8 @@
 #' @importFrom dplyr tbl %>% inner_join filter select collect
 #' @importFrom rlang .data UQ
 #' @importFrom tidyr spread
-#' @importFrom RODBC odbcDriverConnect
+#' @importFrom DBI dbConnect
+#' @importFrom odbc odbc
 #' @export
 odbc_connect <- function(data.source.name, username, password, channel){
   # nocov start
@@ -84,16 +85,16 @@ odbc_connect <- function(data.source.name, username, password, channel){
   if (connection$datasource_type == "Microsoft SQL Server") {
     assert_that(has_name(connection, "server"))
     assert_that(has_name(connection, "dbname"))
+    driver <- ifelse(
+      .Platform$OS.type == "windows",
+      "SQL Server",
+      "{ODBC Driver 17 for SQL Server}"
+    )
     if (connection$connect_method ==
         "Credentials stored securely in the report server") {
       assert_that(has_name(connection, "username"))
       assert_that(has_name(connection, "password"))
-      driver <- ifelse(
-        .Platform$OS.type == "windows",
-        "SQL Server",
-        "FreeTDS"
-      )
-      connection.string <- sprintf(
+      connection_string <- sprintf(
         "Driver=%s;Server=%s;Database=%s;uid=%s;pwd=%s;",
         driver,
         connection$server,
@@ -101,13 +102,21 @@ odbc_connect <- function(data.source.name, username, password, channel){
         connection$username,
         connection$password
       )
+    } else if (connection$connect_method == "Trusted connection") {
+      connection_string <- sprintf(
+        "Driver=%s;Server=%s;Database=%s;Trusted_Connection=yes;",
+        driver,
+        connection$server,
+        connection$dbname
+      )
     } else {
       stop("'", connection$connect_method, "' is to do")
     }
-    return(odbcDriverConnect(connection.string))
   } else {
     stop("'", connection$datasource_type, "' is to do")
   }
-  return(channel)
+  return(
+    dbConnect(odbc(), .connection_string = connection_string)
+  )
   # nocov end
 }
