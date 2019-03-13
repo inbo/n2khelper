@@ -5,43 +5,31 @@
 #' @param authority Do the species names include authority?
 #' @export
 #' @importFrom RODBC odbcDriverConnect sqlQuery odbcClose
-#' @importFrom dplyr %>%
+#' @importFrom dplyr %>% distinct group_by filter ungroup select slice arrange
+#' @importFrom rlang .data
 #' @importFrom assertthat assert_that is.string
+#' @importFrom DBI dbQuoteString dbGetQuery
 get_nbn_key <- function(name, language = "la", channel, authority = FALSE){
   # nocov start
-  name <- check_character(name, name = "name")
-  assert_that(is.string(language))
-  assert_that(inherits(channel, "RODBC"))
-
-  sql <- sprintf("
-    SELECT
-      Count(LANGUAGE) AS N
-    FROM
-      TAXON
-    WHERE
-      LANGUAGE = '%s'",
-    language
+  assert_that(
+    is.character(name),
+    is.string(language),
+    inherits(channel, "DBIConnection")
   )
-  if (
-    sqlQuery(
-      channel = channel,
-      query = sql,
-      stringsAsFactors = FALSE,
-      as.is = TRUE
-    )$N == 0
-  ) {
-    sql <- "
-      SELECT
-        LANGUAGE AS Language
-      FROM
-        TAXON
-      GROUP BY
-        LANGUAGE
-    "
-    available <- sqlQuery(
-      channel = channel,
-      query = sql,
-      stringsAsFactors = FALSE
+  sprintf("
+    SELECT Count(LANGUAGE) AS N
+    FROM TAXON
+    WHERE LANGUAGE = %s",
+    dbQuoteString(channel, language)
+  ) %>%
+    dbGetQuery(conn = channel) -> counts
+
+  if (counts$N == 0) {
+    available <- dbGetQuery(
+      channel, "
+      SELECT LANGUAGE AS Language
+      FROM TAXON
+      GROUP BY LANGUAGE"
     )$Language
     stop(
       "No records found for language '", language,
@@ -61,7 +49,6 @@ get_nbn_key <- function(name, language = "la", channel, authority = FALSE){
         CASE
           WHEN tlir.TAXON_LIST_VERSION_KEY like 'INB%%'
           THEN 1 ELSE 0 END AS PreferenceOutput,
-        tv.COMMENT AS Comment,
         tv.Attribute
       FROM
         (
@@ -102,10 +89,10 @@ get_nbn_key <- function(name, language = "la", channel, authority = FALSE){
       ON
         tlir.TAXON_LIST_ITEM_KEY = ns.RECOMMENDED_TAXON_LIST_ITEM_KEY
       WHERE
-        t.LANGUAGE = '%s' AND
+        t.LANGUAGE = %s AND
         t.ITEM_NAME + ' ' + t.AUTHORITY IN (%s)",
-      language,
-      paste0("'", name, "'", collapse = ", ")
+      dbQuoteString(channel, language),
+      paste0(dbQuoteString(channel, name), collapse = ", ")
     )
   } else {
     sql <- sprintf("
@@ -119,7 +106,6 @@ get_nbn_key <- function(name, language = "la", channel, authority = FALSE){
         CASE
           WHEN tlir.TAXON_LIST_VERSION_KEY like 'INB%%'
           THEN 1 ELSE 0 END AS PreferenceOutput,
-        tv.COMMENT AS Comment,
         tv.Attribute
       FROM
         (
@@ -160,31 +146,21 @@ get_nbn_key <- function(name, language = "la", channel, authority = FALSE){
       ON
         tlir.TAXON_LIST_ITEM_KEY = ns.RECOMMENDED_TAXON_LIST_ITEM_KEY
       WHERE
-        t.LANGUAGE = '%s' AND
+        t.LANGUAGE = %s AND
         t.ITEM_NAME IN (%s)",
-      language,
-      paste0("'", name, "'", collapse = ", ")
+      dbQuoteString(channel, language),
+      paste0(dbQuoteString(channel, name), collapse = ", ")
     )
   }
-  output <- sql %>%
-    sqlQuery(
-      channel = channel,
-      stringsAsFactors = FALSE,
-      as.is = TRUE
-    ) %>%
-    unique()
-
-  if (anyDuplicated(output$InputName) > 1) {
-    output <- output %>%
-      group_by_(~InputName) %>%
-      filter_(~PreferenceInput == max(PreferenceInput)) %>%
-      filter_(~PreferenceOutput == max(PreferenceOutput)) %>%
-      ungroup() %>%
-      select_(~-PreferenceInput, ~-PreferenceOutput) %>%
-      as.data.frame()
-  }
-  if (anyDuplicated(output$InputName) > 1) {
-    warning("Duplicate matching keys")
-  }
-  return(output) #nocov end
+  dbGetQuery(channel, sql) %>%
+    distinct() %>%
+    group_by(.data$InputName) %>%
+    filter(.data$PreferenceInput == max(.data$PreferenceInput)) %>%
+    filter(.data$PreferenceOutput == max(.data$PreferenceOutput)) %>%
+    arrange(.data$NBNKey) %>%
+    slice(1) %>%
+    ungroup() %>%
+    select(-"PreferenceInput", -"PreferenceOutput") %>%
+    as.data.frame()
+  #nocov end
 }
