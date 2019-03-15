@@ -2,73 +2,53 @@
 #' @param species A data.frame with the name of species in one or more languages
 #' @param orders the order in which the languages are tried to get a matching NBN key
 #' @inheritParams get_nbn_key
-#' @importFrom stats aggregate
-#' @importFrom dplyr %>% slice_ mutate_
+#' @importFrom assertthat assert_that has_name
+#' @importFrom dplyr select slice mutate
 #' @export
 get_nbn_key_multi <- function(species, orders = c("la", "nl", "en"), channel){
   orders <- match.arg(orders, several.ok = TRUE)
-  lang.name <- c(
+  lang_name <- c(
     la = "ScientificName", nl = "DutchName", en = "EnglishName",
     fr = "FrenchName", de = "GermanName"
   )
-  check_dataframe_variable(
-    df = species,
-    variable = lang.name[orders],
-    name = "species"
+  assert_that(
+    inherits(species, "data.frame"),
+    lang_name[orders] %in% colnames(species)
   )
-
-
   if (has_name(species, "NBNKey")) {
     warning("Existing NBNKey will be overwritten.")
-    species <- species %>%
-      select_(~-NBNKey)
+    species <- select(species, -"NBNKey")
   }
 
-  to.do <- species
-  done <- species %>%
-    slice_(~0) %>%
-    mutate_(
-      NBNKey = ~character(0)
-    )
+  to_do <- species
+  slice(species, 0) %>%
+    mutate(NBNKey = character(0)) -> done
 
   # nocov start
   for (language in orders) {
-    nbn.key <- get_nbn_key(
-      name = to.do[, lang.name[language]],
+    nbn_key <- get_nbn_key(
+      name = to_do[, lang_name[language]],
       language = language,
       channel = channel
     )
-    if (max(table(nbn.key$InputName)) > 1) {
-      nbn.key$INBO <- FALSE
-      nbn.key$INBO[grep("^INB", nbn.key$NBNKey)] <- TRUE
-      max.key <- aggregate(
-        nbn.key[, "INBO", drop = FALSE],
-        nbn.key[, "InputName", drop = FALSE],
-        FUN = max
-      )
-      nbn.key <- merge(nbn.key, max.key)
-    }
-    if (max(table(nbn.key$InputName)) > 1) {
-      stop("Duplicate matching keys for ", lang.name[language])
-    }
-    to.do <- match_nbn_key(
-      species = to.do,
-      nbn.key = nbn.key,
-      variable = lang.name[language]
+    to_do <- match_nbn_key(
+      species = to_do,
+      nbn.key = nbn_key,
+      variable = lang_name[language]
     )
-    done <- rbind(done, to.do[!is.na(to.do$NBNKey), ])
-    to.do <- to.do[is.na(to.do$NBNKey), ]
-    if (nrow(to.do) == 0) {
+    done <- rbind(done, to_do[!is.na(to_do$NBNKey), ])
+    to_do <- to_do[is.na(to_do$NBNKey), ]
+    if (nrow(to_do) == 0) {
       break
     }
-    to.do$NBNKey <- NULL
+    to_do$NBNKey <- NULL
   }
 
   # nocov start
-  if (nrow(to.do) > 0) {
+  if (nrow(to_do) > 0) {
     warning("No matches found for some records")
-    to.do$NBNKey <- NA
-    done <- rbind(done, to.do)
+    to_do$NBNKey <- NA
+    done <- rbind(done, to_do)
   }
   return(done) #nocov end
 }

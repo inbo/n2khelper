@@ -1,8 +1,8 @@
 Package: n2khelper
 Title: Auxiliary Functions for the Analysis and Reporting of the Natura 2000
     Monitoring
-Version: 0.4.2
-Date: 2018-10-02
+Version: 0.4.3
+Date: 2019-03-13
 Authors@R: c(
   person(
     "Thierry", "Onkelinx", role = c("aut", "cre"), 
@@ -24,6 +24,7 @@ Imports:
     lubridate,
     lazyeval,
     methods,
+    odbc,
     plyr,
     rlang,
     RODBC,
@@ -60,4 +61,5 @@ Collate:
     'odbc_get_multi_id.R'
     'odbc_insert.R'
     'read_object_environment.R'
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
+Encoding: UTF-8

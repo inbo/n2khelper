@@ -4,7 +4,8 @@
 \alias{check_dataframe_covariate}
 \title{Check if the covariates are available in a dataframe}
 \usage{
-check_dataframe_covariate(df, covariate, response = "Count", error = TRUE)
+check_dataframe_covariate(df, covariate, response = "Count",
+  error = TRUE)
 }
 \arguments{
 \item{df}{the \code{data.frame} to check}
