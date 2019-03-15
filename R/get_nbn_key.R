@@ -4,7 +4,6 @@
 #' @param channel An open RODBC channel to the NBN database
 #' @param authority Do the species names include authority?
 #' @export
-#' @importFrom RODBC odbcDriverConnect sqlQuery odbcClose
 #' @importFrom dplyr %>% distinct group_by filter ungroup select slice arrange
 #' @importFrom rlang .data
 #' @importFrom assertthat assert_that is.string
