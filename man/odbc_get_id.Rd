@@ -4,8 +4,14 @@
 \alias{odbc_get_id}
 \title{Get the id of the matching records}
 \usage{
-odbc_get_id(table, variable, value, schema = "public", channel,
-  id_variable = "id")
+odbc_get_id(
+  table,
+  variable,
+  value,
+  schema = "public",
+  channel,
+  id_variable = "id"
+)
 }
 \arguments{
 \item{table}{The name of the table}

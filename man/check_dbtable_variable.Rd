@@ -4,8 +4,13 @@
 \alias{check_dbtable_variable}
 \title{Check if a variable is available in a given table}
 \usage{
-check_dbtable_variable(table, variable, schema = "public", channel,
-  error = TRUE)
+check_dbtable_variable(
+  table,
+  variable,
+  schema = "public",
+  channel,
+  error = TRUE
+)
 }
 \arguments{
 \item{table}{The name of the table}

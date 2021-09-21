@@ -6,8 +6,7 @@
 \alias{git_connection}
 \title{The gitConnection class}
 \usage{
-git_connection(repo.path, key, username, password, commit.user,
-  commit.email)
+git_connection(repo.path, key, username, password, commit.user, commit.email)
 }
 \arguments{
 \item{repo.path}{The path of the root of the repository}

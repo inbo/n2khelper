@@ -4,8 +4,13 @@
 \alias{check_dataframe_variable}
 \title{Check if a data.frame contains variables}
 \usage{
-check_dataframe_variable(df, variable, name = "df", force.NA = FALSE,
-  error = TRUE)
+check_dataframe_variable(
+  df,
+  variable,
+  name = "df",
+  force.NA = FALSE,
+  error = TRUE
+)
 }
 \arguments{
 \item{df}{the \code{data.frame} to check}

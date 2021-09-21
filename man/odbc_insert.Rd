@@ -4,8 +4,14 @@
 \alias{odbc_insert}
 \title{Append a data.frame to a table through an ODBC connection}
 \usage{
-odbc_insert(data, table, channel, schema = "dbo", append = TRUE,
-  rows.at.time = 1000)
+odbc_insert(
+  data,
+  table,
+  channel,
+  schema = "dbo",
+  append = TRUE,
+  rows.at.time = 1000
+)
 }
 \arguments{
 \item{data}{the data.frame}

@@ -4,9 +4,14 @@
 \alias{connect_ut_db}
 \title{connect to the unit test database}
 \usage{
-connect_ut_db(host = "localhost", dbname = "n2kunittest",
-  user = "unittest_analysis", password = "unittest", port = 5432,
-  ...)
+connect_ut_db(
+  host = "localhost",
+  dbname = "n2kunittest",
+  user = "unittest_analysis",
+  password = "unittest",
+  port = 5432,
+  ...
+)
 }
 \arguments{
 \item{host}{Host name and port number of database}
@@ -19,7 +24,7 @@ Generally, you should avoid saving username and password in your
 scripts as it is easy to accidentally expose valuable credentials.
 Instead, retrieve them from environment variables, or use database
 specific credential scores. For example, with MySQL you can set up \code{my.cnf}
-as described in \code{\link[RMySQL:MySQL]{RMySQL::MySQL()}}.}
+as described in \code{\link[RMySQL:MySQLDriver-class]{RMySQL::MySQL()}}.}
 
 \item{password}{User name and password.
 
@@ -27,7 +32,7 @@ Generally, you should avoid saving username and password in your
 scripts as it is easy to accidentally expose valuable credentials.
 Instead, retrieve them from environment variables, or use database
 specific credential scores. For example, with MySQL you can set up \code{my.cnf}
-as described in \code{\link[RMySQL:MySQL]{RMySQL::MySQL()}}.}
+as described in \code{\link[RMySQL:MySQLDriver-class]{RMySQL::MySQL()}}.}
 
 \item{port}{Host name and port number of database}
 

@@ -1,38 +1,41 @@
 Package: n2khelper
-Title: Auxiliary Functions for the Analysis and Reporting of the Natura 2000
-    Monitoring
-Version: 0.4.3
-Date: 2019-03-13
-Authors@R: c(
-  person(
-    "Thierry", "Onkelinx", role = c("aut", "cre"), 
-    email = "thierry.onkelinx@inbo.be", 
-    comment = c(ORCID = "0000-0001-8804-4216")),
-  person(
-    family = "Research Institute for Nature and Forest",
-    role = c("cph", "fnd"), email = "info@inbo.be"))
-Description: Auxiliary functions for analysing Natura 2000 monitoring data.
+Title: Auxiliary Functions for the Analysis and Reporting of the Natura
+    2000 Monitoring
+Version: 0.4.4
+Authors@R: 
+    c(person(given = "Thierry",
+             family = "Onkelinx",
+             role = c("aut", "cre"),
+             email = "thierry.onkelinx@inbo.be",
+             comment = c(ORCID = "0000-0001-8804-4216")),
+      person(family = "Research Institute for Nature and Forest",
+             role = c("cph", "fnd"),
+             email = "info@inbo.be"))
+Description: Auxiliary functions for analysing Natura 2000 monitoring
+    data.
+License: GPL-3
 URL: https://doi.org/10.5281/zenodo.835732
 BugReports: https://github.com/inbo/n2khelper/issues
 Depends:
     R (>= 3.2.0)
 Imports:
-    assertthat,
     DBI,
+    RODBC,
+    assertthat,
     dplyr,
     git2r,
-    lubridate,
     lazyeval,
+    lubridate,
     methods,
     odbc,
     plyr,
     rlang,
-    RODBC,
     tidyr
-License: GPL-3
-LazyData: true
 Suggests:
     testthat
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
 Collate:
     'check_character.R'
     'check_dataframe_covariate.R'
@@ -61,5 +64,3 @@ Collate:
     'odbc_get_multi_id.R'
     'odbc_insert.R'
     'read_object_environment.R'
-RoxygenNote: 6.1.1
-Encoding: UTF-8

@@ -4,8 +4,16 @@
 \alias{odbc_get_multi_id}
 \title{Get the corresponding id's}
 \usage{
-odbc_get_multi_id(data, id.field, merge.field, table, channel,
-  create = FALSE, select = TRUE, rows.at.time = 1000)
+odbc_get_multi_id(
+  data,
+  id.field,
+  merge.field,
+  table,
+  channel,
+  create = FALSE,
+  select = TRUE,
+  rows.at.time = 1000
+)
 }
 \arguments{
 \item{data}{the data.frame}

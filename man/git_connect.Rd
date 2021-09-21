@@ -4,9 +4,15 @@
 \alias{git_connect}
 \title{Returns the path of the datasource within the git repository}
 \usage{
-git_connect(data.source.name, channel, type = c("ssh", "https"),
-  username = character(0), password = character(0), commit.user,
-  commit.email)
+git_connect(
+  data.source.name,
+  channel,
+  type = c("ssh", "https"),
+  username = character(0),
+  password = character(0),
+  commit.user,
+  commit.email
+)
 }
 \arguments{
 \item{data.source.name}{The name of the data source}
