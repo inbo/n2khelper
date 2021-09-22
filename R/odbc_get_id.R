@@ -9,26 +9,20 @@
 #' @importFrom lazyeval interp
 #' @importFrom dplyr %>% filter_ select_ collect
 odbc_get_id <- function(
-  table,
-  variable,
-  value,
-  schema = "public",
-  channel,
-  id_variable = "id"
-){
-  value <- check_character(value, name = "value")
-  if (length(value) == 0) {
-    stop("at least one value is needed")
-  }
+  table, variable, value, schema = "public", channel, id_variable = "id"
+) {
+  value <- check_character(value)
+  assert_that(length(value) > 0)
   check_dbtable_variable(table = table, variable = variable, channel = channel)
+  assert_that(
+    length(value) == length(variable),
+    msg = "the number of values doesn't match the number of variables"
+  )
   # nocov start
-  if (length(value) != length(variable)) {
-    stop("the number of values doesn't match the number of variables")
-  }
 
   dots <- sapply(
     seq_along(variable),
-    function(i){
+    function(i) {
       interp(~x == y, x = as.name(variable[i]), y = value[i])
     }
   )

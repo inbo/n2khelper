@@ -4,10 +4,11 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom DBI dbQuoteString dbGetQuery
-#' @importFrom dplyr %>% count mutate semi_join group_by summarise ungroup n filter
+#' @importFrom dplyr %>% count mutate semi_join group_by summarise ungroup n
+#' filter
 #' @importFrom rlang .data
 #' @importFrom tidyr spread
-get_nbn_name <- function(nbn_key, channel){
+get_nbn_name <- function(nbn_key, channel) {
   # nocov start
   assert_that(
     is.character(nbn_key),

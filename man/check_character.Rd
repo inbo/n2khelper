@@ -4,17 +4,19 @@
 \alias{check_character}
 \title{Check if the object is a character}
 \usage{
-check_character(x, name = "x", na.action = na.fail)
+check_character(x, na_action = na.fail)
 }
 \arguments{
 \item{x}{the object to check}
 
-\item{name}{the name of the object to use in the error message}
-
-\item{na.action}{\code{link[stats]{na.fail}} throws an error in case of \code{NA} (default). \code{link[stats]{na.omit}} will return \code{x} without the \code{NA} values. \code{link[stats]{na.pass}} will return \code{x} with the \code{NA} values.}
+\item{na_action}{\code{stats::na.fail()} throws an error in case of \code{NA}
+(default).
+\code{stats::na.omit()} will return \code{x} without the \code{NA} values.
+\code{stats::na.pass()} will return \code{x} with the \code{NA} values.}
 }
 \value{
-The function gives the character back. it throws an error when the input is not a character.
+The function gives the character back.
+It throws an error when the input is not a character.
 }
 \description{
 Factors are converted to character.

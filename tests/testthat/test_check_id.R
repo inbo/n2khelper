@@ -2,11 +2,11 @@ context("check if an id exists")
 describe("check_id()", {
   table <- "datasource_type"
   variable <- "id"
-  variable.text <- "description"
-  value.text <- "'git, tab delimited ssh'"
+  variable_text <- "description"
+  value_text <- "'git, tab delimited ssh'"
   value <- 1
   sql <- paste(
-    "SELECT", variable, "FROM", table, "WHERE", variable.text, "=", value.text
+    "SELECT", variable, "FROM", table, "WHERE", variable_text, "=", value_text
   )
   junk <- "junk"
 

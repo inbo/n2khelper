@@ -4,10 +4,10 @@ describe("check_dataframe_variable()", {
   missing.var2 <- c("aaaa", "bbbb")
   df <- data.frame(a = integer(0), b = logical(0), c = character(0))
   variable <- colnames(df)
-  variable.subset <- sample(variable, length(variable) - 1)
+  variable_subset <- sample(variable, length(variable) - 1)
   name <- "df"
   error <- TRUE
-  df.matrix <- as.matrix(df)
+  df_matrix <- as.matrix(df)
 
   it("checks if df is a data.frame", {
     expect_error(
@@ -62,7 +62,7 @@ describe("check_dataframe_variable()", {
     )
     expect_that(
       check_dataframe_variable(
-        df = df.matrix,
+        df = df_matrix,
         variable = variable,
         name = name,
         error = error
@@ -72,7 +72,7 @@ describe("check_dataframe_variable()", {
     expect_that(
       check_dataframe_variable(
         df = df,
-        variable = variable.subset,
+        variable = variable_subset,
         name = name,
         error = error
       ),
@@ -80,8 +80,8 @@ describe("check_dataframe_variable()", {
     )
     expect_that(
       check_dataframe_variable(
-        df = df.matrix,
-        variable = variable.subset,
+        df = df_matrix,
+        variable = variable_subset,
         name = name,
         error = error
       ),
@@ -100,7 +100,7 @@ describe("check_dataframe_variable()", {
     )
     expect_that(
       check_dataframe_variable(
-        df = df.matrix,
+        df = df_matrix,
         variable = c(variable, missing.var),
         name = name,
         error = TRUE
@@ -125,7 +125,7 @@ describe("check_dataframe_variable()", {
     )
     expect_that(
       check_dataframe_variable(
-        df = df.matrix,
+        df = df_matrix,
         variable = c(variable, missing.var),
         name = name,
         error = FALSE
@@ -151,7 +151,7 @@ describe("check_dataframe_variable()", {
     expect_that(
       suppressWarnings(
         check_dataframe_variable(
-          df = df.matrix,
+          df = df_matrix,
           variable = c(variable, missing.var),
           name = name,
           error = FALSE
@@ -165,7 +165,7 @@ describe("check_dataframe_variable()", {
     expect_true(
       check_dataframe_variable(
         df = dplyr::as.tbl(df),
-        variable = variable.subset,
+        variable = variable_subset,
         name = name,
         error = error
       )

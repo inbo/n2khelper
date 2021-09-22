@@ -1,167 +1,166 @@
 context("git_connection")
 
 connection <- tempfile(pattern = "git2r-")
-commit.user <- "me"
-commit.email <- "me@me.com"
+commit_user <- "me"
+commit_email <- "me@me.com"
 
-# test repo.path
+# test repo_path
 expect_error(
   git_connection(
-    repo.path = connection,
-    commit.user = commit.user,
-    commit.email = commit.email
+    repo_path = connection,
+    commit_user = commit_user,
+    commit_email = commit_email
   ),
   "is not a git repository"
 )
 dir.create(connection)
 expect_error(
   git_connection(
-    repo.path = connection,
-    commit.user = commit.user,
-    commit.email = commit.email
+    repo_path = connection,
+    commit_user = commit_user,
+    commit_email = commit_email
   ),
   "is not a git repository"
 )
 repo <- git2r::init(connection)
 
-#test commit.user
+#test commit_user
 expect_error(
   git_connection(
-    repo.path = connection,
-    commit.user = 1,
-    commit.email = commit.email
+    repo_path = connection,
+    commit_user = 1,
+    commit_email = commit_email
   ),
-  "commit.user is not a string \\(a length one character vector\\)\\."
+  "commit_user is not a string \\(a length one character vector\\)\\."
 )
 expect_error(
   git_connection(
-    repo.path = connection,
-    commit.user = NA,
-    commit.email = commit.email
+    repo_path = connection,
+    commit_user = NA,
+    commit_email = commit_email
   ),
-  "commit.user is not a string \\(a length one character vector\\)\\."
+  "commit_user is not a string \\(a length one character vector\\)\\."
 )
 expect_error(
   git_connection(
-    repo.path = connection,
-    commit.user = rep(commit.user, 2),
-    commit.email = commit.email
+    repo_path = connection,
+    commit_user = rep(commit_user, 2),
+    commit_email = commit_email
   ),
-  "commit.user is not a string \\(a length one character vector\\)\\."
+  "commit_user is not a string \\(a length one character vector\\)\\."
 )
 
-# test commit.email
+# test commit_email
 expect_error(
   git_connection(
-    repo.path = connection,
-    commit.user = commit.user,
-    commit.email = 1
+    repo_path = connection,
+    commit_user = commit_user,
+    commit_email = 1
   ),
-  "commit.email is not a string \\(a length one character vector\\)\\."
+  "commit_email is not a string \\(a length one character vector\\)\\."
 )
 expect_error(
   git_connection(
-    repo.path = connection,
-    commit.user = commit.user,
-    commit.email = NA
+    repo_path = connection,
+    commit_user = commit_user,
+    commit_email = NA
   ),
-  "commit.email is not a string \\(a length one character vector\\)\\."
+  "commit_email is not a string \\(a length one character vector\\)\\."
 )
 expect_error(
   git_connection(
-    repo.path = connection,
-    commit.user = commit.user,
-    commit.email = rep(commit.email, 2)
+    repo_path = connection,
+    commit_user = commit_user,
+    commit_email = rep(commit_email, 2)
   ),
-  "commit.email is not a string \\(a length one character vector\\)\\."
+  "commit_email is not a string \\(a length one character vector\\)\\."
 )
 
 expect_is(
-  git.connection <- git_connection(
-    repo.path = connection,
-    commit.user = commit.user,
-    commit.email = commit.email
+  git_conn <- git_connection(
+    repo_path = connection, commit_user = commit_user,
+    commit_email = commit_email
   ),
   "gitConnection"
 )
 expect_identical(
   git2r::config(repo)$local$user.name,
-  commit.user
+  commit_user
 )
 expect_identical(
   git2r::config(repo)$local$user.email,
-  commit.email
+  commit_email
 )
 
 expect_is(
   git_connection(
-    repo.path = connection,
+    repo_path = connection,
     username = "me",
     password = "junk",
-    commit.user = commit.user,
-    commit.email = commit.email
+    commit_user = commit_user,
+    commit_email = commit_email
   ),
   "gitConnection"
 )
 
 expect_error(
   git_connection(
-    repo.path = connection,
+    repo_path = connection,
     username = rep("me", 2),
     password = "junk",
-    commit.user = commit.user,
-    commit.email = commit.email
+    commit_user = commit_user,
+    commit_email = commit_email
   ),
   "username is not a string \\(a length one character vector\\)\\."
 )
 expect_error(
   git_connection(
-    repo.path = connection,
+    repo_path = connection,
     username = NA,
     password = "junk",
-    commit.user = commit.user,
-    commit.email = commit.email
+    commit_user = commit_user,
+    commit_email = commit_email
   ),
   "username is not a string \\(a length one character vector\\)\\."
 )
 expect_error(
   git_connection(
-    repo.path = connection,
+    repo_path = connection,
     username = "",
     password = "junk",
-    commit.user = commit.user,
-    commit.email = commit.email
+    commit_user = commit_user,
+    commit_email = commit_email
   ),
   "username not not equal to \"\""
 )
 
 expect_error(
   git_connection(
-    repo.path = connection,
+    repo_path = connection,
     username = "me",
     password = rep("junk", 2),
-    commit.user = commit.user,
-    commit.email = commit.email
+    commit_user = commit_user,
+    commit_email = commit_email
   ),
   "password is not a string \\(a length one character vector\\)\\."
 )
 expect_error(
   git_connection(
-    repo.path = connection,
+    repo_path = connection,
     username = "me",
     password = NA,
-    commit.user = commit.user,
-    commit.email = commit.email
+    commit_user = commit_user,
+    commit_email = commit_email
   ),
   "password is not a string \\(a length one character vector\\)\\."
 )
 expect_error(
   git_connection(
-    repo.path = connection,
+    repo_path = connection,
     username = "me",
     password = "",
-    commit.user = commit.user,
-    commit.email = commit.email
+    commit_user = commit_user,
+    commit_email = commit_email
   ),
   "password not not equal to \"\""
 )

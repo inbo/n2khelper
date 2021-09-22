@@ -7,22 +7,22 @@ describe("cut_date()", {
     )
     )
   dm <- c("1-1", "15-1", "1-2", "31-12")
-  dm.format <- c("1/1", "01/01", "40-1", "1 1", "1-1-2015")
-  include.last <- TRUE
+  dm_format <- c("1/1", "01/01", "40-1", "1 1", "1-1-2015")
+  include_last <- TRUE
 
   it("yields the correct periods", {
     expect_that(
-      cut_date(x = x, dm = c("1-1", "31-12"), include.last = FALSE),
+      cut_date(x = x, dm = c("1-1", "31-12"), include_last = FALSE),
       is_identical_to(
         factor(c(rep(1, length(x) - 1), NA), labels = "[1-1, 31-12)")
       )
     )
     expect_that(
-      cut_date(x = x, dm = c("1-1", "31-12"), include.last = TRUE),
+      cut_date(x = x, dm = c("1-1", "31-12"), include_last = TRUE),
       is_identical_to(factor(c(rep(1, length(x))), labels = "[1-1, 31-12]"))
     )
     expect_that(
-      cut_date(x = x, dm = c("1-1", "1-2", "31-12"), include.last = TRUE),
+      cut_date(x = x, dm = c("1-1", "1-2", "31-12"), include_last = TRUE),
       is_identical_to(
         factor(
           c(1, 1, 1, 1, 2, 2),
@@ -31,7 +31,7 @@ describe("cut_date()", {
       )
     )
     expect_that(
-      cut_date(x = as.Date(x), dm = c("1-1", "31-12"), include.last = TRUE),
+      cut_date(x = as.Date(x), dm = c("1-1", "31-12"), include_last = TRUE),
       is_identical_to(factor(c(rep(1, length(x))), labels = "[1-1, 31-12]"))
     )
   })
@@ -50,11 +50,11 @@ describe("cut_date()", {
   })
   it("checks the format of dm", {
     expect_that(
-      cut_date(x = x, dm = dm.format),
+      cut_date(x = x, dm = dm_format),
       throws_error(
         paste(
           "'dm' requires a day-month format. Mismatching values:",
-          paste0("'", dm.format, "'", collapse = ", ")
+          paste0("'", dm_format, "'", collapse = ", ")
         )
       )
     )

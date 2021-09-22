@@ -35,6 +35,7 @@ Suggests:
     testthat
 Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Collate:
     'check_character.R'
@@ -44,9 +45,6 @@ Collate:
     'check_dbtable_variable.R'
     'check_id.R'
     'check_path.R'
-    'check_single_character.R'
-    'check_single_logical.R'
-    'check_single_numeric.R'
     'check_single_posix.R'
     'check_single_probability.R'
     'connect_result.R'

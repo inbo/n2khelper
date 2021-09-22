@@ -5,26 +5,17 @@
 #' @param password the password for the username.
 #' @param develop Logical value. Indicates the location of the results database
 #' @importFrom assertthat assert_that is.flag noNA is.string
-connect_result <- function(username, password, develop = TRUE){
-  assert_that(is.flag(develop))
-  assert_that(noNA(develop))
+connect_result <- function(username, password, develop = TRUE) {
+  assert_that(is.flag(develop), noNA(develop))
   assert_that(is.string(username))
   assert_that(is.string(password))
 
   dbname <- "n2kresult"
-  if (develop) {
-  # nocov start
-    host <- "localhost"
-  # nocov end
-  } else {
-    stop("Production database not yet defined")
-  }
+  assert_that(develop, msg = "Production database not yet defined")
+  host <- "localhost"
   # nocov start
   src_postgres(
-    host = host,
-    dbname = dbname,
-    user = username,
-    password = password
+    host = host, dbname = dbname, user = username, password = password
   )
   # nocov end
 }
@@ -32,7 +23,7 @@ connect_result <- function(username, password, develop = TRUE){
 #' Open a trusted connection to the NBN database
 #' @export
 #' @importFrom RODBC odbcDriverConnect
-connect_nbn <- function(){
+connect_nbn <- function() {
   odbcDriverConnect(connection = nbn.dsn)
 }
 
@@ -47,7 +38,7 @@ connect_ut_db <- function(
   password = "unittest",
   port = 5432,
   ...
-){
+) {
   # nocov start
   src_postgres(
     host = host,

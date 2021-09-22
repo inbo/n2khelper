@@ -4,15 +4,15 @@
 \alias{match_nbn_key}
 \title{Merge NBN keys into a species dataframe}
 \usage{
-match_nbn_key(species, nbn.key, variable)
+match_nbn_key(species, nbn_key, variable)
 }
 \arguments{
 \item{species}{a data.frame with the species names}
 
-\item{nbn.key}{a data.frame with the NBN keys}
+\item{nbn_key}{a data.frame with the NBN keys}
 
 \item{variable}{the name of the variable of species to match with InputName
-from nbn.key}
+from nbn_key}
 }
 \description{
 Merge NBN keys into a species dataframe

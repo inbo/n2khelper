@@ -10,7 +10,7 @@ odbc_insert(
   channel,
   schema = "dbo",
   append = TRUE,
-  rows.at.time = 1000
+  rows_at_time = 1000
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ odbc_insert(
 
 \item{append}{Append the data or overwrite existing rows?}
 
-\item{rows.at.time}{Number of rows to insert in one SQL statement}
+\item{rows_at_time}{Number of rows to insert in one SQL statement}
 }
 \value{
 The status of the SQL INSERT for each row in returned but invisible.

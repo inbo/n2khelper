@@ -2,9 +2,9 @@
 #' @param x the object to check
 #' @export
 #' @importFrom assertthat 'on_failure<-'
-is.chartor <- function(x){
+is_chartor <- function(x) {
   is.character(x) | is.factor(x)
 }
-on_failure(is.chartor) <- function(call, env) {
+on_failure(is_chartor) <- function(call, env) {
   paste0(deparse(call$x), " is neither character nor factor")
 }

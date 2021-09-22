@@ -6,24 +6,24 @@
 \alias{git_connection}
 \title{The gitConnection class}
 \usage{
-git_connection(repo.path, key, username, password, commit.user, commit.email)
+git_connection(repo_path, key, username, password, commit_user, commit_email)
 }
 \arguments{
-\item{repo.path}{The path of the root of the repository}
+\item{repo_path}{The path of the root of the repository}
 
-\item{key}{Optional: the path to a private ssh key. The public key is assumed
-to have the same path with a '.pub' extension. Using in case of ssh
-authentication.}
+\item{key}{Optional: the path to a private ssh key.
+The public key is assumed to have the same path with a '.pub' extension.
+Using in case of ssh authentication.}
 
 \item{username}{The optional username used in case of  https authentication.
 Ignored when \code{key} is provided.}
 
-\item{password}{The password required for the ssh key or the username. Should
-be missing when the ssh-key doesn't require a password.}
+\item{password}{The password required for the ssh key or the username.
+Should be missing when the ssh-key doesn't require a password.}
 
-\item{commit.user}{the name of the user how will commit}
+\item{commit_user}{the name of the user how will commit}
 
-\item{commit.email}{the email of the user how will commit}
+\item{commit_email}{the email of the user how will commit}
 }
 \description{
 The gitConnection class
@@ -32,11 +32,11 @@ Open a git connection
 }
 \section{Slots}{
 
-  \describe{
-   \item{\code{Repository}}{a git repository}
-   \item{\code{Credentials}}{the credentials for the repository}
-   \item{\code{CommitUser}}{the name of the user how will commit}
-   \item{\code{CommitEmail}}{the email of the user how will commit}
-  }
+\describe{
+\item{\code{Repository}}{a git repository}
+\item{\code{Credentials}}{the credentials for the repository}
+\item{\code{CommitUser}}{the name of the user how will commit}
+\item{\code{CommitEmail}}{the email of the user how will commit}
+}
 }
 

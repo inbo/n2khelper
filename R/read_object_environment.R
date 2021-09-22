@@ -7,6 +7,7 @@
 #' @return the object or \code{NULL} is the object doesn't exists in the
 #'    environment
 #' @export
+#' @importFrom assertthat assert_that is.flag is.string noNA
 #' @importFrom utils hasName
 #' @examples
 #'   object <- "test"
@@ -15,18 +16,16 @@
 #'   assign(x = object, value = value, envir = env)
 #'   read_object_environment(object, env)
 
-read_object_environment <- function(object, env, warn = TRUE){
-  object <- check_single_character(object, name = "object")
-  if (class(env) != "environment") {
-    stop("env is not an environment")
-  }
-  warn <- check_single_logical(warn, name = "warn")
+read_object_environment <- function(object, env, warn = TRUE) {
+  assert_that(is.string(object), noNA(object))
+  assert_that(inherits(env), "environment")
+  assert_that(is.flag(warn), noNA(warn))
 
-  if (!hasName(env, object)) {
-    if (warn) {
-      warning(object, " doesn't exists in env")
-    }
-    return(NULL)
+  if (hasName(env, object)) {
+    return(get(object, envir = env))
   }
-  return(get(object, envir = env))
+  if (warn) {
+    warning(object, " doesn't exists in env")
+  }
+  return(NULL)
 }

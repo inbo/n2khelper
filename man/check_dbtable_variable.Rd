@@ -21,7 +21,9 @@ check_dbtable_variable(
 
 \item{channel}{the open dplyr connection to the database.}
 
-\item{error}{Indicates the behaviour when a variable is missing. Gives an error when error = TRUE (default). Return FALSE otherwise.}
+\item{error}{Indicates the behaviour when a variable is missing.
+Gives an error when error = \code{TRUE} (default).
+Return FALSE otherwise.}
 }
 \value{
 TRUE when all variables are present in the table.

@@ -3,11 +3,12 @@
 #' @param path the path of the directory or file name
 #' @param type either "file" or "directory"
 #' @inheritParams check_dataframe_variable
+#' @importFrom assertthat assert_that is.flag is.string noNA
 #' @importFrom utils file_test
-check_path <- function(path, type = c("file", "directory"), error = TRUE){
+check_path <- function(path, type = c("file", "directory"), error = TRUE) {
+  assert_that(is.string(path), noNA(path))
   type <- match.arg(type)
-  path <- check_single_character(path, name = "path")
-  error <- check_single_logical(error, name = "error")
+  assert_that(is.flag(error), noNA(error))
 
   path <- normalizePath(path, winslash = "/", mustWork = FALSE)
   if (type == "file") {

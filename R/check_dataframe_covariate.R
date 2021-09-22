@@ -2,23 +2,18 @@
 #' @inheritParams check_dataframe_variable
 #' @param covariate The right hand side of the model as a character
 #' @param response The left hand side of the model as a character
+#' @importFrom assertthat assert_that is.flag is.string noNA
 #' @importFrom stats as.formula
 #' @export
 check_dataframe_covariate <- function(
-  df,
-  covariate,
-  response = "Count",
-  error = TRUE
-){
-  covariate <- check_single_character(covariate, name = "covariate")
-  response <- check_single_character(response, name = "response")
-  error <- check_single_logical(error)
+  df, covariate, response = "Count", error = TRUE
+) {
+  assert_that(is.string(covariate), noNA(covariate))
+  assert_that(is.string(response), noNA(response))
+  assert_that(is.flag(error), noNA(error))
 
   formula <- as.formula(paste(response, "~ ", covariate))
-  output <- check_dataframe_variable(
-    df = df[1, ],
-    variable = all.vars(formula),
-    error = error
+  check_dataframe_variable(
+    df = df[1, ], variable = all.vars(formula), error = error
   )
-  return(output)
 }

@@ -1,8 +1,10 @@
 #' connect to a data source through ODBC
 #'
 #' The connection string is stored in the results database.
-#' @param data.source.name The name of the data source
-#' @param username the username in case the ConnectMethod is "Credentials supplied by the user running the report". Ignored in all other cases.
+#' @param data_source_name The name of the data source
+#' @param username the username in case the ConnectMethod is `"Credentials
+#' supplied by the user running the report"`.
+#' Ignored in all other cases.
 #' @param password the password to be used in combination with the username.
 #' @param channel the ODBC channel to the database with the connection strings
 #' @importFrom assertthat assert_that is.string has_name
@@ -12,9 +14,9 @@
 #' @importFrom DBI dbConnect
 #' @importFrom odbc odbc
 #' @export
-odbc_connect <- function(data.source.name, username, password, channel){
+odbc_connect <- function(data_source_name, username, password, channel) {
   # nocov start
-  assert_that(is.string(data.source.name))
+  assert_that(is.string(data_source_name))
   check_dbtable_variable(
     table = "datasource",
     variable = c(
@@ -39,7 +41,7 @@ odbc_connect <- function(data.source.name, username, password, channel){
   )
 
   connection <- tbl(channel, "datasource") %>%
-    filter(UQ(as.name("description")) == data.source.name) %>%
+    filter(UQ(as.name("description")) == data_source_name) %>%
     select(
       datasource_id = .data$id,
       datasource_type_id = .data$datasource_type
@@ -73,12 +75,12 @@ odbc_connect <- function(data.source.name, username, password, channel){
     spread(key = "parameter", value = "value")
 
   if (nrow(connection) == 0) {
-    stop("No connection information found for '", data.source.name, "'.")
+    stop("No connection information found for '", data_source_name, "'.")
   }
   if (nrow(connection) > 1) {
     stop(
       "Multiple lines with connection information found for '",
-      data.source.name, "'."
+      data_source_name, "'."
     )
   }
 

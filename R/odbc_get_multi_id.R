@@ -1,10 +1,14 @@
 #' Get the corresponding id's
 #'
 #' @param data the data.frame
-#' @param id.field the id fields
-#' @param merge.field the merge fields
-#' @param create When TRUE, the function creates unmatching records AND updates attributes. Defaults to FALSE.
-#' @param select Return the matching ID's when TRUE. Returns invisible NULL when FALSE. select = FALSE is only relevant in combination with create = TRUE.
+#' @param id_field the id fields
+#' @param merge_field the merge fields
+#' @param create When `TRUE`, the function creates unmatching records AND
+#' updates attributes.
+#' Defaults to `FALSE`.
+#' @param select Return the matching ID's when `TRUE`.
+#' Returns invisible `NULL` when `FALSE`.
+#' select = `FALSE` is only relevant in combination with create = `TRUE`.
 #' @inheritParams check_dbtable_variable
 #' @inheritParams odbc_insert
 #' @export
@@ -12,27 +16,20 @@
 #' @importFrom assertthat assert_that is.flag noNA
 #' @importFrom RODBC sqlQuery odbcClose
 odbc_get_multi_id <- function(
-  data,
-  id.field,
-  merge.field,
-  table,
-  channel,
-  create = FALSE,
-  select = TRUE,
-  rows.at.time = 1000
-){
-  assert_that(is.flag(create))
-  assert_that(is.flag(select))
-  assert_that(noNA(create))
-  assert_that(noNA(select))
-  if (! create && ! select) {
-    stop("The combination of select = FALSE and create = FALSE is meaningless")
-  }
+  data, id_field, merge_field, table, channel, create = FALSE, select = TRUE,
+  rows_at_time = 1000
+) {
+  assert_that(is.flag(create), noNA(create))
+  assert_that(is.flag(select), noNA(select))
+  assert_that(
+    create | select,
+    msg = "The combination of select = FALSE and create = FALSE is meaningless"
+  )
 
-  check_dataframe_variable(df = data, variable = merge.field, name = "data")
+  check_dataframe_variable(df = data, variable = merge_field, name = "data")
   check_dbtable_variable(
     table = table,
-    variable = c(id.field, merge.field),
+    variable = c(id_field, merge_field),
     schema = "dbo",
     channel = channel
   )
@@ -44,34 +41,34 @@ odbc_get_multi_id <- function(
     table = table,
     schema = "staging",
     append = FALSE,
-    rows.at.time = rows.at.time
+    rows_at_time = rows_at_time
   )
 
-  join.on <- paste0(
-    "(TARGET.", merge.field, " = SOURCE.", merge.field, " OR (TARGET.",
-    merge.field, " IS NULL AND SOURCE.", merge.field, " IS NULL))",
+  join_on <- paste0(
+    "(TARGET.", merge_field, " = SOURCE.", merge_field, " OR (TARGET.",
+    merge_field, " IS NULL AND SOURCE.", merge_field, " IS NULL))",
     collapse = " AND\n        "
   )
 
   if (create) {
-    attribute.field <- colnames(data)[!colnames(data) %in% merge.field]
-    if (length(attribute.field) == 0) {
-      update.command <- ""
+    attribute_field <- colnames(data)[!colnames(data) %in% merge_field]
+    if (length(attribute_field) == 0) {
+      update_command <- ""
     } else {
-      update.clause <- paste0(
-        "TARGET.", attribute.field, " <> SOURCE.", attribute.field,
-        " OR TARGET.", attribute.field, " IS NULL OR SOURCE.", attribute.field,
+      update_clause <- paste0(
+        "TARGET.", attribute_field, " <> SOURCE.", attribute_field,
+        " OR TARGET.", attribute_field, " IS NULL OR SOURCE.", attribute_field,
         " IS NULL",
         collapse = " OR "
       )
-      update.set <- paste0(
-        "TARGET.", attribute.field, " = SOURCE.", attribute.field,
+      update_set <- paste0(
+        "TARGET.", attribute_field, " = SOURCE.", attribute_field,
         collapse = ",\n"
       )
-      update.command <- paste0("
-      WHEN MATCHED AND (", update.clause, ") THEN
+      update_command <- paste0("
+      WHEN MATCHED AND (", update_clause, ") THEN
         UPDATE SET
-          ", update.set
+          ", update_set
       )
     }
     sql <- paste0("
@@ -80,7 +77,7 @@ odbc_get_multi_id <- function(
       USING
         staging.", table, " AS SOURCE
       ON
-        ", join.on, update.command, "
+        ", join_on, update_command, "
       WHEN NOT MATCHED BY TARGET THEN
         INSERT (", paste0(colnames(data), collapse = ", "), ")
         VALUES (", paste0("SOURCE.", colnames(data), collapse = ", "), ")
@@ -93,35 +90,35 @@ odbc_get_multi_id <- function(
       as.is = TRUE
     )
     if (length(output) > 0) {
-      true.error <- grep(
+      true_error <- grep(
         paste0("^[RODBC] ERROR: Could not SQLExecDirect '", sql),
         output
       )
-      if (length(true.error) > 0) {
+      if (length(true_error) > 0) {
         warning(output)
       }
     }
   }
 
-  if (! select) {
+  if (!select) {
     return(invisible(NULL))
   }
 
   # select matching id's
-  selected.field <- paste0(
+  selected_field <- paste0(
     "TARGET.",
-    c(id.field, merge.field),
+    c(id_field, merge_field),
     collapse = ",\n      "
   )
   sql <- paste0("
     SELECT
-      ", selected.field, "
+      ", selected_field, "
     FROM
       staging.", table, " AS SOURCE
     INNER JOIN
       dbo.", table, " AS TARGET
     ON
-      ", join.on
+      ", join_on
   )
   id <- sqlQuery(
     channel = channel,

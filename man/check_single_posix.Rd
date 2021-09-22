@@ -11,10 +11,12 @@ check_single_posix(x, name = "x", past = FALSE)
 
 \item{name}{the name of the object to use in the error message}
 
-\item{past}{Should the function throw an error when x is in the future? Default is FALSE.}
+\item{past}{Should the function throw an error when x is in the future?
+Default is \code{FALSE}.}
 }
 \value{
-The function gives the single POSIX back. It throws an error when the input is not a single character.
+The function gives the single POSIX back.
+It throws an error when the input is not a single character.
 }
 \description{
 Check if the object is a single POSIX
