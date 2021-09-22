@@ -15,7 +15,7 @@
 #' @importFrom methods new
 #' @importFrom assertthat assert_that is.string
 #' @importFrom git2r in_repository repository config cred_ssh_key cred_user_pass
-#' @include gitConnection_class.R
+#' @include gitconnection_class.R
 git_connection <- function(
   repo_path, key, username, password, commit_user, commit_email
 ) {
