@@ -51,41 +51,37 @@ describe("check_dataframe_variable()", {
   })
 
   it("works on data.frames and matrices", {
-    expect_that(
+    expect_true(
       check_dataframe_variable(
         df = df,
         variable = variable,
         name = name,
         error = error
-      ),
-      is_true()
+      )
     )
-    expect_that(
+    expect_true(
       check_dataframe_variable(
         df = df_matrix,
         variable = variable,
         name = name,
         error = error
-      ),
-      is_true()
+      )
     )
-    expect_that(
+    expect_true(
       check_dataframe_variable(
         df = df,
         variable = variable_subset,
         name = name,
         error = error
-      ),
-      is_true()
+      )
     )
-    expect_that(
+    expect_true(
       check_dataframe_variable(
         df = df_matrix,
         variable = variable_subset,
         name = name,
         error = error
-      ),
-      is_true()
+      )
     )
     expect_that(
       check_dataframe_variable(
@@ -137,7 +133,7 @@ describe("check_dataframe_variable()", {
         )
       )
     )
-    expect_that(
+    expect_false(
       suppressWarnings(
         check_dataframe_variable(
           df = df,
@@ -145,10 +141,9 @@ describe("check_dataframe_variable()", {
           name = name,
           error = FALSE
         )
-      ),
-      is_false()
+      )
     )
-    expect_that(
+    expect_false(
       suppressWarnings(
         check_dataframe_variable(
           df = df_matrix,
@@ -156,15 +151,14 @@ describe("check_dataframe_variable()", {
           name = name,
           error = FALSE
         )
-      ),
-      is_false()
+      )
     )
   })
 
   it("handles tbl_df from dplyr", {
     expect_true(
       check_dataframe_variable(
-        df = dplyr::as.tbl(df),
+        df = tibble::as_tibble(df),
         variable = variable_subset,
         name = name,
         error = error
@@ -178,7 +172,7 @@ describe("check_dataframe_variable()", {
         df = data.frame(A = NA),
         variable = list(A = "character"),
         name = name,
-        force.NA = TRUE
+        force_na = TRUE
       ),
       "A: got 'logical', expected 'character'"
     )
@@ -187,7 +181,7 @@ describe("check_dataframe_variable()", {
         df = data.frame(A = NA),
         variable = list(A = "character"),
         name = name,
-        force.NA = FALSE
+        force_na = FALSE
       ),
       check_dataframe_variable(
         df = data.frame(A = NA),

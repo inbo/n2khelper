@@ -9,7 +9,7 @@ describe("read_object_environment()", {
   it("checks if env is an environment", {
     expect_error(
       read_object_environment(object = object, env = object),
-      "env is not an environment"
+      "env does not inherit from class environment"
     )
   })
   it("returns the object or NULL if the object doesn't exists", {

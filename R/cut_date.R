@@ -23,7 +23,7 @@ cut_date <- function(x, dm, include_last = TRUE) {
   if (is.Date(x)) {
     x <- as.POSIXlt(x)
   }
-  assert_that(is.POSIXt(x))
+  assert_that(inherits(x, "POSIXt"))
   dm <- check_character(dm)
   wrong_format <- grep(
     "^([123456789]|[0123][0123456789])-([123456789]|0[123456789]|1[012])$",

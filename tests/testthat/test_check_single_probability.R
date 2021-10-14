@@ -6,19 +6,19 @@ describe("check_single_probability()", {
   it("checks if the input is probability", {
     expect_that(
       check_single_probability(x = "a", name = name),
-      throws_error(paste(name, "must be numeric"))
+      throws_error(paste(name, "must be a single numeric"))
     )
   })
   it("uses 'x' as default name", {
     expect_that(
       check_single_probability(x = "a"),
-      throws_error(paste("x must be numeric"))
+      throws_error(paste("x must be a single numeric"))
     )
   })
   it("does not allow NA", {
     expect_that(
       check_single_probability(x = NA, name = name),
-      throws_error(paste(name, "must be numeric"))
+      throws_error(paste(name, "must be a single numeric"))
     )
   })
   it("checks if the input is a single probability", {
@@ -33,12 +33,12 @@ describe("check_single_probability()", {
   })
   it("checks if the input is with the 0:1 range", {
     expect_that(
-      check_single_probability(x = - .Machine$double.eps, name = name),
-      throws_error(paste(name, "must be positive"))
+      check_single_probability(x = -.Machine$double.eps, name = name),
+      throws_error(paste(name, "must be a value between 0 and 1"))
     )
     expect_that(
       check_single_probability(x = 1 + .Machine$double.eps, name = name),
-      throws_error(paste(name, "must be smaller than 1"))
+      throws_error(paste(name, "must be a value between 0 and 1"))
     )
     expect_that(
       check_single_probability(x = 0, name = name),

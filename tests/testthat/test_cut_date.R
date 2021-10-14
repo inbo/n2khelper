@@ -45,7 +45,7 @@ describe("cut_date()", {
   it("checks if the input is POSIXt or Date", {
     expect_that(
       cut_date(x = 1, dm = dm),
-      throws_error("'x' must be POSIXt")
+      throws_error("x does not inherit from class POSIXt")
     )
   })
   it("checks the format of dm", {

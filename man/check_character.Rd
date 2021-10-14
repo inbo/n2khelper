@@ -4,10 +4,12 @@
 \alias{check_character}
 \title{Check if the object is a character}
 \usage{
-check_character(x, na_action = na.fail)
+check_character(x, name = "x", na_action = na.fail)
 }
 \arguments{
 \item{x}{the object to check}
+
+\item{name}{the name of the object to use in the error message}
 
 \item{na_action}{\code{stats::na.fail()} throws an error in case of \code{NA}
 (default).

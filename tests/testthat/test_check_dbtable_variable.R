@@ -7,43 +7,43 @@ describe("check_dbtable_variable()", {
   it("checks if table is a single character", {
     skip_on_cran()
     channel <- connect_ut_db()
-    expect_that(
+    expect_error(
       check_dbtable_variable(
         table = integer(0),
         variable = variable,
         channel = channel,
         error = error
       ),
-      throws_error("table must be character")
+      "table is not a string"
     )
-    expect_that(
+    expect_error(
       check_dbtable_variable(
         table = NA,
         variable = variable,
         channel = channel,
         error = error
       ),
-      throws_error("table must be character")
+      "table is not a string"
     )
-    expect_that(
+    expect_error(
       check_dbtable_variable(
         table = character(2),
         variable = variable,
         channel = channel,
         error = error
       ),
-      throws_error("table must be a single character")
+      "table is not a string"
     )
-    expect_that(
+    expect_error(
       check_dbtable_variable(
         table = character(0),
         variable = variable,
         channel = channel,
         error = error
       ),
-      throws_error("table must be a single character")
+      "table is not a string"
     )
-    DBI::dbDisconnect(channel$con)
+    DBI::dbDisconnect(channel)
   })
 
   it("checks if table exists", {
@@ -77,7 +77,7 @@ describe("check_dbtable_variable()", {
       ),
       throws_error("channel does not inherit from class DBIConnection")
     )
-    DBI::dbDisconnect(channel$con)
+    DBI::dbDisconnect(channel)
   })
 
   it("checks if variable is a non-empty character without missing values", {
@@ -112,54 +112,49 @@ describe("check_dbtable_variable()", {
       ),
       throws_error("'variable' must contain at least one value")
     )
-    DBI::dbDisconnect(channel$con)
+    DBI::dbDisconnect(channel)
   })
 
   it("gives correct output", {
     skip_on_cran()
     channel <- connect_ut_db()
-    expect_that(
+    expect_true(
       check_dbtable_variable(
         table = table,
         variable = variable,
         channel = channel,
         error = error
-      ),
-      is_true()
+      )
     )
-    expect_that(
+    expect_false(
       check_dbtable_variable(
         table = table,
         variable = junk,
         channel = channel,
         error = FALSE
-      ),
-      is_false()
+      )
     )
-    expect_that(
+    expect_false(
       check_dbtable_variable(
         table = table,
         variable = junk,
         channel = channel,
         error = FALSE
-      ),
-      is_false()
+      )
     )
-    expect_that(
+    expect_error(
       check_dbtable_variable(
         table = table,
         variable = junk,
         channel = channel,
         error = TRUE
       ),
-      throws_error(
-        paste0(
-          "Variable\\(s\\) missing from '", table, "': ",
-          paste(junk, collapse = ", ")
-        )
+      paste0(
+        "Variable\\(s\\) missing from '", table, "': ",
+        paste(junk, collapse = ", ")
       )
     )
-    DBI::dbDisconnect(channel$con)
+    DBI::dbDisconnect(channel)
   })
 
 })

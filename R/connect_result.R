@@ -1,10 +1,10 @@
 #' Opens an ODBC connection to the 'results' database
 #' @export
-#' @importFrom dplyr src_postgres
 #' @param username the username to connect to the database.
 #' @param password the password for the username.
 #' @param develop Logical value. Indicates the location of the results database
 #' @importFrom assertthat assert_that is.flag noNA is.string
+#' @importFrom RPostgreSQL dbConnect PostgreSQL
 connect_result <- function(username, password, develop = TRUE) {
   assert_that(is.flag(develop), noNA(develop))
   assert_that(is.string(username))
@@ -14,8 +14,9 @@ connect_result <- function(username, password, develop = TRUE) {
   assert_that(develop, msg = "Production database not yet defined")
   host <- "localhost"
   # nocov start
-  src_postgres(
-    host = host, dbname = dbname, user = username, password = password
+  dbConnect(
+    drv = PostgreSQL(), host = host, dbname = dbname, user = username,
+    password = password
   )
   # nocov end
 }
@@ -30,7 +31,7 @@ connect_nbn <- function() {
 #' connect to the unit test database
 #' @inheritParams dplyr::src_postgres
 #' @export
-#' @importFrom dplyr src_postgres
+#' @importFrom RPostgreSQL dbConnect PostgreSQL
 connect_ut_db <- function(
   host = "localhost",
   dbname = "n2kunittest",
@@ -40,12 +41,9 @@ connect_ut_db <- function(
   ...
 ) {
   # nocov start
-  src_postgres(
-    host = host,
-    dbname = dbname,
-    user = user,
-    password = password,
-    ...
+  dbConnect(
+    drv = PostgreSQL(), host = host, dbname = dbname, user = user,
+    password = password, port = port, ...
   )
   # nocov end
 }

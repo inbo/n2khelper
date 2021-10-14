@@ -13,16 +13,16 @@ check_dbtable_variable <- function(
 ) {
   assert_that(is.string(table), noNA(table))
   variable <- check_character(
-    x = variable,
-    name = "variable",
-    na.action = na.fail
+    x = variable, name = "variable", na_action = na.fail
   )
-  assert_that(length(variable) > 0)
+  assert_that(
+    length(variable) > 0, msg = "'variable' must contain at least one value"
+  )
   check_dbtable(table = table, schema = schema, channel = channel, error = TRUE)
   # nocov start
 
   check <- variable %in%
-    dbListFields(conn = channel$con, name = c(schema, table))
+    dbListFields(conn = channel, name = c(schema, table))
   if (all(check)) {
     return(TRUE)
   }

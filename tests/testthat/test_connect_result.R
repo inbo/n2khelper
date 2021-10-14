@@ -29,7 +29,7 @@ describe("check_id()", {
         username = Sys.getenv("N2KRESULT_USERNAME"),
         password = Sys.getenv("N2KRESULT_PASSWORD")
       ),
-      "src"
+      "PostgreSQLConnection"
     )
   })
 })

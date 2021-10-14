@@ -11,7 +11,7 @@ check_id <- function(value, variable, table, channel) {
   # nocov start
   sql <- paste("SELECT", variable, "FROM", table, "WHERE", variable, "=", value)
   selection <- dbGetQuery(
-    conn = channel$con,
+    conn = channel,
     statement = sql
   )
   if (nrow(selection) == 0) {

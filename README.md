@@ -1,7 +1,7 @@
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![License](https://img.shields.io/badge/license-GPL--3-blue.svg?style=flat)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![DOI](https://zenodo.org/badge/50571210.svg)](https://zenodo.org/badge/latestdoi/50571210)
-[![codecov](https://codecov.io/gh/inbo/n2khelper/branch/master/graph/badge.svg)](https://codecov.io/gh/inbo/n2khelper)
+[![codecov](https://codecov.io/gh/inbo/n2khelper/branch/master/graph/badge.svg)](https://app.codecov.io/gh/inbo/n2khelper)
 
 # The n2khelper package
 

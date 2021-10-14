@@ -24,7 +24,7 @@ odbc_insert <- function(
       any(is.finite(x))
     }
   )
-  assert_that(all(finite), "data contains infinite values")
+  assert_that(all(finite), msg = "data contains infinite values")
   assert_that(is.count(rows_at_time))
   if (rows_at_time > 1000) {
     rows_at_time <- 1000

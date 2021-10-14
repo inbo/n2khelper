@@ -47,12 +47,11 @@ check_dataframe_variable <- function(
   available <- variable %in% colnames(df)
   if (!all(available)) {
     missing.var <- paste(variable[!available], collapse = ", ")
-    if (error) {
-      stop("Variables missing in ", name, ": ", missing.var)
-    } else {
-      warning("Variables missing in ", name, ": ", missing.var)
-      return(FALSE)
-    }
+    assert_that(
+      !error, msg = paste0("Variables missing in ", name, ": ", missing.var)
+    )
+    warning("Variables missing in ", name, ": ", missing.var)
+    return(FALSE)
   }
 
   if (is.null(required_class)) {
@@ -69,15 +68,15 @@ check_dataframe_variable <- function(
       }
     )
   }
-  correct_class <- sapply(df[, variable[!all_na], drop = FALSE], class)
+  current_class <- sapply(df[, variable[!all_na], drop = FALSE], class)
   correct_class <- sapply(
-    seq_along(correct_class),
+    seq_along(current_class),
     function(i) {
-    any(correct_class[[i]] %in% required_class[!all_na][[i]])
+      any(current_class[[i]] %in% required_class[!all_na][[i]])
     }
   )
   if (!all(correct_class)) {
-    wrong_class <- correct_class[!correct_class]
+    wrong_class <- current_class[!correct_class]
     wrong_class <- sapply(wrong_class, paste, collapse = "', '")
     expected_class <- required_class[!all_na][names(wrong_class)]
     expected_class <- sapply(expected_class, paste, collapse = "', '")

@@ -23,21 +23,17 @@ describe("check_path()", {
       check_path(path = file_path, type = "file", error = TRUE),
       throws_error(paste0("'", full_file_path, "' is not a file"))
     )
-    expect_that(
-      check_path(path = path, type = "directory", error = FALSE),
-      is_false()
+    expect_false(
+      check_path(path = path, type = "directory", error = FALSE)
     )
-    expect_that(
-      check_path(path = path, type = "file", error = FALSE),
-      is_false()
+    expect_false(
+      check_path(path = path, type = "file", error = FALSE)
     )
-    expect_that(
-      check_path(path = file_path, type = "directory", error = FALSE),
-      is_false()
+    expect_false(
+      check_path(path = file_path, type = "directory", error = FALSE)
     )
-    expect_that(
-      check_path(path = file_path, type = "file", error = FALSE),
-      is_false()
+    expect_false(
+      check_path(path = file_path, type = "file", error = FALSE)
     )
   })
   dir.create(full_path)
@@ -61,13 +57,11 @@ describe("check_path()", {
         paste0("'", normalizePath(full_path, winslash = "/"), "' is not a file")
       )
     )
-    expect_that(
-      check_path(path = file_path, type = "directory", error = FALSE),
-      is_false()
+    expect_false(
+      check_path(path = file_path, type = "directory", error = FALSE)
     )
-    expect_that(
-      check_path(path = path, type = "file", error = FALSE),
-      is_false()
+    expect_false(
+      check_path(path = path, type = "file", error = FALSE)
     )
   })
   it("returns the normalised path", {

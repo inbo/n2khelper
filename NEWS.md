@@ -1,3 +1,3 @@
-# n2khelper 0.4.4
+# n2khelper 0.5.0
 
 * Added a `NEWS.md` file to track changes to the package.

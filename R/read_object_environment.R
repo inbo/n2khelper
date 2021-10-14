@@ -18,7 +18,7 @@
 
 read_object_environment <- function(object, env, warn = TRUE) {
   assert_that(is.string(object), noNA(object))
-  assert_that(inherits(env), "environment")
+  assert_that(inherits(env, "environment"))
   assert_that(is.flag(warn), noNA(warn))
 
   if (hasName(env, object)) {

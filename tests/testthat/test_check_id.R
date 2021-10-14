@@ -12,62 +12,59 @@ describe("check_id()", {
 
   it("tests if the channel in an ODBC connection", {
     skip_on_cran()
-    expect_that(
+    expect_error(
       check_id(
         value = value,
         variable = variable,
         table = table,
         channel = junk
       ),
-      throws_error("channel does not inherit from class DBIConnection")
+      "channel does not inherit from class DBIConnection"
     )
   })
   it("tests if the table exists in the ODBC connection", {
     skip_on_cran()
     channel <- connect_ut_db()
-    expect_that(
+    expect_error(
       check_id(
         value = value,
         variable = variable,
         table = junk,
         channel = channel
       ),
-      throws_error(
-        sprintf(
-          "Table\\(s\\) %s not found in schema public on database",
-          junk
-        )
+      sprintf(
+        "Table\\(s\\) %s not found in schema public on database",
+        junk
       )
     )
-    DBI::dbDisconnect(channel$con)
+    DBI::dbDisconnect(channel)
   })
   it("tests if the variable table exists in the table", {
     skip_on_cran()
     channel <- connect_ut_db()
     value <- 1
-    expect_that(
+    expect_error(
       check_id(
         value = value,
         variable = junk,
         table = table,
         channel = channel
       ),
-      throws_error(paste0("Variable\\(s\\) missing from '", table, "': ", junk))
+      paste0("Variable\\(s\\) missing from '", table, "': ", junk)
     )
-    DBI::dbDisconnect(channel$con)
+    DBI::dbDisconnect(channel)
   })
   it("tests if the id exists in the table", {
     skip_on_cran()
     channel <- connect_ut_db()
-    expect_that(
+    expect_false(
       check_id(
         value = 99999999,
         variable = variable,
         table = table,
         channel = channel
-      ),
-      is_false()
+      )
     )
-    DBI::dbDisconnect(channel$con)
+    DBI::dbDisconnect(channel)
   })
 })

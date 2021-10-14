@@ -10,7 +10,14 @@
 #' @examples
 #' check_single_posix(Sys.time())
 check_single_posix <- function(x, name = "x", past = FALSE) {
-  assert_that(inherits(x, "POSIXt"), length(x) == 1)
+  assert_that(
+    inherits(x, "POSIXt"),
+    msg = paste(name, "must be a POSIXct or POSIXlt object")
+  )
+  assert_that(
+    length(x) == 1,
+    msg = paste(name, "must be a single POSIXct or POSIXlt object")
+  )
   assert_that(!past | x < Sys.time(), msg = paste(name, "is in the future."))
   return(x)
 }

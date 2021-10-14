@@ -4,10 +4,12 @@
 \alias{check_single_probability}
 \title{Check if the object is a single probability}
 \usage{
-check_single_probability(x)
+check_single_probability(x, name = "x")
 }
 \arguments{
 \item{x}{the object to check}
+
+\item{name}{the name of the object to use in the error message}
 }
 \value{
 The function gives the single probability back.
