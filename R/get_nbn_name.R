@@ -1,5 +1,5 @@
 #' Get the name associated with an NBN key
-#' @param nbn.key A vector with NBN keys
+#' @param nbn_key A vector with NBN keys
 #' @inheritParams get_nbn_key
 #' @export
 #' @importFrom assertthat assert_that
