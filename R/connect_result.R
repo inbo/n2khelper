@@ -29,7 +29,13 @@ connect_nbn <- function() {
 }
 
 #' connect to the unit test database
-#' @inheritParams dplyr::src_postgres
+#' @param host Host name and port number of PostgreSQL database.
+#' @param dbname Database name.
+#' @param user User name and password.
+#' @param password User name and password.
+#' @param port Port number of database.
+#' Defaults to 5432
+#' @param ... arguments past to [DBI::dbConnect()].
 #' @export
 #' @importFrom RPostgreSQL dbConnect PostgreSQL
 connect_ut_db <- function(

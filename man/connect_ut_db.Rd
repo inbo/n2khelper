@@ -14,31 +14,18 @@ connect_ut_db(
 )
 }
 \arguments{
-\item{host}{Host name and port number of database}
+\item{host}{Host name and port number of PostgreSQL database.}
 
-\item{dbname}{Database name}
+\item{dbname}{Database name.}
 
-\item{user}{User name and password.
+\item{user}{User name and password.}
 
-Generally, you should avoid saving username and password in your
-scripts as it is easy to accidentally expose valuable credentials.
-Instead, retrieve them from environment variables, or use database
-specific credential scores. For example, with MySQL you can set up \code{my.cnf}
-as described in \code{\link[RMySQL:MySQLDriver-class]{RMySQL::MySQL()}}.}
+\item{password}{User name and password.}
 
-\item{password}{User name and password.
+\item{port}{Port number of database.
+Defaults to 5432}
 
-Generally, you should avoid saving username and password in your
-scripts as it is easy to accidentally expose valuable credentials.
-Instead, retrieve them from environment variables, or use database
-specific credential scores. For example, with MySQL you can set up \code{my.cnf}
-as described in \code{\link[RMySQL:MySQLDriver-class]{RMySQL::MySQL()}}.}
-
-\item{port}{Host name and port number of database}
-
-\item{...}{for the src, other arguments passed on to the underlying
-database connector, \code{\link[DBI:dbConnect]{DBI::dbConnect()}}. For the tbl, included for
-compatibility with the generic, but otherwise ignored.}
+\item{...}{arguments past to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
 }
 \description{
 connect to the unit test database
