@@ -25,7 +25,7 @@ connect_result <- function(username, password, develop = TRUE) {
 #' @export
 #' @importFrom RODBC odbcDriverConnect
 connect_nbn <- function() {
-  odbcDriverConnect(connection = nbn.dsn)
+  odbcDriverConnect(connection = nbn_dsn)
 }
 
 #' connect to the unit test database
