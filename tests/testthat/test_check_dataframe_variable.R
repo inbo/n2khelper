@@ -1,7 +1,7 @@
 context("check if a data.frame contains a variable")
 describe("check_dataframe_variable()", {
-  missing.var <- "aaaa"
-  missing.var2 <- c("aaaa", "bbbb")
+  missing_var <- "aaaa"
+  missing_var2 <- c("aaaa", "bbbb")
   df <- data.frame(a = integer(0), b = logical(0), c = character(0))
   variable <- colnames(df)
   variable_subset <- sample(variable, length(variable) - 1)
@@ -46,7 +46,7 @@ describe("check_dataframe_variable()", {
         name = name,
         error = error
       ),
-      "length\\(variable\\) not greater than 0"
+      "length\\(variable\\) not greater than 0" #nolint: nonportable_path_linter, line_length_linter.
     )
   })
 
@@ -85,51 +85,51 @@ describe("check_dataframe_variable()", {
     )
     expect_that(
       check_dataframe_variable(
-        df = df, variable = c(variable, missing.var), name = name, error = TRUE
+        df = df, variable = c(variable, missing_var), name = name, error = TRUE
       ),
       throws_error(
         paste0(
           "Variables missing in ", name, ": ",
-          paste(missing.var, collapse = ", ")
+          paste(missing_var, collapse = ", ")
         )
       )
     )
     expect_that(
       check_dataframe_variable(
         df = df_matrix,
-        variable = c(variable, missing.var),
+        variable = c(variable, missing_var),
         name = name,
         error = TRUE
       ),
       throws_error(
         paste0(
           "Variables missing in ", name, ": ",
-          paste(missing.var, collapse = ", ")
+          paste(missing_var, collapse = ", ")
         )
       )
     )
     expect_that(
       check_dataframe_variable(
-        df = df, variable = c(variable, missing.var), name = name, error = FALSE
+        df = df, variable = c(variable, missing_var), name = name, error = FALSE
       ),
       gives_warning(
         paste0(
           "Variables missing in ", name, ": ",
-          paste(missing.var, collapse = ", ")
+          paste(missing_var, collapse = ", ")
         )
       )
     )
     expect_that(
       check_dataframe_variable(
         df = df_matrix,
-        variable = c(variable, missing.var),
+        variable = c(variable, missing_var),
         name = name,
         error = FALSE
       ),
       gives_warning(
         paste0(
           "Variables missing in ", name, ": ",
-          paste(missing.var, collapse = ", ")
+          paste(missing_var, collapse = ", ")
         )
       )
     )
@@ -137,7 +137,7 @@ describe("check_dataframe_variable()", {
       suppressWarnings(
         check_dataframe_variable(
           df = df,
-          variable = c(variable, missing.var),
+          variable = c(variable, missing_var),
           name = name,
           error = FALSE
         )
@@ -147,7 +147,7 @@ describe("check_dataframe_variable()", {
       suppressWarnings(
         check_dataframe_variable(
           df = df_matrix,
-          variable = c(variable, missing.var),
+          variable = c(variable, missing_var),
           name = name,
           error = FALSE
         )

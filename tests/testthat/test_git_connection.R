@@ -31,7 +31,7 @@ expect_error(
     commit_user = 1,
     commit_email = commit_email
   ),
-  "commit_user is not a string \\(a length one character vector\\)\\."
+  "commit_user is not a string \\(a length one character vector\\)\\." #nolint: nonportable_path_linter, line_length_linter.
 )
 expect_error(
   git_connection(
@@ -39,7 +39,7 @@ expect_error(
     commit_user = NA,
     commit_email = commit_email
   ),
-  "commit_user is not a string \\(a length one character vector\\)\\."
+  "commit_user is not a string \\(a length one character vector\\)\\." #nolint: nonportable_path_linter, line_length_linter.
 )
 expect_error(
   git_connection(
@@ -47,7 +47,7 @@ expect_error(
     commit_user = rep(commit_user, 2),
     commit_email = commit_email
   ),
-  "commit_user is not a string \\(a length one character vector\\)\\."
+  "commit_user is not a string \\(a length one character vector\\)\\." #nolint: nonportable_path_linter, line_length_linter.
 )
 
 # test commit_email
@@ -57,7 +57,7 @@ expect_error(
     commit_user = commit_user,
     commit_email = 1
   ),
-  "commit_email is not a string \\(a length one character vector\\)\\."
+  "commit_email is not a string \\(a length one character vector\\)\\." #nolint: nonportable_path_linter, line_length_linter.
 )
 expect_error(
   git_connection(
@@ -65,7 +65,7 @@ expect_error(
     commit_user = commit_user,
     commit_email = NA
   ),
-  "commit_email is not a string \\(a length one character vector\\)\\."
+  "commit_email is not a string \\(a length one character vector\\)\\." #nolint: nonportable_path_linter, line_length_linter.
 )
 expect_error(
   git_connection(
@@ -73,7 +73,7 @@ expect_error(
     commit_user = commit_user,
     commit_email = rep(commit_email, 2)
   ),
-  "commit_email is not a string \\(a length one character vector\\)\\."
+  "commit_email is not a string \\(a length one character vector\\)\\." #nolint: nonportable_path_linter, line_length_linter.
 )
 
 expect_is(
@@ -111,7 +111,7 @@ expect_error(
     commit_user = commit_user,
     commit_email = commit_email
   ),
-  "username is not a string \\(a length one character vector\\)\\."
+  "username is not a string \\(a length one character vector\\)\\." #nolint: nonportable_path_linter, line_length_linter.
 )
 expect_error(
   git_connection(
@@ -121,7 +121,7 @@ expect_error(
     commit_user = commit_user,
     commit_email = commit_email
   ),
-  "username is not a string \\(a length one character vector\\)\\."
+  "username is not a string \\(a length one character vector\\)\\." #nolint: nonportable_path_linter, line_length_linter.
 )
 expect_error(
   git_connection(
@@ -142,7 +142,7 @@ expect_error(
     commit_user = commit_user,
     commit_email = commit_email
   ),
-  "password is not a string \\(a length one character vector\\)\\."
+  "password is not a string \\(a length one character vector\\)\\." #nolint: nonportable_path_linter, line_length_linter.
 )
 expect_error(
   git_connection(
@@ -152,7 +152,7 @@ expect_error(
     commit_user = commit_user,
     commit_email = commit_email
   ),
-  "password is not a string \\(a length one character vector\\)\\."
+  "password is not a string \\(a length one character vector\\)\\." #nolint: nonportable_path_linter, line_length_linter.
 )
 expect_error(
   git_connection(

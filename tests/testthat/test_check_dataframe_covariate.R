@@ -1,7 +1,7 @@
 context("check if a data.frame contains the covariates")
 describe("check_dataframe_covariate()", {
   response <- "Count"
-  missing.response <- "NoCount"
+  missing_response <- "NoCount"
   covariates_one <- c(
     "A",
     "(1|A)",
@@ -64,7 +64,7 @@ describe("check_dataframe_covariate()", {
           check_dataframe_covariate(
             df = df,
             covariate = covariate,
-            response = missing.response,
+            response = missing_response,
             error = FALSE
           )
         )
@@ -73,10 +73,10 @@ describe("check_dataframe_covariate()", {
         check_dataframe_covariate(
           df = df,
           covariate = covariate,
-          response = missing.response,
+          response = missing_response,
           error = FALSE
         ),
-        gives_warning(paste("Variables missing in df:", missing.response))
+        gives_warning(paste("Variables missing in df:", missing_response))
       )
     }
     for (covariate in covariates_two) {
@@ -117,10 +117,10 @@ describe("check_dataframe_covariate()", {
         check_dataframe_covariate(
           df = df,
           covariate = covariate,
-          response = missing.response,
+          response = missing_response,
           error = TRUE
         ),
-        throws_error(paste("Variables missing in df:", missing.response))
+        throws_error(paste("Variables missing in df:", missing_response))
       )
     }
     for (covariate in covariates_two) {

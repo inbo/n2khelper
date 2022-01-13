@@ -46,11 +46,11 @@ check_dataframe_variable <- function(
 
   available <- variable %in% colnames(df)
   if (!all(available)) {
-    missing.var <- paste(variable[!available], collapse = ", ")
+    missing_var <- paste(variable[!available], collapse = ", ")
     assert_that(
-      !error, msg = paste0("Variables missing in ", name, ": ", missing.var)
+      !error, msg = paste0("Variables missing in ", name, ": ", missing_var)
     )
-    warning("Variables missing in ", name, ": ", missing.var)
+    warning("Variables missing in ", name, ": ", missing_var)
     return(FALSE)
   }
 

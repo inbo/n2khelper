@@ -58,7 +58,7 @@ describe("check_dbtable_variable()", {
       ),
       throws_error(
         sprintf(
-          "Table\\(s\\) %s not found in schema public on database",
+          "Table\\(s\\) %s not found in schema public on database", #nolint: nonportable_path_linter, line_length_linter.
           junk
         )
       )
@@ -150,7 +150,7 @@ describe("check_dbtable_variable()", {
         error = TRUE
       ),
       paste0(
-        "Variable\\(s\\) missing from '", table, "': ",
+        "Variable\\(s\\) missing from '", table, "': ", #nolint: nonportable_path_linter, line_length_linter.
         paste(junk, collapse = ", ")
       )
     )

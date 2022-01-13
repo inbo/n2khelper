@@ -33,7 +33,7 @@ describe("check_id()", {
         channel = channel
       ),
       sprintf(
-        "Table\\(s\\) %s not found in schema public on database",
+        "Table\\(s\\) %s not found in schema public on database", #nolint: nonportable_path_linter, line_length_linter.
         junk
       )
     )
@@ -50,7 +50,7 @@ describe("check_id()", {
         table = table,
         channel = channel
       ),
-      paste0("Variable\\(s\\) missing from '", table, "': ", junk)
+      paste0("Variable\\(s\\) missing from '", table, "': ", junk) #nolint: nonportable_path_linter, line_length_linter.
     )
     DBI::dbDisconnect(channel)
   })

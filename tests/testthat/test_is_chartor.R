@@ -16,6 +16,6 @@ test_that("is_chartor() uses a custom error message with assert_that", {
   expect_true(assert_that(is_chartor(factor(1:10))))
   expect_error(
     assert_that(is_chartor(data.frame())),
-    "data.frame\\(\\) is neither character nor factor"
+    "data.frame\\(\\) is neither character nor factor" #nolint: nonportable_path_linter, line_length_linter.
   )
 })

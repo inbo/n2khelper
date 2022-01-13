@@ -7,7 +7,7 @@ describe("cut_date()", {
     )
     )
   dm <- c("1-1", "15-1", "1-2", "31-12")
-  dm_format <- c("1/1", "01/01", "40-1", "1 1", "1-1-2015")
+  dm_format <- c("1/1", "01/01", "40-1", "1 1", "1-1-2015") #nolint: nonportable_path_linter, line_length_linter.
   include_last <- TRUE
 
   it("yields the correct periods", {
