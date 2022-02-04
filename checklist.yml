@@ -3,12 +3,15 @@ package: yes
 allowed:
   warnings: []
   notes:
-  - motivation: Package not intended for CRAN
+  - motivation: require development version of lubridate
     value: |-
       checking CRAN incoming feasibility ... NOTE
       Maintainer: 'Thierry Onkelinx <thierry.onkelinx@inbo.be>'
 
       New submission
+
+      Unknown, possibly mis-spelled, fields in DESCRIPTION:
+        'Remotes'
 citation_roles:
 - aut
 - cre
