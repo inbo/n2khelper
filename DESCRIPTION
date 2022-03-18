@@ -34,6 +34,7 @@ Suggests:
 Remotes:
     tidyverse/lubridate
 Encoding: UTF-8
+Language: eng
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Collate:
