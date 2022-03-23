@@ -7,8 +7,8 @@
 #' @param rows_at_time Number of rows to insert in one SQL statement
 #' @export
 #' @importFrom assertthat assert_that is.count
-#' @importFrom dplyr %>% mutate_each_ data_frame funs group_by summarise_
-#' mutate_ select_
+#' @importFrom dplyr %>% data_frame funs group_by transmute
+#' mutate_each_ summarise_ select_
 #' @importFrom RODBC sqlClear sqlColumns sqlQuery
 #' @importFrom rlang .data
 #' @importFrom utils write.table
@@ -140,16 +140,12 @@ odbc_insert <- function(
     summarise_(
       Value = ~paste(Value, collapse = "),\n(")
     ) %>%
-    mutate_(
-      SQL = ~paste0(
-        "INSERT INTO
-          ", schema, ".", table, " (", paste(colnames(data), collapse = ", "),
-        ")
-        VALUES
-        (", Value, ")"
+    transmute(
+      SQL = sprintf(
+        "INSERT INTO %s.%s (%s) VALUES (%s)", .data$schema, .data$table,
+        paste(colnames(data), collapse = ", "), .data$Values
       )
-    ) %>%
-    select_(~SQL)
+    )
 
   # nocov start
   sql_status <- sapply(
