@@ -12,7 +12,7 @@ describe("check_id()", {
 
   it("tests if the channel in an ODBC connection", {
     skip_on_cran()
-    skip_if(identical(Sys.getenv("RSPM"), ""))
+    skip_if_not(identical(Sys.getenv("RSPM"), ""))
     expect_error(
       check_id(
         value = value,
@@ -25,7 +25,7 @@ describe("check_id()", {
   })
   it("tests if the table exists in the ODBC connection", {
     skip_on_cran()
-    skip_if(identical(Sys.getenv("RSPM"), ""))
+    skip_if_not(identical(Sys.getenv("RSPM"), ""))
     channel <- connect_ut_db()
     expect_error(
       check_id(
@@ -43,7 +43,7 @@ describe("check_id()", {
   })
   it("tests if the variable table exists in the table", {
     skip_on_cran()
-    skip_if(identical(Sys.getenv("RSPM"), ""))
+    skip_if_not(identical(Sys.getenv("RSPM"), ""))
     channel <- connect_ut_db()
     value <- 1
     expect_error(
@@ -59,7 +59,7 @@ describe("check_id()", {
   })
   it("tests if the id exists in the table", {
     skip_on_cran()
-    skip_if(identical(Sys.getenv("RSPM"), ""))
+    skip_if_not(identical(Sys.getenv("RSPM"), ""))
     channel <- connect_ut_db()
     expect_false(
       check_id(
