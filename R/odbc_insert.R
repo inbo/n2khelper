@@ -7,8 +7,8 @@
 #' @param rows_at_time Number of rows to insert in one SQL statement
 #' @export
 #' @importFrom assertthat assert_that is.count
-#' @importFrom dplyr %>% data_frame funs group_by select transmute
-#' mutate_each_ summarise_
+#' @importFrom dplyr %>% across data_frame funs group_by mutate select transmute
+#' summarise_
 #' @importFrom RODBC sqlClear sqlColumns sqlQuery
 #' @importFrom rlang .data
 #' @importFrom utils write.table
@@ -86,7 +86,7 @@ odbc_insert <- function(
     unfactor <- function(x) {
       levels(x)[x]
     }
-    data <- mutate_each_(data, funs(unfactor), vars = names(relevant))
+    data <- mutate(data, across(.cols = names(relevant), fns = funs(unfactor)))
     type[relevant] <- "character"
   }
 
@@ -99,7 +99,7 @@ odbc_insert <- function(
     old_fancy_quotes <- getOption("useFancyQuotes")
     on.exit(options(useFancyQuotes = old_fancy_quotes), add = TRUE)
     options(useFancyQuotes = FALSE)
-    data <- mutate_each_(data, funs(add_quote), vars = names(relevant))
+    data <- mutate(data, across(.cols = names(relevant), .fns = add_quote))
     type[relevant] <- "done"
   }
 
@@ -109,14 +109,14 @@ odbc_insert <- function(
     fmt_posix <- function(x) {
       strftime(x, format = "'%Y%m%d %H:%M:%S'")
     }
-    data <- mutate_each_(data, funs(fmt_posix), vars = names(relevant))
+    data <- mutate(data, across(.cols = names(relevant), .fns = fmt_posix))
     type[relevant] <- "done"
   }
 
   # Convert TRUE / FALSE to 1 / 0
   relevant <- which(sapply(type, identical, "logical"))
   if (length(relevant) > 0) {
-    data <- mutate_each_(data, funs(as.integer), vars = names(relevant))
+    data <- mutate(data, across(.cols = names(relevant), .fns = as.integer))
     type[relevant] <- "done"
   }
 
