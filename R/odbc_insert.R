@@ -7,8 +7,8 @@
 #' @param rows_at_time Number of rows to insert in one SQL statement
 #' @export
 #' @importFrom assertthat assert_that is.count
-#' @importFrom dplyr %>% across data_frame funs group_by mutate select transmute
-#' summarise_
+#' @importFrom dplyr %>% across data_frame funs group_by mutate select summarise
+#' transmute
 #' @importFrom RODBC sqlClear sqlColumns sqlQuery
 #' @importFrom rlang .data
 #' @importFrom utils write.table
@@ -137,9 +137,7 @@ odbc_insert <- function(
     Group = seq_len(nrow(data)) %/% rows_at_time
   ) %>%
     group_by(.data$Group) %>%
-    summarise_(
-      Value = ~paste(Value, collapse = "),\n(")
-    ) %>%
+    summarise(Value = paste(.data$Value, collapse = "),\n(")) %>%
     transmute(
       SQL = sprintf(
         "INSERT INTO %s.%s (%s) VALUES (%s)", .data$schema, .data$table,
