@@ -7,9 +7,10 @@
 #' @param rows_at_time Number of rows to insert in one SQL statement
 #' @export
 #' @importFrom assertthat assert_that is.count
-#' @importFrom RODBC sqlClear sqlColumns sqlQuery
-#' @importFrom dplyr %>% mutate_each_ funs data_frame group_by_ summarise_
+#' @importFrom dplyr %>% mutate_each_ data_frame funs group_by summarise_
 #' mutate_ select_
+#' @importFrom RODBC sqlClear sqlColumns sqlQuery
+#' @importFrom rlang .data
 #' @importFrom utils write.table
 odbc_insert <- function(
   data, table, channel, schema = "dbo", append = TRUE, rows_at_time = 1000
@@ -135,7 +136,7 @@ odbc_insert <- function(
     Value = apply(data, 1, paste, collapse = ", "),
     Group = seq_len(nrow(data)) %/% rows_at_time
   ) %>%
-    group_by_(~Group) %>%
+    group_by(.data$Group) %>%
     summarise_(
       Value = ~paste(Value, collapse = "),\n(")
     ) %>%
