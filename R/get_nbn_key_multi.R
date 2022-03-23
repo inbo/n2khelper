@@ -45,7 +45,6 @@ get_nbn_key_multi <- function(species, orders = c("la", "nl", "en"), channel) {
     to_do$NBNKey <- NULL # nolint
   }
 
-  # nocov start
   if (nrow(to_do) > 0) {
     warning("No matches found for some records")
     to_do$NBNKey <- NA # nolint

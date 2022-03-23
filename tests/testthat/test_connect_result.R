@@ -13,6 +13,7 @@ describe("check_id()", {
   it("uses trusted authentication when username is missing or ''", {
     skip_on_cran()
     skip_on_os("linux")
+    skip_if(identical(Sys.getenv("RSPM"), ""))
     expect_is(
       connect_result(),
       "src"
@@ -24,6 +25,7 @@ describe("check_id()", {
   })
   it("uses username and password when supplied", {
     skip_on_cran()
+    skip_if(identical(Sys.getenv("RSPM"), ""))
     expect_is(
       connect_result(
         username = Sys.getenv("N2KRESULT_USERNAME"),
