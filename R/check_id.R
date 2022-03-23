@@ -1,5 +1,7 @@
 #' Test if an id exists in a given field of the table
 #' @inheritParams odbc_get_id
+#' @inheritParams check_dbtable_variable
+#' @param value the id value
 #' @export
 #' @importFrom assertthat assert_that is.count is.string
 #' @importFrom DBI dbGetQuery

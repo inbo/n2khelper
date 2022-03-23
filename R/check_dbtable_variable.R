@@ -2,6 +2,7 @@
 #' @param error Indicates the behaviour when a variable is missing.
 #' Gives an error when error = `TRUE` (default).
 #' Return FALSE otherwise.
+#' @param variable A vector with the names of the columns
 #' @inheritParams odbc_get_id
 #' @export
 #' @importFrom assertthat assert_that is.string noNA

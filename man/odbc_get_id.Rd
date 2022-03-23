@@ -4,21 +4,12 @@
 \alias{odbc_get_id}
 \title{Get the id of the matching records}
 \usage{
-odbc_get_id(
-  table,
-  variable,
-  value,
-  schema = "public",
-  channel,
-  id_variable = "id"
-)
+odbc_get_id(table, ..., schema = "public", channel, id_variable = "id")
 }
 \arguments{
 \item{table}{The name of the table}
 
-\item{variable}{A vector with the names of the columns}
-
-\item{value}{the content of the variable}
+\item{...}{arguments passed to \code{filter()}.}
 
 \item{schema}{The schema of the table. Defaults to public}
 

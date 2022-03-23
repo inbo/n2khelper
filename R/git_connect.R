@@ -5,9 +5,10 @@
 #' @inheritParams git_connection
 #' @param type Use 'ssh' or 'https' for authentication
 #' @importFrom assertthat assert_that is.string has_name
-#' @importFrom dplyr %>% tbl inner_join select_ filter_ collect
-#' @importFrom tidyr spread_
+#' @importFrom dplyr %>% tbl inner_join select_ filter collect
 #' @importFrom git2r repository cred_user_pass
+#' @importFrom rlang .data
+#' @importFrom tidyr spread_
 #' @export
 git_connect <- function(
   data_source_name, channel, type = c("ssh", "https"), username = character(0),
@@ -39,12 +40,12 @@ git_connect <- function(
 
   type <- sprintf("git, tab delimited %s", type)
   connection <- tbl(channel, "datasource") %>%
-    filter_(~description == data_source_name) %>%
+    filter(.data$description == data_source_name) %>%
     inner_join(
       tbl(channel, "datasource_type"),
       by = c("datasource_type" = "id")
     ) %>%
-    filter_(~description.y == type) %>%
+    filter(.data$description.y == type) %>%
     select_(
       datasource = ~ id,
       datasource_type = ~description.y
