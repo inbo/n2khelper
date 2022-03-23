@@ -10,7 +10,7 @@
 #' @importFrom assertthat assert_that is.string has_name
 #' @importFrom dplyr tbl %>% inner_join filter select collect
 #' @importFrom rlang .data UQ
-#' @importFrom tidyr spread
+#' @importFrom tidyr pivot_wider
 #' @importFrom DBI dbConnect
 #' @importFrom odbc odbc
 #' @export
@@ -72,7 +72,7 @@ odbc_connect <- function(data_source_name, username, password, channel) {
       .data$value
     ) %>%
     collect() %>%
-    spread(key = "parameter", value = "value")
+    pivot_wider(names_from = .data$parameter, values_from = .data$value)
 
   if (nrow(connection) == 0) {
     stop("No connection information found for '", data_source_name, "'.")

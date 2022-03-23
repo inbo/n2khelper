@@ -8,7 +8,7 @@
 #' @importFrom dplyr %>% collect filter inner_join select tbl
 #' @importFrom git2r repository cred_user_pass
 #' @importFrom rlang .data
-#' @importFrom tidyr spread_
+#' @importFrom tidyr pivot_wider
 #' @export
 git_connect <- function(
   data_source_name, channel, type = c("ssh", "https"), username = character(0),
@@ -57,7 +57,7 @@ git_connect <- function(
       by = "datasource"
     ) %>%
     collect() %>%
-    spread_(key_col = "parameter", value_col = "value")
+    pivot_wider(names_from = .data$parameter, values_from = .data$value)
   if (nrow(connection) == 0) {
     stop("No connection information found for '", data_source_name, "'.")
   }
