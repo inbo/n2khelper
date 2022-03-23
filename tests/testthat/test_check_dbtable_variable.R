@@ -6,7 +6,7 @@ describe("check_dbtable_variable()", {
   error <- TRUE
   it("checks if table is a single character", {
     skip_on_cran()
-    skip_if_not(identical(Sys.getenv("RSPM"), ""))
+    skip_if(isTRUE(Sys.getenv("CHECKLIST_OS", FALSE)))
     channel <- connect_ut_db()
     expect_error(
       check_dbtable_variable(
@@ -49,7 +49,7 @@ describe("check_dbtable_variable()", {
 
   it("checks if table exists", {
     skip_on_cran()
-    skip_if_not(identical(Sys.getenv("RSPM"), ""))
+    skip_if(isTRUE(Sys.getenv("CHECKLIST_OS", FALSE)))
     channel <- connect_ut_db()
     expect_that(
       check_dbtable_variable(
@@ -69,7 +69,7 @@ describe("check_dbtable_variable()", {
 
   it("checks if channel is on ODBC connection", {
     skip_on_cran()
-    skip_if_not(identical(Sys.getenv("RSPM"), ""))
+    skip_if(isTRUE(Sys.getenv("CHECKLIST_OS", FALSE)))
     channel <- connect_ut_db()
     expect_that(
       check_dbtable_variable(
@@ -85,7 +85,7 @@ describe("check_dbtable_variable()", {
 
   it("checks if variable is a non-empty character without missing values", {
     skip_on_cran()
-    skip_if_not(identical(Sys.getenv("RSPM"), ""))
+    skip_if(isTRUE(Sys.getenv("CHECKLIST_OS", FALSE)))
     channel <- connect_ut_db()
     expect_that(
       check_dbtable_variable(
@@ -121,7 +121,7 @@ describe("check_dbtable_variable()", {
 
   it("gives correct output", {
     skip_on_cran()
-    skip_if_not(identical(Sys.getenv("RSPM"), ""))
+    skip_if(isTRUE(Sys.getenv("CHECKLIST_OS", FALSE)))
     channel <- connect_ut_db()
     expect_true(
       check_dbtable_variable(
