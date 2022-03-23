@@ -74,15 +74,19 @@ odbc_connect <- function(data_source_name, username, password, channel) {
     collect() %>%
     pivot_wider(names_from = .data$parameter, values_from = .data$value)
 
-  if (nrow(connection) == 0) {
-    stop("No connection information found for '", data_source_name, "'.")
-  }
-  if (nrow(connection) > 1) {
-    stop(
+  assert_that(
+    nrow(connection) > 0,
+    msg = paste0(
+      "No connection information found for '", data_source_name, "'."
+    )
+  )
+  assert_that(
+    nrow(connection) == 1,
+    msg = paste0(
       "Multiple lines with connection information found for '",
       data_source_name, "'."
     )
-  }
+  )
 
   if (connection$datasource_type == "Microsoft SQL Server") {
     assert_that(has_name(connection, "server"))

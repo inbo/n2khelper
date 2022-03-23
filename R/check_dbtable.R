@@ -12,9 +12,9 @@
 check_dbtable <- function(table, schema = "public", channel, error = TRUE) {
   # nocov start
   table <- check_character(x = table, na_action = na.fail)
-  if (length(table) == 0) {
-    stop("'table' must contain at least one value")
-  }
+  assert_that(
+    length(table) > 0, msg = "'table' must contain at least one value"
+  )
   assert_that(is.string(schema))
   if (has_name(channel, "con")) {
     assert_that(inherits(channel$con, "DBIConnection"))
@@ -31,21 +31,17 @@ check_dbtable <- function(table, schema = "public", channel, error = TRUE) {
         dbExistsTable(conn = this_channel)
     }
   )
-  if (all(test)) {
-    return(TRUE)
-  }
-  if (error) {
-    names(test)[!test] %>%
-      paste(collapse = ", ") %>%
-      sprintf(
-        fmt = "Table(s) %s not found in schema %s on database %s",
-        schema,
-        dbGetInfo(this_channel)$dbname
-      ) %>%
-      stop(call. = FALSE)
-  } else {
-    return(FALSE)
-  }
 
+  if (all(test) || !error) {
+    return(all(test))
+  }
+  names(test)[!test] %>%
+    paste(collapse = ", ") %>%
+    sprintf(
+      fmt = "Table(s) %s not found in schema %s on database %s",
+      schema,
+      dbGetInfo(this_channel)$dbname
+    ) %>%
+    stop(call. = FALSE)
   # nocov end
 }

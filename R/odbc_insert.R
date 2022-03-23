@@ -121,12 +121,10 @@ odbc_insert <- function(
   }
 
   # test if all data types are handled
-  if (any(type != "done")) {
-    stop(
-      "Unhandled data types: ",
-      unique(type[type != "done"])
-    )
-  }
+  assert_that(
+    all(type == "done"),
+    msg = paste0("Unhandled data types: ", unique(type[type != "done"]))
+  )
 
   # Convert NA
   data[is.na(data)] <- "NULL"
