@@ -7,8 +7,8 @@
 #' @param rows_at_time Number of rows to insert in one SQL statement
 #' @export
 #' @importFrom assertthat assert_that is.count
-#' @importFrom dplyr %>% data_frame funs group_by transmute
-#' mutate_each_ summarise_ select_
+#' @importFrom dplyr %>% data_frame funs group_by select transmute
+#' mutate_each_ summarise_
 #' @importFrom RODBC sqlClear sqlColumns sqlQuery
 #' @importFrom rlang .data
 #' @importFrom utils write.table
@@ -60,7 +60,7 @@ odbc_insert <- function(
   )
 
   dbtable <- sqlColumns(channel = channel, sqtable = table, schema = schema) %>%
-    select_(~COLUMN_NAME)
+    select(.data$COLUMN_NAME)
   data[, dbtable$COLUMN_NAME[!dbtable$COLUMN_NAME %in% colnames(data)]] <- NA
   file <- tempfile(fileext = ".txt")
   write.table(

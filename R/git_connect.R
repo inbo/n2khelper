@@ -5,7 +5,7 @@
 #' @inheritParams git_connection
 #' @param type Use 'ssh' or 'https' for authentication
 #' @importFrom assertthat assert_that is.string has_name
-#' @importFrom dplyr %>% tbl inner_join select_ filter collect
+#' @importFrom dplyr %>% collect filter inner_join select tbl
 #' @importFrom git2r repository cred_user_pass
 #' @importFrom rlang .data
 #' @importFrom tidyr spread_
@@ -46,21 +46,14 @@ git_connect <- function(
       by = c("datasource_type" = "id")
     ) %>%
     filter(.data$description.y == type) %>%
-    select_(
-      datasource = ~ id,
-      datasource_type = ~description.y
-    ) %>%
+    select(datasource = .data$id, datasource_type = .data$description.y) %>%
     inner_join(
       tbl(channel, "datasource_value") %>%
         inner_join(
           tbl(channel, "datasource_parameter"),
           by = c("parameter" = "id")
         ) %>%
-        select_(
-          ~ datasource,
-          parameter = ~description,
-          ~value
-        ),
+        select(.data$datasource, parameter = .data$description, .data$value),
       by = "datasource"
     ) %>%
     collect() %>%
