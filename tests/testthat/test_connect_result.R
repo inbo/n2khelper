@@ -13,7 +13,7 @@ describe("check_id()", {
   it("uses trusted authentication when username is missing or ''", {
     skip_on_cran()
     skip_on_os("linux")
-    skip_if(isTRUE(Sys.getenv("CHECKLIST_OS", FALSE)))
+    skip_if(as.logical(Sys.getenv("CHECKLIST_OS", FALSE)))
     expect_is(
       connect_result(),
       "src"
@@ -25,7 +25,7 @@ describe("check_id()", {
   })
   it("uses username and password when supplied", {
     skip_on_cran()
-    skip_if(isTRUE(Sys.getenv("CHECKLIST_OS", FALSE)))
+    skip_if(as.logical(Sys.getenv("CHECKLIST_OS", FALSE)))
     expect_is(
       connect_result(
         username = Sys.getenv("N2KRESULT_USERNAME"),
