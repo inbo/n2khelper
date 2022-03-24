@@ -4,8 +4,13 @@
 \alias{check_dbtable_variable}
 \title{Check if a variable is available in a given table}
 \usage{
-check_dbtable_variable(table, variable, schema = "public", channel,
-  error = TRUE)
+check_dbtable_variable(
+  table,
+  variable,
+  schema = "public",
+  channel,
+  error = TRUE
+)
 }
 \arguments{
 \item{table}{The name of the table}
@@ -16,7 +21,9 @@ check_dbtable_variable(table, variable, schema = "public", channel,
 
 \item{channel}{the open dplyr connection to the database.}
 
-\item{error}{Indicates the behaviour when a variable is missing. Gives an error when error = TRUE (default). Return FALSE otherwise.}
+\item{error}{Indicates the behaviour when a variable is missing.
+Gives an error when error = \code{TRUE} (default).
+Return FALSE otherwise.}
 }
 \value{
 TRUE when all variables are present in the table.

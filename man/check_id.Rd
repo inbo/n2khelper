@@ -7,7 +7,7 @@
 check_id(value, variable, table, channel)
 }
 \arguments{
-\item{value}{the content of the variable}
+\item{value}{the id value}
 
 \item{variable}{A vector with the names of the columns}
 

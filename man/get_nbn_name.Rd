@@ -7,9 +7,9 @@
 get_nbn_name(nbn_key, channel)
 }
 \arguments{
-\item{channel}{An open RODBC channel to the NBN database}
+\item{nbn_key}{A vector with NBN keys}
 
-\item{nbn.key}{A vector with NBN keys}
+\item{channel}{An open RODBC channel to the NBN database}
 }
 \description{
 Get the name associated with an NBN key

@@ -1,0 +1,14 @@
+citHeader("To cite `n2khelper` in publications please use:")
+# begin checklist entry
+citEntry(
+  entry = "Manual",
+  title = "n2khelper: Auxiliary Functions for the Analysis and Reporting of the Natura 2000 Monitoring. Version 0.5.0",
+  author = c(person(given = "Thierry", family = "Onkelinx")),
+  year = 2022,
+  url = "https://doi.org/10.5281/zenodo.835732",
+  abstract = "Auxiliary functions for analysing Natura 2000 monitoring data.",
+  textVersion = "Onkelinx, Thierry (2022) n2khelper: Auxiliary Functions for the Analysis and Reporting of the Natura 2000 Monitoring. Version 0.5.0. https://doi.org/10.5281/zenodo.835732",
+  keywords = "R package",
+  doi = "10.5281/zenodo.835732",
+)
+# end checklist entry

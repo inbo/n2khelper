@@ -6,7 +6,7 @@
 #'    required variables in the data.frame. The elements of the list contain the
 #'    accepted classes for each varaible.
 #' @param name the name of the \code{data.frame} to use in the error message
-#' @param force.NA check the class of variables with all NA
+#' @param force_na check the class of variables with all NA
 #' @param error When TRUE (default), the function returns an error when a
 #'    variable is missing. Otherwise it returns a warning.
 #' @return The function returns TRUE when all variables are present. If returns
@@ -24,21 +24,21 @@
 #' )
 #' @importFrom assertthat assert_that is.string is.flag noNA
 check_dataframe_variable <- function(
-  df, variable, name = "df", force.NA = FALSE, error = TRUE
-){
+  df, variable, name = "df", force_na = FALSE, error = TRUE
+) {
   assert_that(is.string(name))
   assert_that(inherits(df, "data.frame") | inherits(df, "matrix"))
-  assert_that(is.flag(force.NA))
-  assert_that(noNA(force.NA))
+  assert_that(is.flag(force_na))
+  assert_that(noNA(force_na))
   assert_that(is.flag(error))
   assert_that(noNA(error))
   assert_that(is.list(variable) | is.character(variable))
 
   if (inherits(variable, "list")) {
-    required.class <- variable
-    variable <- names(required.class)
+    required_class <- variable
+    variable <- names(required_class)
   } else {
-    required.class <- NULL
+    required_class <- NULL
   }
 
   assert_that(length(variable) > 0)
@@ -46,43 +46,43 @@ check_dataframe_variable <- function(
 
   available <- variable %in% colnames(df)
   if (!all(available)) {
-    missing.var <- paste(variable[!available], collapse = ", ")
-    if (error) {
-      stop("Variables missing in ", name, ": ", missing.var)
-    } else {
-      warning("Variables missing in ", name, ": ", missing.var)
-      return(FALSE)
-    }
+    missing_var <- paste(variable[!available], collapse = ", ")
+    assert_that(
+      !error, msg = paste0("Variables missing in ", name, ": ", missing_var)
+    )
+    warning("Variables missing in ", name, ": ", missing_var)
+    return(FALSE)
   }
 
-  if (is.null(required.class)) {
+  if (is.null(required_class)) {
     return(TRUE)
   }
 
-  if (force.NA) {
-    all.NA <- rep(FALSE, length(variable))
+  if (force_na) {
+    all_na <- rep(FALSE, length(variable))
   } else {
-    all.NA <- sapply(
+    all_na <- sapply(
       df[, variable],
-      function(x){
+      function(x) {
         all(is.na(x))
       }
     )
   }
-  current.class <- sapply(df[, variable[!all.NA], drop = FALSE], class)
-  correct.class <- sapply(seq_along(current.class), function(i){
-    any(current.class[[i]] %in% required.class[!all.NA][[i]])
-  })
-  if (!all(correct.class)) {
-    wrong.class <- current.class[!correct.class]
-    wrong.class <- sapply(wrong.class, paste, collapse = "', '")
-    expected.class <- required.class[!all.NA][names(wrong.class)]
-    expected.class <- sapply(expected.class, paste, collapse = "', '")
+  current_class <- sapply(df[, variable[!all_na], drop = FALSE], class)
+  correct_class <- sapply(
+    seq_along(current_class),
+    function(i) {
+      any(current_class[[i]] %in% required_class[!all_na][[i]])
+    }
+  )
+  if (!all(correct_class)) {
+    wrong_class <- current_class[!correct_class]
+    wrong_class <- sapply(wrong_class, paste, collapse = "', '")
+    expected_class <- required_class[!all_na][names(wrong_class)]
+    expected_class <- sapply(expected_class, paste, collapse = "', '")
     sprintf(
-      "\n%s: got '%s', expected '%s'",
-      names(wrong.class),
-      wrong.class,
-      expected.class
+      "\n%s: got '%s', expected '%s'", names(wrong_class), wrong_class,
+      expected_class
     ) %>%
       paste(collapse = "") %>%
       sprintf(fmt = "Wrong class for following variable(s)%s") %>%

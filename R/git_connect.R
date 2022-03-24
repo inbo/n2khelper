@@ -5,22 +5,19 @@
 #' @inheritParams git_connection
 #' @param type Use 'ssh' or 'https' for authentication
 #' @importFrom assertthat assert_that is.string has_name
-#' @importFrom dplyr %>% tbl inner_join select_ filter_ collect
-#' @importFrom tidyr spread_
+#' @importFrom dplyr %>% collect filter inner_join select tbl
 #' @importFrom git2r repository cred_user_pass
+#' @importFrom rlang .data
+#' @importFrom tidyr pivot_wider
 #' @export
 git_connect <- function(
-  data.source.name,
-  channel,
-  type = c("ssh", "https"),
-  username = character(0),
-  password = character(0),
-  commit.user,
-  commit.email
-){
+  data_source_name, channel, type = c("ssh", "https"), username = character(0),
+  password = character(0), commit_user, commit_email
+) {
   type <- match.arg(type)
-  assert_that(is.string(data.source.name))
-  check_dbtable_variable( #nocov start
+  assert_that(is.string(data_source_name))
+  # nocov start
+  check_dbtable_variable(
     table = "datasource",
     variable = c("id", "datasource_type"),
     channel = channel
@@ -43,38 +40,31 @@ git_connect <- function(
 
   type <- sprintf("git, tab delimited %s", type)
   connection <- tbl(channel, "datasource") %>%
-    filter_(~description == data.source.name) %>%
+    filter(.data$description == data_source_name) %>%
     inner_join(
       tbl(channel, "datasource_type"),
       by = c("datasource_type" = "id")
     ) %>%
-    filter_(~description.y == type) %>%
-    select_(
-      datasource = ~ id,
-      datasource_type = ~description.y
-    ) %>%
+    filter(.data$description.y == type) %>%
+    select(datasource = .data$id, datasource_type = .data$description.y) %>%
     inner_join(
       tbl(channel, "datasource_value") %>%
         inner_join(
           tbl(channel, "datasource_parameter"),
           by = c("parameter" = "id")
         ) %>%
-        select_(
-          ~ datasource,
-          parameter = ~description,
-          ~value
-        ),
+        select(.data$datasource, parameter = .data$description, .data$value),
       by = "datasource"
     ) %>%
     collect() %>%
-    spread_(key_col = "parameter", value_col = "value")
+    pivot_wider(names_from = .data$parameter, values_from = .data$value)
   if (nrow(connection) == 0) {
-    stop("No connection information found for '", data.source.name, "'.")
+    stop("No connection information found for '", data_source_name, "'.")
   }
   if (nrow(connection) > 1) {
     stop(
       "Multiple lines with connection information found for '",
-      data.source.name, "'."
+      data_source_name, "'."
     )
   }
   assert_that(has_name(connection, "connect_method"))
@@ -100,21 +90,15 @@ git_connect <- function(
   if (type == "ssh") {
     return(
       git_connection(
-        repo.path = connection$repo,
-        key = username,
-        password = password,
-        commit.user = commit.user,
-        commit.email = commit.email
+        repo_path = connection$repo, key = username, password = password,
+        commit_user = commit_user, commit_email = commit_email
       )
     )
   }
   return(
     git_connection(
-      repo.path = connection$repo,
-      username = username,
-      password = password,
-      commit.user = commit.user,
-      commit.email = commit.email
+      repo_path = connection$repo, username = username, password = password,
+      commit_user = commit_user, commit_email = commit_email
     )
   ) #nocov end
 }

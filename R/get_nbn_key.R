@@ -8,7 +8,7 @@
 #' @importFrom rlang .data
 #' @importFrom assertthat assert_that is.string
 #' @importFrom DBI dbQuoteString dbGetQuery
-get_nbn_key <- function(name, language = "la", channel, authority = FALSE){
+get_nbn_key <- function(name, language = "la", channel, authority = FALSE) {
   # nocov start
   assert_that(
     is.character(name),

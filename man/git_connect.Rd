@@ -4,24 +4,31 @@
 \alias{git_connect}
 \title{Returns the path of the datasource within the git repository}
 \usage{
-git_connect(data.source.name, channel, type = c("ssh", "https"),
-  username = character(0), password = character(0), commit.user,
-  commit.email)
+git_connect(
+  data_source_name,
+  channel,
+  type = c("ssh", "https"),
+  username = character(0),
+  password = character(0),
+  commit_user,
+  commit_email
+)
 }
 \arguments{
-\item{data.source.name}{The name of the data source}
+\item{data_source_name}{The name of the data source}
 
 \item{channel}{the ODBC channel to the database with the connection strings}
 
 \item{type}{Use 'ssh' or 'https' for authentication}
 
-\item{username}{the username in case the ConnectMethod is "Credentials supplied by the user running the report". Ignored in all other cases.}
+\item{username}{the username in case the ConnectMethod is \code{"Credentials supplied by the user running the report"}.
+Ignored in all other cases.}
 
 \item{password}{the password to be used in combination with the username.}
 
-\item{commit.user}{the name of the user how will commit}
+\item{commit_user}{the name of the user how will commit}
 
-\item{commit.email}{the email of the user how will commit}
+\item{commit_email}{the email of the user how will commit}
 }
 \description{
 The details are stored in the results database.

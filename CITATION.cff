@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it as below.
+authors:
+- family-names: Onkelinx
+  given-names: Thierry
+  orcid: https://orcid.org/0000-0001-8804-4216
+contact:
+- email: thierry.onkelinx@inbo.be
+  family-names: Onkelinx
+  given-names: Thierry
+- email: info@inbo.be
+  name: Research Institute for Nature and Forest
+title: |-
+  n2khelper: Auxiliary Functions for the Analysis and Reporting of the Natura
+      2000 Monitoring
+version: 0.5.0
+abstract: Auxiliary functions for analysing Natura 2000 monitoring data.
+license: GPL-3.0
+type: software
+doi: 10.5281/zenodo.835732
+identifiers: []
+keywords: R package

@@ -4,8 +4,13 @@
 \alias{check_dataframe_variable}
 \title{Check if a data.frame contains variables}
 \usage{
-check_dataframe_variable(df, variable, name = "df", force.NA = FALSE,
-  error = TRUE)
+check_dataframe_variable(
+  df,
+  variable,
+  name = "df",
+  force_na = FALSE,
+  error = TRUE
+)
 }
 \arguments{
 \item{df}{the \code{data.frame} to check}
@@ -17,14 +22,14 @@ accepted classes for each varaible.}
 
 \item{name}{the name of the \code{data.frame} to use in the error message}
 
-\item{force.NA}{check the class of variables with all NA}
+\item{force_na}{check the class of variables with all NA}
 
 \item{error}{When TRUE (default), the function returns an error when a
 variable is missing. Otherwise it returns a warning.}
 }
 \value{
 The function returns TRUE when all variables are present. If returns
-   FALSE when a variable is missing and \code{error = FALSE}.
+FALSE when a variable is missing and \code{error = FALSE}.
 }
 \description{
 Check if a data.frame contains variables

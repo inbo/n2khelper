@@ -1,13 +1,14 @@
 #' Get the name associated with an NBN key
-#' @param nbn.key A vector with NBN keys
+#' @param nbn_key A vector with NBN keys
 #' @inheritParams get_nbn_key
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom DBI dbQuoteString dbGetQuery
-#' @importFrom dplyr %>% count mutate semi_join group_by summarise ungroup n filter
+#' @importFrom dplyr %>% count mutate semi_join group_by summarise ungroup n
+#' filter
 #' @importFrom rlang .data
-#' @importFrom tidyr spread
-get_nbn_name <- function(nbn_key, channel){
+#' @importFrom tidyr pivot_wider
+get_nbn_name <- function(nbn_key, channel) {
   # nocov start
   assert_that(
     is.character(nbn_key),
@@ -63,7 +64,9 @@ get_nbn_name <- function(nbn_key, channel){
   if (length(unique(output$Preference)) > 1) {
     output %>%
       count(.data$NBNKey, .data$Language, .data$Preference) %>%
-      spread(key = "Preference", value = "n", fill = 0L) %>%
+      pivot_wider(
+        names_from = .data$Preference, values_from = .data$n, values_fill = 0L
+      ) %>%
       mutate(Preference = ifelse(.data$Yes > 0, "Yes", "No")) %>%
       semi_join(x = output, by = c("NBNKey", "Language", "Preference")) ->
       output
@@ -71,7 +74,9 @@ get_nbn_name <- function(nbn_key, channel){
   if (length(unique(output$Status)) > 1) {
     output %>%
       count(.data$NBNKey, .data$Language, .data$Status) %>%
-      spread(key = "Status", value = "n", fill = 0L) %>%
+      pivot_wider(
+        key = .data$Status, values_from = .data$n, values_fill = 0L
+      ) %>%
       mutate(Status = ifelse(.data$R > 0, "R", "S")) %>%
       semi_join(x = output, by = c("NBNKey", "Language", "Status")) -> output
   }

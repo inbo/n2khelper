@@ -32,14 +32,14 @@ setClass(
 #' @importFrom assertthat assert_that is.string has_name
 setValidity(
   "gitConnection",
-  function(object){
+  function(object) {
     assert_that(is.string(object@CommitUser))
     assert_that(is.string(object@CommitEmail))
-    repo.config <- config(object@Repository)
-    assert_that(has_name(repo.config$local, "user.name"))
-    assert_that(has_name(repo.config$local, "user.email"))
-    assert_that(repo.config$local$user.name == object@CommitUser)
-    assert_that(repo.config$local$user.email == object@CommitEmail)
+    repo_config <- config(object@Repository)
+    assert_that(has_name(repo_config$local, "user.name"))
+    assert_that(has_name(repo_config$local, "user.email"))
+    assert_that(repo_config$local$user.name == object@CommitUser)
+    assert_that(repo_config$local$user.email == object@CommitEmail)
     return(TRUE)
   }
 )

@@ -12,7 +12,8 @@ check_single_probability(x, name = "x")
 \item{name}{the name of the object to use in the error message}
 }
 \value{
-The function gives the single probability back. it throws an error when the input is not a single probability.
+The function gives the single probability back.
+It throws an error when the input is not a single probability.
 }
 \description{
 Check if the object is a single probability

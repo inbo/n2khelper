@@ -16,7 +16,7 @@ Defaults to TRUE}
 }
 \value{
 the object or \code{NULL} is the object doesn't exists in the
-   environment
+environment
 }
 \description{
 Read an object from an environment

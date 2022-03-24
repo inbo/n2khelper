@@ -1,13 +1,13 @@
 context("check if a data.frame contains a variable")
 describe("check_dataframe_variable()", {
-  missing.var <- "aaaa"
-  missing.var2 <- c("aaaa", "bbbb")
+  missing_var <- "aaaa"
+  missing_var2 <- c("aaaa", "bbbb")
   df <- data.frame(a = integer(0), b = logical(0), c = character(0))
   variable <- colnames(df)
-  variable.subset <- sample(variable, length(variable) - 1)
+  variable_subset <- sample(variable, length(variable) - 1)
   name <- "df"
   error <- TRUE
-  df.matrix <- as.matrix(df)
+  df_matrix <- as.matrix(df)
 
   it("checks if df is a data.frame", {
     expect_error(
@@ -46,126 +46,120 @@ describe("check_dataframe_variable()", {
         name = name,
         error = error
       ),
-      "length\\(variable\\) not greater than 0"
+      "length\\(variable\\) not greater than 0" #nolint: nonportable_path_linter, line_length_linter.
     )
   })
 
   it("works on data.frames and matrices", {
-    expect_that(
+    expect_true(
       check_dataframe_variable(
         df = df,
         variable = variable,
         name = name,
         error = error
-      ),
-      is_true()
+      )
     )
-    expect_that(
+    expect_true(
       check_dataframe_variable(
-        df = df.matrix,
+        df = df_matrix,
         variable = variable,
         name = name,
         error = error
-      ),
-      is_true()
+      )
     )
-    expect_that(
+    expect_true(
       check_dataframe_variable(
         df = df,
-        variable = variable.subset,
+        variable = variable_subset,
         name = name,
         error = error
-      ),
-      is_true()
+      )
+    )
+    expect_true(
+      check_dataframe_variable(
+        df = df_matrix,
+        variable = variable_subset,
+        name = name,
+        error = error
+      )
     )
     expect_that(
       check_dataframe_variable(
-        df = df.matrix,
-        variable = variable.subset,
-        name = name,
-        error = error
-      ),
-      is_true()
-    )
-    expect_that(
-      check_dataframe_variable(
-        df = df, variable = c(variable, missing.var), name = name, error = TRUE
+        df = df, variable = c(variable, missing_var), name = name, error = TRUE
       ),
       throws_error(
         paste0(
           "Variables missing in ", name, ": ",
-          paste(missing.var, collapse = ", ")
+          paste(missing_var, collapse = ", ")
         )
       )
     )
     expect_that(
       check_dataframe_variable(
-        df = df.matrix,
-        variable = c(variable, missing.var),
+        df = df_matrix,
+        variable = c(variable, missing_var),
         name = name,
         error = TRUE
       ),
       throws_error(
         paste0(
           "Variables missing in ", name, ": ",
-          paste(missing.var, collapse = ", ")
+          paste(missing_var, collapse = ", ")
         )
       )
     )
     expect_that(
       check_dataframe_variable(
-        df = df, variable = c(variable, missing.var), name = name, error = FALSE
+        df = df, variable = c(variable, missing_var), name = name, error = FALSE
       ),
       gives_warning(
         paste0(
           "Variables missing in ", name, ": ",
-          paste(missing.var, collapse = ", ")
+          paste(missing_var, collapse = ", ")
         )
       )
     )
     expect_that(
       check_dataframe_variable(
-        df = df.matrix,
-        variable = c(variable, missing.var),
+        df = df_matrix,
+        variable = c(variable, missing_var),
         name = name,
         error = FALSE
       ),
       gives_warning(
         paste0(
           "Variables missing in ", name, ": ",
-          paste(missing.var, collapse = ", ")
+          paste(missing_var, collapse = ", ")
         )
       )
     )
-    expect_that(
+    expect_false(
       suppressWarnings(
         check_dataframe_variable(
           df = df,
-          variable = c(variable, missing.var),
+          variable = c(variable, missing_var),
           name = name,
           error = FALSE
         )
-      ),
-      is_false()
+      )
     )
-    expect_that(
+    expect_false(
       suppressWarnings(
         check_dataframe_variable(
-          df = df.matrix,
-          variable = c(variable, missing.var),
+          df = df_matrix,
+          variable = c(variable, missing_var),
           name = name,
           error = FALSE
         )
-      ),
-      is_false()
+      )
     )
   })
 
   it("handles tbl_df from dplyr", {
     expect_true(
       check_dataframe_variable(
-        df = dplyr::as.tbl(df),
-        variable = variable.subset,
+        df = tibble::as_tibble(df),
+        variable = variable_subset,
         name = name,
         error = error
       )
@@ -178,7 +172,7 @@ describe("check_dataframe_variable()", {
         df = data.frame(A = NA),
         variable = list(A = "character"),
         name = name,
-        force.NA = TRUE
+        force_na = TRUE
       ),
       "A: got 'logical', expected 'character'"
     )
@@ -187,7 +181,7 @@ describe("check_dataframe_variable()", {
         df = data.frame(A = NA),
         variable = list(A = "character"),
         name = name,
-        force.NA = FALSE
+        force_na = FALSE
       ),
       check_dataframe_variable(
         df = data.frame(A = NA),

@@ -9,7 +9,8 @@ get_nbn_key_multi(species, orders = c("la", "nl", "en"), channel)
 \arguments{
 \item{species}{A data.frame with the name of species in one or more languages}
 
-\item{orders}{the order in which the languages are tried to get a matching NBN key}
+\item{orders}{the order in which the languages are tried to get a matching
+NBN key.}
 
 \item{channel}{An open RODBC channel to the NBN database}
 }

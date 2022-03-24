@@ -4,12 +4,13 @@
 \alias{odbc_connect}
 \title{connect to a data source through ODBC}
 \usage{
-odbc_connect(data.source.name, username, password, channel)
+odbc_connect(data_source_name, username, password, channel)
 }
 \arguments{
-\item{data.source.name}{The name of the data source}
+\item{data_source_name}{The name of the data source}
 
-\item{username}{the username in case the ConnectMethod is "Credentials supplied by the user running the report". Ignored in all other cases.}
+\item{username}{the username in case the ConnectMethod is \code{"Credentials supplied by the user running the report"}.
+Ignored in all other cases.}
 
 \item{password}{the password to be used in combination with the username.}
 

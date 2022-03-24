@@ -1,11 +1,12 @@
 #' Try multiple languages to get a matching NBN key
 #' @param species A data.frame with the name of species in one or more languages
-#' @param orders the order in which the languages are tried to get a matching NBN key
+#' @param orders the order in which the languages are tried to get a matching
+#' NBN key.
 #' @inheritParams get_nbn_key
 #' @importFrom assertthat assert_that has_name
 #' @importFrom dplyr select slice mutate
 #' @export
-get_nbn_key_multi <- function(species, orders = c("la", "nl", "en"), channel){
+get_nbn_key_multi <- function(species, orders = c("la", "nl", "en"), channel) {
   orders <- match.arg(orders, several.ok = TRUE)
   lang_name <- c(
     la = "ScientificName", nl = "DutchName", en = "EnglishName",
@@ -33,7 +34,7 @@ get_nbn_key_multi <- function(species, orders = c("la", "nl", "en"), channel){
     )
     to_do <- match_nbn_key(
       species = to_do,
-      nbn.key = nbn_key,
+      nbn_key = nbn_key,
       variable = lang_name[language]
     )
     done <- rbind(done, to_do[!is.na(to_do$NBNKey), ])
@@ -41,13 +42,12 @@ get_nbn_key_multi <- function(species, orders = c("la", "nl", "en"), channel){
     if (nrow(to_do) == 0) {
       break
     }
-    to_do$NBNKey <- NULL
+    to_do$NBNKey <- NULL # nolint
   }
 
-  # nocov start
   if (nrow(to_do) > 0) {
     warning("No matches found for some records")
-    to_do$NBNKey <- NA
+    to_do$NBNKey <- NA # nolint
     done <- rbind(done, to_do)
   }
   return(done) #nocov end

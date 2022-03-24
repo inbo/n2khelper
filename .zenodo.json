@@ -1,0 +1,32 @@
+{
+  "title": "n2khelper: Auxiliary Functions for the Analysis and Reporting of the Natura\n    2000 Monitoring",
+  "version": "0.5.0",
+  "description": "Auxiliary functions for analysing Natura 2000 monitoring data.",
+  "creators": [
+    {
+      "name": "Onkelinx, Thierry",
+      "orcid": "https://orcid.org/0000-0001-8804-4216"
+    }
+  ],
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "GPL-3.0",
+  "communities": [
+    {
+      "identifier": "inbo"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Research Institute for Nature and Forest",
+      "type": "RightsHolder"
+    },
+    {
+      "name": "Onkelinx, Thierry",
+      "type": "ContactPerson",
+      "orcid": "https://orcid.org/0000-0001-8804-4216"
+    }
+  ],
+  "language": "eng",
+  "keywords": "R package"
+}
