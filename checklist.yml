@@ -16,3 +16,5 @@ citation_roles:
 - aut
 - cre
 keywords: R package
+spelling:
+  default: en-GB
