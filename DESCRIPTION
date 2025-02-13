@@ -1,11 +1,11 @@
 Package: n2khelper
 Title: Auxiliary Functions for the Analysis and Reporting of the Natura
     2000 Monitoring
-Version: 0.5.0
+Version: 0.5.1
 Authors@R: c(
     person("Thierry", "Onkelinx", , "thierry.onkelinx@inbo.be", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-8804-4216")),
-    person("Research Institute for Nature and Forest", , , "info@inbo.be", role = c("cph", "fnd"))
+           comment = c(ORCID = "0000-0001-8804-4216", affiliation = "Research Institute for Nature and Forest (INBO)")),
+    person("Research Institute for Nature and Forest (INBO)", , , "info@inbo.be", role = c("cph", "fnd"))
   )
 Description: Auxiliary functions for analysing Natura 2000 monitoring
     data.
@@ -60,3 +60,5 @@ Collate:
     'odbc_get_multi_id.R'
     'odbc_insert.R'
     'read_object_environment.R'
+Config/checklist/keywords: Natura2000, utilities
+Config/checklist/communities: inbo
