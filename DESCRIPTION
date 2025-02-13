@@ -31,8 +31,6 @@ Imports:
 Suggests:
     testthat,
     tibble
-Remotes:
-    tidyverse/lubridate
 Encoding: UTF-8
 Language: en-GB
 Roxygen: list(markdown = TRUE)
